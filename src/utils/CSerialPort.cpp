@@ -16,7 +16,7 @@
 
 #include "CSerialPort.h"
 
-#include "libredaq.h" // format()
+#include "format.h"
 
 // =================  LINUX / OSX  ============
 #if !defined(_WIN32)

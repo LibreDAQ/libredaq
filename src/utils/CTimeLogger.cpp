@@ -15,7 +15,7 @@
   +-------------------------------------------------------------------------+  */
 
 #include "CTimeLogger.h"
-#include "libredaq.h"  // format()
+#include "format.h"
 
 #include <iostream>
 #include <fstream>
