@@ -12,23 +12,37 @@
 
 namespace libredaq
 {
-	
-	
-	
-	
-	
-	/** @name Utility functions
+	/** @name Main LibreDAQ API
 	  * @{ */
 	
-// Define a decl. modifier for printf-like format checks at compile time:
-#ifdef __GNUC__
-#	define MBDE_printf_format_check(_FMT_,_VARARGS_)  __attribute__ ((__format__ (__printf__, _FMT_,_VARARGS_)))
-#else
-#	define MBDE_printf_format_check(_FMT_,_VARARGS_)
-#endif
-	
-	/** A sprintf-like function for std::string */
-	std::string format(const char *fmt, ...) MBDE_printf_format_check(1,2);
+	/** The interface to any LibreDAQ physical device.
+	  */
+	class Device
+	{
+	public:
+		/** Constructor of an unitilized device. Must be connected with \ref connect() */
+		Device();
+
+		/** Destructor. It automatically stop all tasks and disconnects from the device. */
+		~Device();
+
+		/** Connects to a device in a given serial port
+		  * \return  true on success, false on any error
+		  */
+		bool connect_serial_port( const std::string &serialPortName );
+
+		/** Disconnect from the device. Note that this does not stop running tasks on the firmware. 
+		  * Does nothing if already disconnected.
+		  * \sa stop_all_tasks() */
+		void disconnect();
+
+		/** Instruct the firmware to stop all running tasks */
+		void stop_all_tasks();
+
+	private:
+		void *m_ptr_serial_port;  // Opaque ptr to CSerialPort
+
+	}; // end class
 	
 	/** @} */
 }
