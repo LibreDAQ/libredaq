@@ -39,8 +39,18 @@ namespace libredaq
 		/** Instruct the firmware to stop all running tasks */
 		void stop_all_tasks();
 
+		/** Start capturing Analog-to-Digital (ADC) channels
+		  * \return false on any error (and dumps details to stderr)
+		  */
+		bool start_task_adc( double sampling_rate_hz );
+
 	private:
 		void *m_ptr_serial_port;  // Opaque ptr to CSerialPort
+		void *m_rx_thread_handle; // Opaque ptr to TThreadHandle
+
+
+		volatile bool m_all_threads_must_exit;
+		void thread_rx(); //!< The running thread for 
 
 	}; // end class
 	

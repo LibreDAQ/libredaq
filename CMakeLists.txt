@@ -17,4 +17,5 @@ include_directories("${libredaq_SOURCE_DIR}/include")
 add_subdirectory(src)
 
 # Examples:
+add_subdirectory(examples)
 
