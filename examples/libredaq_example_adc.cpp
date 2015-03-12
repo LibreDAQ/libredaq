@@ -10,11 +10,17 @@
 void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
 {
 	static int i=0;
-	if (++i==100) 
+	if (++i==100)
 	{
 		i=0;
-		printf("TIME: %10u ADC DATA: %5.04f\n", data.device_timestamp, data.adc_data_volts[0] );
+		printf("TIME: %10u ADC DATA: 0=%5.03f 1=%5.03f 2=%5.03f 3=%5.03f 4=%5.03f\n", data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3],data.adc_data_volts[4] );
 	}
+
+	static FILE* f=fopen("adc.txt","wt");
+	fprintf(f,"%10u", data.device_timestamp);
+	for (int k=0;k<data.adc_data_volts.size();k++)
+		fprintf(f," %5.03f",data.adc_data_volts[k] );
+	fprintf(f,"\n");
 }
 
 int main(int argc, char **argv)
@@ -31,7 +37,7 @@ int main(int argc, char **argv)
 	printf("Starting ADC task...\n");
 	daq.start_task_adc(1000);
 
-	libredaq::sleep_ms(10000);
+	libredaq::sleep_ms(5000);
 	printf("Stopping ADC task...\n");
 	daq.stop_all_tasks();
 
