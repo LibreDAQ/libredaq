@@ -9,9 +9,26 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 namespace libredaq
 {
+	/** @name Callback types
+	  * @{ */
+
+	/** Data for callbacks of type ADC */
+	struct TCallbackData_ADC
+	{
+		unsigned long        device_timestamp;  //!< Device specific. See XXX() for converting to computer time
+		unsigned int         num_channels;      //!< Number of ADC channels
+		std::vector<double>  adc_data_volts;    //!< Interlaced ADC data, in volts: [A0 ... A7](for t=0), [A0 ... A7](for t=1), etc.
+	};
+
+	/** Callback for ADC data */
+	typedef void (*callback_adc_t)(const TCallbackData_ADC &data);
+
+	/** @} */
+
 	/** @name Main LibreDAQ API
 	  * @{ */
 	
@@ -44,15 +61,28 @@ namespace libredaq
 		  */
 		bool start_task_adc( double sampling_rate_hz );
 
+
+		void set_callback_ADC(callback_adc_t user_function) { m_callback_adc = user_function; }
+
 	private:
 		void *m_ptr_serial_port;  // Opaque ptr to CSerialPort
 		void *m_rx_thread_handle; // Opaque ptr to TThreadHandle
-
+		void *m_rx_buf;           // Opaque ptr to circular_buffer
 
 		volatile bool m_all_threads_must_exit;
 		void thread_rx(); //!< The running thread for 
+		bool internal_send_cmd(void *buf, size_t len, const char *error_msg_cmd); //!< Returns false on any comms error
+
+		// Functors for callbacks:
+		callback_adc_t  m_callback_adc;
 
 	}; // end class
-	
+
+
+
+	/** Sleep for the given number of milliseconds */
+	void sleep_ms(unsigned int ms);
+
+
 	/** @} */
 }

@@ -13,6 +13,8 @@
 #	pragma pack(push, 1) // exact fit - no padding
 #endif
 
+typedef uint32_t   timestamp_t;
+
 enum ldaq_frame_opcodes_t
 {
 	// ======================== BOARD -> PC  ==========================
