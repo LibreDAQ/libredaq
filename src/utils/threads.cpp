@@ -179,7 +179,7 @@ libredaq::system::TThreadHandle libredaq::system::detail::createThreadImpl(
 
     pthread_t   newThreadId;
     int iRet = pthread_create( &newThreadId,NULL,auxiliary_thread_launcher_LIN,auxData);
-    ASSERT_(iRet==0);
+	if (iRet!=0) throw std::runtime_error("Error invoking pthread_create");
 
 	threadHandle.idThread = (unsigned long)newThreadId;
 	return threadHandle;
@@ -316,8 +316,7 @@ void libredaq::system::changeCurrentProcessPriority( TProcessPriority priority  
 	}
 	SetPriorityClass( GetCurrentProcess(), dwPri );
 #else
-	MRPT_UNUSED_PARAM(priority);
-    cout << "[libredaq::system::changeCurrentProcessPriority] Warning: Not implemented in Linux yet" << endl;
+	std::cout << "[libredaq::system::changeCurrentProcessPriority] Warning: Not implemented in Linux yet" << std::endl;
 #endif
 }
 

@@ -37,11 +37,11 @@
 #include <signal.h>
 
 #include <map>
-#include <mrpt/system/threads.h>
+#include <iostream>
+#include "utils/threads.h"
 
 
-using namespace mrpt;
-using namespace mrpt::hwdrivers;
+using namespace libredaq;
 using namespace std;
 
 /* -----------------------------------------------------
@@ -167,12 +167,12 @@ void  CSerialPort::setConfig(
 	// Port must be open!
 	if (!isOpen()) throw std::runtime_error("The serial port is not open!");
 
-	ASSERT_(baudRate>0)
+	if (baudRate<=0) throw std::runtime_error("Serial port baudRate must be >0!");
 
-		//
-		// Apply baud rate
-		//
-		int BR;
+	//
+	// Apply baud rate
+	//
+	int BR;
 	switch (baudRate)
 	{
 	case 50: BR = B50; break;
@@ -430,7 +430,7 @@ size_t  CSerialPort::Read(void *Buffer, size_t Count)
 		if (alreadyRead<Count)
 		{
 			// Wait 1 more ms for new data to arrive.
-			mrpt::system::sleep( 1 );
+			libredaq::system::sleep( 1 );
 		}
 
 		// Reset interbytes timer:
@@ -456,10 +456,10 @@ std::string CSerialPort::ReadString(
 
 	// Calling ::ReadBuffer() many times would be even worse, so replicate its code here:
 
-	ASSERT_(eol_chars!=NULL)
+	if (eol_chars==NULL) throw std::runtime_error("eol_chars can't be NULL!");
 
-		// Port must be open!
-		if (!isOpen()) throw std::runtime_error("The port is not open yet!");
+	// Port must be open!
+	if (!isOpen()) throw std::runtime_error("The port is not open yet!");
 
 	if (out_timeout) *out_timeout = false; // Will be set to true on timeout
 
@@ -504,7 +504,7 @@ std::string CSerialPort::ReadString(
 		{
 			// we decide to move the sleep here to satisfy realtime requirement in the case where we are waiting a n-length string at a frequency
 			// greater than 1/n...
-			mrpt::system::sleep( 1 ); // Wait 1 more ms for new data to arrive.
+			libredaq::system::sleep( 1 ); // Wait 1 more ms for new data to arrive.
 		}
 		// If we are still here, string is not finished:
 	}

@@ -18,6 +18,7 @@
 
 #include "CSemaphore.h"
 #include "threads.h"
+#include "format.h"
 
 #include <cstdlib>
 #include <cstring>
@@ -78,11 +79,9 @@ m_name(name)
 
 	// On error, launch an exception explaining it:
 	if (token->semid==SEM_FAILED)
-		throw std::runtime_error( format("Creating semaphore (name='%s') raised error: %s",m_name.c_str(),strerror(errno) ) )
+		throw std::runtime_error( libredaq::format("Creating semaphore (name='%s') raised error: %s",m_name.c_str(),strerror(errno) ) );
 
-		//int sval; sem_getvalue(token->semid, &sval); std::cout << mrpt::format("Semaphore: Init val=%i desired initialCount=%i.\n",sval,initialCount);std::cout.flush();
-
-
+	//int sval; sem_getvalue(token->semid, &sval); std::cout << mrpt::format("Semaphore: Init val=%i desired initialCount=%i.\n",sval,initialCount);std::cout.flush();
 }
 
 /*---------------------------------------------------------------
@@ -174,7 +173,7 @@ void CSemaphore::release(unsigned int increaseCount )
 
 	for (unsigned int i=0;i<increaseCount;i++)
 		if (sem_post(token->semid))
-			throw std::runtime_error( format("Increasing count of semaphore (name='%s') raised error: %s",m_name.c_str(),strerror(errno) ) )
+			throw std::runtime_error( format("Increasing count of semaphore (name='%s') raised error: %s",m_name.c_str(),strerror(errno) ) );
 
 }
 

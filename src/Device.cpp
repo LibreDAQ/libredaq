@@ -14,6 +14,9 @@
 #include "utils/threads.h"
 #include "utils/circular_buffer.h"
 
+#include <cstdio>  // stderr,...
+#include <cstring> // memcpy
+
 using namespace libredaq;
 using libredaq::system::TThreadHandle;
 using libredaq::utils::circular_buffer;
@@ -54,7 +57,7 @@ Device::~Device()
 
 	// Free all objects alloc'd via opaque pointers: (these will never be NULL)
 	delete PTR_SERIALPORT;
-	delete m_rx_thread_handle;
+	delete PTR_HANDLE_RX_THREAD;
 	delete PTR_RX_BUFFER;
 }
 

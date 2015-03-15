@@ -15,6 +15,8 @@
   +-------------------------------------------------------------------------+  */
 
 #include "CTicTac.h"
+#include <cstring>
+#include <stdexcept>
 
 using namespace std;
 
@@ -39,7 +41,8 @@ CTicTac::CTicTac()
 	LARGE_INTEGER *l= LARGE_INTEGER_NUMS;
 	QueryPerformanceFrequency(&l[0]);
 #else
-	MBDE_ASSERT( sizeof( largeInts ) > 2*sizeof(struct timeval) );
+	if ( sizeof( largeInts ) < 2*sizeof(struct timeval) )
+		throw std::runtime_error("timeval size not as expected in this system!");
 #endif
 	Tic();
 }

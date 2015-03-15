@@ -5,6 +5,7 @@
  **********************************************************/
 
 #include <libredaq.h>
+#include <cstdio>
 
 // Callback for ADC data
 void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
@@ -13,11 +14,11 @@ void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
 	if (++i==100)
 	{
 		i=0;
-		printf("TIME: %10u ADC DATA: 0=%5.03f 1=%5.03f 2=%5.03f 3=%5.03f 4=%5.03f\n", data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3],data.adc_data_volts[4] );
+		printf("TIME: %10u ADC DATA: 0=%5.03f 1=%5.03f 2=%5.03f 3=%5.03f 4=%5.03f\n", (unsigned int)data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3],data.adc_data_volts[4] );
 	}
 
 	static FILE* f=fopen("adc.txt","wt");
-	fprintf(f,"%10u", data.device_timestamp);
+	fprintf(f,"%10u", (unsigned int)data.device_timestamp);
 	for (int k=0;k<data.adc_data_volts.size();k++)
 		fprintf(f," %5.03f",data.adc_data_volts[k] );
 	fprintf(f,"\n");

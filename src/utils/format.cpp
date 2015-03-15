@@ -9,6 +9,7 @@
 #include "format.h"
 
 #include <cstdarg>
+#include <cstdio>
 #include <cstdlib>
 #include <vector>
 

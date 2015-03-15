@@ -53,7 +53,7 @@
 ////////////////////////////////////////////////////////////////////////////////
 #include "exceptions.hpp"
 
-#include "atomic_incr.h"   // JLB: For atomic_count. See smart_ptr.tpp
+#include "utils/atomic_incr.h"   // JLB: For atomic_count. See smart_ptr.tpp
 
 namespace stlplus
 {
