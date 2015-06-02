@@ -11,7 +11,7 @@
 void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
 {
 	static int i=0;
-	if (++i==100)
+	if (++i==10000)
 	{
 		i=0;
 		printf("TIME: %10u ADC DATA: 0=%5.03f 1=%5.03f 2=%5.03f 3=%5.03f 4=%5.03f\n", (unsigned int)data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3],data.adc_data_volts[4] );
@@ -20,7 +20,7 @@ void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
 	static FILE* f=fopen("adc.txt","wt");
 	fprintf(f,"%10u", (unsigned int)data.device_timestamp);
 	for (int k=0;k<data.adc_data_volts.size();k++)
-		fprintf(f," %5.03f",data.adc_data_volts[k] );
+		fprintf(f," %5.05f",data.adc_data_volts[k] );
 	fprintf(f,"\n");
 }
 
@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 	libredaq::Device  daq;
 
 	// Establish communications:
-	const std::string sSerialPort = "COM25";
+	const std::string sSerialPort = "COM9";
 	daq.connect_serial_port(sSerialPort);
 
 	daq.set_callback_ADC(&my_callback_ADC);

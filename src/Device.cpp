@@ -114,6 +114,10 @@ void Device::thread_rx()
 	TCallbackData_ADC adc16b_x8_data;
 	// ------------------------------------------------------------------------------------------
 
+	// Bandwidth stats:
+	size_t  num_bytes_rx = 0, num_frames_rx = 0;
+	CTicTac num_bytes_rx_timer;
+
 	// Main thrad loop:
 	while (!m_all_threads_must_exit)
 	{
@@ -131,6 +135,21 @@ void Device::thread_rx()
 			const size_t nActualRead = PTR_SERIALPORT->Read(buf,sizeof(buf));
 			if (nActualRead)
 				rx_buf.push_many(buf,nActualRead);
+
+			// Bandwidth stats:
+			{
+				num_bytes_rx+=nActualRead;
+				const double At = num_bytes_rx_timer.Tac();
+				if (At>1.0)
+				{
+					const double RX_kBytesPerSec = 1e-3*num_bytes_rx/At;
+					const double RX_FramesPerSec = num_frames_rx/At;
+					num_bytes_rx_timer.Tic();
+					num_bytes_rx=0;
+					num_frames_rx=0;
+					printf("[libredaq::Device::thread_rx] RX Bandwidth=%7.3f KB/s | %7.3f Frames/s\n",RX_kBytesPerSec,RX_FramesPerSec);
+				}
+			}
 		}
 		catch(std::exception &e)
 		{
@@ -164,8 +183,11 @@ void Device::thread_rx()
 			if (rx_buf.size()<total_frame_len)
 				break;  // We are sure there is not a complete frame, wait to it to be rx....
 			
+			// Yes: we have a COMPLETE FRAME
+			// --------------------------------
 			unsigned char frame_buf[0x400];
 			rx_buf.pop_many(frame_buf,total_frame_len);
+			num_frames_rx++;
 
 			// Decode depending on OPCODE:
 			const uint8_t opcode = frame_buf[1];
