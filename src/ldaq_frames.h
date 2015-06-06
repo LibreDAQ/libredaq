@@ -9,11 +9,9 @@
 
 #include <stdint.h>
 
-#if !defined(__AVR_MEGA__)
-#	pragma pack(push, 1) // exact fit - no padding
-#endif
-
-typedef uint32_t   timestamp_t;
+//#if !defined(__AVR_MEGA__) && !defined(__arm__)
+#pragma pack(push, 1) // exact fit - no padding
+//#endif
 
 enum ldaq_frame_opcodes_t
 {
@@ -34,56 +32,76 @@ enum ldaq_frame_opcodes_t
 	FRAMECMD_ADC_START    = 0x90,
 	FRAMECMD_ADC_STOP,
 	// ----
-	FRAMECMD_ENC_START    = 0x98,
+	FRAMECMD_ENC_START,
 	FRAMECMD_ENC_STOP,
 	// ----
+	FRAMECMD_STOP_ALL
 	
 };
 
 #define LDAQ_FRAME_START  0x69
 #define LDAQ_FRAME_END    0x96
 
-template <uint8_t NUM_ADCS, typename ADC_VALUE_TYPE>
 struct TFrameDAQ_ADC
 {
-	const uint8_t header;
-	const uint8_t opcode;
-	const uint8_t len;
+	uint8_t header;
+	uint8_t opcode;
+	uint8_t len;
 	// ----------- Payload -----------
-	timestamp_t     time;
-	ADC_VALUE_TYPE  adcs[NUM_ADCS];
+	uint32_t     time;
+	int16_t      adcs[8]; // ADC_VALUE_TYPE, NUM_ADCS
 	// -------------------------------
-	const uint8_t tail;
+	uint8_t tail;
 	
+#ifdef __cplusplus  // C++ version
 	TFrameDAQ_ADC(const uint8_t opcode_) :
 		header(LDAQ_FRAME_START),
 		opcode(opcode_),
-		len(sizeof(TFrameDAQ_ADC<NUM_ADCS,ADC_VALUE_TYPE>)-4),
+		len(sizeof(TFrameDAQ_ADC)-4), // <NUM_ADCS,ADC_VALUE_TYPE>
 		tail(LDAQ_FRAME_END)
 	{
 	}
 };
+#else  // C version
+};
+static inline void TFrameDAQ_ADC_init(struct TFrameDAQ_ADC *f, const uint8_t opcode) {
+	f->header = LDAQ_FRAME_START;
+	f->opcode = opcode;
+	f->len = sizeof(struct TFrameDAQ_ADC)-4;  // ADC_VALUE_TYPE, NUM_ADCS
+	f->tail = LDAQ_FRAME_END;
+}
+#endif
 
-template <uint8_t NUM_ENCODERS, typename TICKCOUNT_VALUE_TYPE>
-struct TFrameDAQ_ENCODERS
+struct TFrameDAQ_ENC
 {
-	const uint8_t header;
-	const uint8_t opcode;
-	const uint8_t len;
+	uint8_t header;
+	uint8_t opcode;
+	uint8_t len;
 	// ----------- Payload -----------
-	timestamp_t           time;
-	TICKCOUNT_VALUE_TYPE  tickpos[NUM_ENCODERS];
+	uint32_t     time;
+	uint32_t     tickpos[4];
 	// -------------------------------
-	const uint8_t tail;
+	uint8_t tail;
 	
-	TFrameDAQ_ENCODERS(const uint8_t opcode_) :
-		header(LDAQ_FRAME_START),
-		opcode(opcode_),
-		len(sizeof(TFrameDAQ_ENCODERS)-4),
-		tail(LDAQ_FRAME_END)
+	#ifdef __cplusplus  // C++ version
+	TFrameDAQ_ENC(const uint8_t opcode_) :
+	header(LDAQ_FRAME_START),
+	opcode(opcode_),
+	len(sizeof(TFrameDAQ_ENC)-4),
+	tail(LDAQ_FRAME_END)
 	{
 	}
 };
+#else  // C version
+};
+static inline void TFrameDAQ_ENC_init(struct TFrameDAQ_ENC *f, const uint8_t opcode) {
+	f->header = LDAQ_FRAME_START;
+	f->opcode = opcode;
+	f->len = sizeof(struct TFrameDAQ_ENC)-4;
+	f->tail = LDAQ_FRAME_END;
+}
+#endif
+
 
 struct TFrameDAQ_CPULoad
 {
@@ -91,11 +109,12 @@ struct TFrameDAQ_CPULoad
 	const uint8_t opcode;
 	const uint8_t len;
 	// ----------- Payload -----------
-	timestamp_t     time;
+	uint32_t     time;
 	uint8_t         cpu_load_percent;
 	// -------------------------------
 	const uint8_t tail;
 	
+#ifdef __cplusplus
 	TFrameDAQ_CPULoad() :
 		header(LDAQ_FRAME_START),
 		opcode(FRAME_CPU_LOAD),
@@ -103,6 +122,7 @@ struct TFrameDAQ_CPULoad
 		tail(LDAQ_FRAME_END)
 	{
 	}
+#endif
 };
 
 struct TFrameDAQ_ADC_Start
@@ -111,10 +131,11 @@ struct TFrameDAQ_ADC_Start
 	const uint8_t opcode;
 	const uint8_t len;
 	// ----------- Payload -----------
-	uint8_t  sampling_rate_khz;         //!< Desired ADC sampling rate (in kHz)
+	uint32_t  sampling_rate_hz;         //!< Desired ADC sampling rate (in Hz)
 	// -------------------------------
 	const uint8_t tail;
 	
+#ifdef __cplusplus
 	TFrameDAQ_ADC_Start() :
 		header(LDAQ_FRAME_START),
 		opcode(FRAMECMD_ADC_START),
@@ -122,6 +143,7 @@ struct TFrameDAQ_ADC_Start
 		tail(LDAQ_FRAME_END)
 	{
 	}
+#endif
 };
 
 struct TFrameDAQ_ADC_Stop
@@ -134,6 +156,7 @@ struct TFrameDAQ_ADC_Stop
 	// -------------------------------
 	const uint8_t tail;
 	
+#ifdef __cplusplus
 	TFrameDAQ_ADC_Stop() :
 		header(LDAQ_FRAME_START),
 		opcode(FRAMECMD_ADC_STOP),
@@ -141,6 +164,7 @@ struct TFrameDAQ_ADC_Stop
 		tail(LDAQ_FRAME_END)
 	{
 	}
+#endif
 };
 
 struct TFrameDAQ_ENC_Start
@@ -149,10 +173,11 @@ struct TFrameDAQ_ENC_Start
 	const uint8_t opcode;
 	const uint8_t len;
 	// ----------- Payload -----------
-	uint8_t  sampling_rate_khz;         //!< Desired sampling rate (in kHz)
+	uint32_t  sampling_rate_hz;         //!< Desired ADC sampling rate (in Hz)
 	// -------------------------------
 	const uint8_t tail;
 	
+#ifdef __cplusplus
 	TFrameDAQ_ENC_Start() :
 		header(LDAQ_FRAME_START),
 		opcode(FRAMECMD_ENC_START),
@@ -160,6 +185,7 @@ struct TFrameDAQ_ENC_Start
 		tail(LDAQ_FRAME_END)
 	{
 	}
+#endif
 };
 
 struct TFrameDAQ_ENC_Stop
@@ -172,6 +198,7 @@ struct TFrameDAQ_ENC_Stop
 	// -------------------------------
 	const uint8_t tail;
 	
+#ifdef __cplusplus
 	TFrameDAQ_ENC_Stop() :
 		header(LDAQ_FRAME_START),
 		opcode(FRAMECMD_ENC_STOP),
@@ -179,8 +206,10 @@ struct TFrameDAQ_ENC_Stop
 		tail(LDAQ_FRAME_END)
 	{
 	}
+#endif
 };
 
-#if !defined(__AVR_MEGA__)
+//#if !defined(__AVR_MEGA__) && !defined(__arm__)
 #	pragma pack(pop)
-#endif
+//#endif
+

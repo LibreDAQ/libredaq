@@ -8,7 +8,7 @@
 
 #include "libredaq.h"
 
-#include "frames.h"  // common header between PC SDK and firmware
+#include "ldaq_frames.h"  // common header between PC SDK and firmware
 
 #include "utils/CSerialPort.h"
 #include "utils/threads.h"
@@ -27,7 +27,7 @@ using libredaq::utils::circular_buffer;
 #define PTR_HANDLE_RX_THREAD (reinterpret_cast<libredaq::system::TThreadHandle*>(m_rx_thread_handle))
 #define PTR_RX_BUFFER (reinterpret_cast<libredaq::utils::circular_buffer<unsigned char>*>(m_rx_buf))
 
-const size_t RX_BUFFER_SIZE = 0x1000;
+const size_t RX_BUFFER_SIZE = 0x4000;
 
 /** Sleep for the given number of milliseconds */
 void libredaq::sleep_ms(unsigned int ms)
@@ -96,12 +96,12 @@ void Device::stop_all_tasks()
 }
 
 
-bool Device::start_task_adc( double sampling_rate_hz )
+bool Device::start_task_adc( unsigned int sampling_rate_hz )
 {
 	TFrameDAQ_ADC_Start cmd;
 
 	// TODO: Check sanity of required rate for this board!
-	cmd.sampling_rate_khz = uint8_t(sampling_rate_hz / 1000);
+	cmd.sampling_rate_hz = sampling_rate_hz;
 
 	return internal_send_cmd(&cmd,sizeof(cmd),"start_task_adc");
 }
@@ -112,10 +112,11 @@ void Device::thread_rx()
 
 	// ----------- These vars are declared here to avoid wasting time reallocating the mem buffers -----------
 	TCallbackData_ADC adc16b_x8_data;
+	TCallbackData_ENC enc32b_x4_data;
 	// ------------------------------------------------------------------------------------------
 
 	// Bandwidth stats:
-	size_t  num_bytes_rx = 0, num_frames_rx = 0;
+	size_t  num_bytes_rx = 0, num_skipped_bytes_rx = 0, num_frames_rx = 0;
 	CTicTac num_bytes_rx_timer;
 
 	// Main thrad loop:
@@ -131,7 +132,7 @@ void Device::thread_rx()
 		// Try to read data and parse it as frames:
 		try
 		{
-			unsigned char buf[0x800];
+			unsigned char buf[0x2000];
 			const size_t nActualRead = PTR_SERIALPORT->Read(buf,sizeof(buf));
 			if (nActualRead)
 				rx_buf.push_many(buf,nActualRead);
@@ -143,11 +144,12 @@ void Device::thread_rx()
 				if (At>1.0)
 				{
 					const double RX_kBytesPerSec = 1e-3*num_bytes_rx/At;
+					const double RX_kBytesSkipPerSec = 1e-3*num_skipped_bytes_rx/At;
 					const double RX_FramesPerSec = num_frames_rx/At;
 					num_bytes_rx_timer.Tic();
 					num_bytes_rx=0;
 					num_frames_rx=0;
-					printf("[libredaq::Device::thread_rx] RX Bandwidth=%7.3f KB/s | %7.3f Frames/s\n",RX_kBytesPerSec,RX_FramesPerSec);
+					printf("[libredaq::thread_rx] RX=%7.3f KB/s | %7.3f Fr/s | Ign=%6.3f KB/s\n",RX_kBytesPerSec,RX_FramesPerSec,RX_kBytesSkipPerSec);
 				}
 			}
 		}
@@ -169,6 +171,7 @@ void Device::thread_rx()
 			{
 				// It's not a valid frame start, ignore this byte:
 				rx_buf.pop();
+				num_skipped_bytes_rx++;
 				continue;
 			}
 
@@ -199,7 +202,7 @@ void Device::thread_rx()
 			{
 			case FRAME_ADC16b_x8:
 				{
-					TFrameDAQ_ADC<8,int16_t>  adc16b_x8(0);
+					TFrameDAQ_ADC adc16b_x8(0); //TFrameDAQ_ADC<8,int16_t>
 					::memcpy(&adc16b_x8,frame_buf,sizeof(adc16b_x8));
 					//onReceive_ADC16b_x8(adc16b_x8);
 
@@ -214,6 +217,25 @@ void Device::thread_rx()
 						}
 
 						(*m_callback_adc)(adc16b_x8_data);
+					}
+				}
+				break;
+
+			case FRAME_ENC32b_x4:
+				{
+					TFrameDAQ_ENC enc(0); //TFrameDAQ_ADC<8,int16_t>
+					::memcpy(&enc,frame_buf,sizeof(enc));
+					//onReceive_ENC32b_x4(enc);
+
+					if (m_callback_enc) {
+						enc32b_x4_data.device_timestamp = enc.time;
+						enc32b_x4_data.num_channels = 4;
+						enc32b_x4_data.enc_ticks.resize(1*enc32b_x4_data.num_channels);
+
+						for (unsigned int i=0;i<enc32b_x4_data.enc_ticks.size();i++)
+							enc32b_x4_data.enc_ticks[i] = enc.tickpos[i];
+
+						(*m_callback_enc)(enc32b_x4_data);
 					}
 				}
 				break;

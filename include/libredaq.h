@@ -10,6 +10,7 @@
 
 #include <string>
 #include <vector>
+#include <stdint.h>
 
 namespace libredaq
 {
@@ -23,9 +24,18 @@ namespace libredaq
 		unsigned int         num_channels;      //!< Number of ADC channels
 		std::vector<double>  adc_data_volts;    //!< Interlaced ADC data, in volts: [A0 ... A7](for t=0), [A0 ... A7](for t=1), etc.
 	};
-
 	/** Callback for ADC data */
 	typedef void (*callback_adc_t)(const TCallbackData_ADC &data);
+
+	/** Data for callbacks of type ENCODER */
+	struct TCallbackData_ENC
+	{
+		unsigned long         device_timestamp;  //!< Device specific. See XXX() for converting to computer time
+		unsigned int          num_channels;      //!< Number of ADC channels
+		std::vector<uint32_t> enc_ticks;         //!< Interlaced ENCODER data, in ticks: [ENC0 ... ENC3](for t=0), [ENC0 ... ENC7](for t=1), etc.
+	};
+	/** Callback for ENCODER data */
+	typedef void (*callback_enc_t)(const TCallbackData_ENC &data);
 
 	/** @} */
 
@@ -59,10 +69,11 @@ namespace libredaq
 		/** Start capturing Analog-to-Digital (ADC) channels
 		  * \return false on any error (and dumps details to stderr)
 		  */
-		bool start_task_adc( double sampling_rate_hz );
+		bool start_task_adc( unsigned int sampling_rate_hz );
 
 
 		void set_callback_ADC(callback_adc_t user_function) { m_callback_adc = user_function; }
+		void set_callback_ENC(callback_enc_t user_function) { m_callback_enc = user_function; }
 
 	private:
 		void *m_ptr_serial_port;  // Opaque ptr to CSerialPort
@@ -75,6 +86,7 @@ namespace libredaq
 
 		// Functors for callbacks:
 		callback_adc_t  m_callback_adc;
+		callback_enc_t  m_callback_enc;
 
 	}; // end class
 
