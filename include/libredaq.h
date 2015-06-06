@@ -32,7 +32,7 @@ namespace libredaq
 	{
 		unsigned long         device_timestamp;  //!< Device specific. See XXX() for converting to computer time
 		unsigned int          num_channels;      //!< Number of ADC channels
-		std::vector<uint32_t> enc_ticks;         //!< Interlaced ENCODER data, in ticks: [ENC0 ... ENC3](for t=0), [ENC0 ... ENC7](for t=1), etc.
+		std::vector<int32_t>  enc_ticks;         //!< Interlaced ENCODER data, in ticks: [ENC0 ... ENC3](for t=0), [ENC0 ... ENC7](for t=1), etc.
 	};
 	/** Callback for ENCODER data */
 	typedef void (*callback_enc_t)(const TCallbackData_ENC &data);

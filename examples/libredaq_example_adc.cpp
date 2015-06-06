@@ -27,7 +27,18 @@ void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
 // Callback for ENC data
 void my_callback_ENC(const libredaq::TCallbackData_ENC &data)
 {
-	printf("ENC: %lu %lu %lu %lu\n", data.enc_ticks[0],data.enc_ticks[1],data.enc_ticks[2],data.enc_ticks[3]);
+	static int i=0;
+	if (++i==100)
+	{
+		i=0;
+		printf("TIME: %10u ENCODERS: %8li %8li %8li %8li\n", (unsigned long)data.device_timestamp, data.enc_ticks[0],data.enc_ticks[1],data.enc_ticks[2],data.enc_ticks[3]);
+	}
+
+	static FILE* f=fopen("enc.txt","wt");
+	fprintf(f,"%10u", (unsigned long)data.device_timestamp);
+	for (int k=0;k<data.enc_ticks.size();k++)
+		fprintf(f," %li",data.enc_ticks[k] );
+	fprintf(f,"\n");
 }
 
 
