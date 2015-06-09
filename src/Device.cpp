@@ -91,8 +91,10 @@ void Device::disconnect()
 	PTR_SERIALPORT->close();
 }
 
-void Device::stop_all_tasks()
+bool Device::stop_all_tasks()
 {
+	TFrameDAQ_StopAllTasks cmd;
+	return internal_send_cmd(&cmd,sizeof(cmd),"end_all_tasks");
 }
 
 

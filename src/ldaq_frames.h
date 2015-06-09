@@ -209,6 +209,28 @@ struct TFrameDAQ_ENC_Stop
 #endif
 };
 
+struct TFrameDAQ_StopAllTasks
+{
+	const uint8_t header;
+	const uint8_t opcode;
+	const uint8_t len;
+	// ----------- Payload -----------
+	
+	// -------------------------------
+	const uint8_t tail;
+	
+#ifdef __cplusplus
+	TFrameDAQ_StopAllTasks() :
+		header(LDAQ_FRAME_START),
+		opcode(FRAMECMD_STOP_ALL),
+		len(sizeof(TFrameDAQ_StopAllTasks)-4),
+		tail(LDAQ_FRAME_END)
+	{
+	}
+#endif
+};
+
+
 //#if !defined(__AVR_MEGA__) && !defined(__arm__)
 #	pragma pack(pop)
 //#endif

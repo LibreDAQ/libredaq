@@ -63,8 +63,9 @@ namespace libredaq
 		  * \sa stop_all_tasks() */
 		void disconnect();
 
-		/** Instruct the firmware to stop all running tasks */
-		void stop_all_tasks();
+		/** Instruct the firmware to stop all running tasks
+		  * \return  true on success, false on any error */
+		bool stop_all_tasks();
 
 		/** Start capturing Analog-to-Digital (ADC) channels
 		  * \return false on any error (and dumps details to stderr)
