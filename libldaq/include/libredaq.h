@@ -71,9 +71,12 @@ namespace libredaq
 		  * \return false on any error (and dumps details to stderr)
 		  */
 		bool start_task_adc( unsigned int sampling_rate_hz );
-
-
 		void set_callback_ADC(callback_adc_t user_function) { m_callback_adc = user_function; }
+
+		/** Start capturing Quadrature Encoders channels
+		  * \return false on any error (and dumps details to stderr)
+		  */
+		bool start_task_encoders( unsigned int sampling_rate_hz );
 		void set_callback_ENC(callback_enc_t user_function) { m_callback_enc = user_function; }
 
 	private:

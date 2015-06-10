@@ -1,12 +1,13 @@
 
-file(GLOB LST_SRCS "${libredaq_SOURCE_DIR}/src/*.cpp")
-file(GLOB LST_INT_HDRS "${libredaq_SOURCE_DIR}/src/*.h")
-file(GLOB LST_PUB_HDRS "${libredaq_SOURCE_DIR}/include/*.h")
+file(GLOB LST_SRCS "${libldaq_SOURCE_DIR}/src/*.cpp")
+file(GLOB LST_INT_HDRS "${libldaq_SOURCE_DIR}/src/*.h")
+file(GLOB LST_PUB_HDRS "${libldaq_SOURCE_DIR}/include/*.h")
 
-file(GLOB_RECURSE LST_UTILS_SRCS "${libredaq_SOURCE_DIR}/src/utils/*.cpp")
-file(GLOB_RECURSE LST_UTILS_HDRS "${libredaq_SOURCE_DIR}/src/utils/*.h")
+file(GLOB_RECURSE LST_UTILS_SRCS "${libldaq_SOURCE_DIR}/src/utils/*.cpp")
+file(GLOB_RECURSE LST_UTILS_HDRS "${libldaq_SOURCE_DIR}/src/utils/*.h")
 
-include_directories("${libredaq_SOURCE_DIR}/src")
+include_directories("${libldaq_SOURCE_DIR}/include")
+include_directories("${libldaq_SOURCE_DIR}/src")
 
 SOURCE_GROUP("Public API .h" FILES ${LST_PUB_HDRS})
 SOURCE_GROUP("libreDAQ lib" FILES ${LST_SRCS} ${LST_INT_HDRS})

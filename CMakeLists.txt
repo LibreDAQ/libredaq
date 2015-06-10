@@ -11,8 +11,6 @@ set(CMAKE_LIBREDAQ_VERSION_NUMBER_MAJOR 0)
 set(CMAKE_LIBREDAQ_VERSION_NUMBER_MINOR 0)
 set(CMAKE_LIBREDAQ_VERSION_NUMBER_PATCH 1)
 
-include_directories("${libredaq_SOURCE_DIR}/include")
-
 # Shared options between GCC and CLANG:
 # ======================================
 if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR CMAKE_COMPILER_IS_GNUCXX)
@@ -26,11 +24,13 @@ if (${CMAKE_CXX_COMPILER_ID} STREQUAL "Clang" OR CMAKE_COMPILER_IS_GNUCXX)
     ENDIF()
 endif()
 
+# ======================================
+#  C++ Library
+# ======================================
+add_subdirectory(libldaq)
 
-
-# Declare library:
-add_subdirectory(src)
-
+# ======================================
 # Examples:
+# ======================================
 add_subdirectory(examples)
 

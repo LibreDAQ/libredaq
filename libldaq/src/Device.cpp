@@ -108,6 +108,17 @@ bool Device::start_task_adc( unsigned int sampling_rate_hz )
 	return internal_send_cmd(&cmd,sizeof(cmd),"start_task_adc");
 }
 
+bool Device::start_task_encoders( unsigned int sampling_rate_hz )
+{
+	TFrameDAQ_ENC_Start cmd;
+
+	// TODO: Check sanity of required rate for this board!
+	cmd.sampling_rate_hz = sampling_rate_hz;
+
+	return internal_send_cmd(&cmd,sizeof(cmd),"start_task_enc");
+}
+
+
 void Device::thread_rx()
 {
 	libredaq::utils::circular_buffer<unsigned char> &rx_buf = *PTR_RX_BUFFER;
