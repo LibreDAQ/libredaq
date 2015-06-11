@@ -101,10 +101,8 @@ bool Device::stop_all_tasks()
 bool Device::start_task_adc( unsigned int sampling_rate_hz )
 {
 	TFrameDAQ_ADC_Start cmd;
-
 	// TODO: Check sanity of required rate for this board!
 	cmd.sampling_rate_hz = sampling_rate_hz;
-
 	return internal_send_cmd(&cmd,sizeof(cmd),"start_task_adc");
 }
 
@@ -116,6 +114,15 @@ bool Device::start_task_encoders( unsigned int sampling_rate_hz )
 	cmd.sampling_rate_hz = sampling_rate_hz;
 
 	return internal_send_cmd(&cmd,sizeof(cmd),"start_task_enc");
+}
+
+bool Device::dac_set_values(uint16_t *vals)
+{
+	TFrameDAQ_DAC_SetValues cmd;
+	// TODO: Check sanity of required rate for this board!
+	for (int i=0;i<4;i++) 
+		cmd.dac_values[i] = vals[i];
+	return internal_send_cmd(&cmd,sizeof(cmd),"dac_set_values");
 }
 
 

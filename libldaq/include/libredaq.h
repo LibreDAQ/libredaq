@@ -79,6 +79,9 @@ namespace libredaq
 		bool start_task_encoders( unsigned int sampling_rate_hz );
 		void set_callback_ENC(callback_enc_t user_function) { m_callback_enc = user_function; }
 
+		bool dac_set_values(uint16_t *vals); //!< 4 values
+
+
 	private:
 		void *m_ptr_serial_port;  // Opaque ptr to CSerialPort
 		void *m_rx_thread_handle; // Opaque ptr to TThreadHandle

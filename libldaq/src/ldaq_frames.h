@@ -45,7 +45,6 @@ enum ldaq_frame_opcodes_t
 	FRAMECMD_FIRMWARE_ALL = 0xE0,
 	// ----
 	FRAMECMD_STOP_ALL     = 0xF0
-	
 };
 
 #define LDAQ_FRAME_START  0x69
@@ -123,6 +122,9 @@ DECLARE_LDAQ_FRAME_BEGIN(TFrameDAQ_StopAllTasks) // Payload:
 // None
 DECLARE_LDAQ_FRAME_END_OPCODE(TFrameDAQ_StopAllTasks,FRAMECMD_STOP_ALL)
 
+DECLARE_LDAQ_FRAME_BEGIN(TFrameDAQ_DAC_SetValues) // Payload:
+uint16_t dac_values[4];
+DECLARE_LDAQ_FRAME_END_OPCODE(TFrameDAQ_DAC_SetValues,FRAMECMD_DAC_SET_VALUES)
 
 #pragma pack(pop)
 

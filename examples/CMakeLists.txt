@@ -14,5 +14,5 @@ ENDMACRO()
 # List examples
 DECLARE_EXAMPLE(libredaq_example_adc)
 DECLARE_EXAMPLE(libredaq_example_encoders)
-
+DECLARE_EXAMPLE(libredaq_example_dac)
 	
