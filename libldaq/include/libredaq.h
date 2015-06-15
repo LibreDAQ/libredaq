@@ -42,7 +42,7 @@ namespace libredaq
 	/** @name Main LibreDAQ API
 	  * @{ */
 	
-	/** The interface to any LibreDAQ physical device.
+	/** The interface to a LibreDAQ board.
 	  */
 	class Device
 	{
@@ -51,7 +51,7 @@ namespace libredaq
 		Device();
 
 		/** Destructor. It automatically stop all tasks and disconnects from the device. */
-		~Device();
+		virtual ~Device();
 
 		/** Connects to a device in a given serial port
 		  * \return  true on success, false on any error
@@ -81,6 +81,7 @@ namespace libredaq
 
 		bool dac_set_values(uint16_t *vals); //!< 4 values
 
+		bool switch_firmware_mode(uint8_t mode); //!< Types are declared in firmware_mode_t
 
 	private:
 		void *m_ptr_serial_port;  // Opaque ptr to CSerialPort

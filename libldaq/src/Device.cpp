@@ -125,6 +125,12 @@ bool Device::dac_set_values(uint16_t *vals)
 	return internal_send_cmd(&cmd,sizeof(cmd),"dac_set_values");
 }
 
+bool Device::switch_firmware_mode(uint8_t mode)
+{
+	TFrameDAQ_SwitchFirmwareMode cmd;
+	cmd.new_firmware_mode = mode;
+	return internal_send_cmd(&cmd,sizeof(cmd),"switch_firmware_mode");
+}
 
 void Device::thread_rx()
 {

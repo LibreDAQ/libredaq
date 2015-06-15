@@ -42,10 +42,23 @@ enum ldaq_frame_opcodes_t
 	// ----
 	FRAMECMD_DAC_SET_VALUES  = 0x90,
 	// ----
-	FRAMECMD_FIRMWARE_ALL = 0xE0,
+	FRAMECMD_FIRMWARE_MODE = 0xE0,
 	// ----
 	FRAMECMD_STOP_ALL     = 0xF0
 };
+
+/** - SDK: These are the modes available for command FRAMECMD_FIRMWARE_MODE
+  * - Firmware: Add new firmware modes here, together with the proper call to ldaq_register_firmware_mode() 
+  */
+typedef enum
+{
+	FIRM_MODE_NORMAL = 0,
+	FIRM_MODE_HIGHSPEED_ADC,
+	
+	// === Always leave at the end of the list of modes!! ===
+	COUNT_FIRMWARE_MODES
+} firmware_mode_t;
+
 
 #define LDAQ_FRAME_START  0x69
 #define LDAQ_FRAME_END    0x96
@@ -125,6 +138,11 @@ DECLARE_LDAQ_FRAME_END_OPCODE(TFrameDAQ_StopAllTasks,FRAMECMD_STOP_ALL)
 DECLARE_LDAQ_FRAME_BEGIN(TFrameDAQ_DAC_SetValues) // Payload:
 uint16_t dac_values[4];
 DECLARE_LDAQ_FRAME_END_OPCODE(TFrameDAQ_DAC_SetValues,FRAMECMD_DAC_SET_VALUES)
+
+DECLARE_LDAQ_FRAME_BEGIN(TFrameDAQ_SwitchFirmwareMode) // Payload:
+uint8_t new_firmware_mode;
+DECLARE_LDAQ_FRAME_END_OPCODE(TFrameDAQ_SwitchFirmwareMode,FRAMECMD_FIRMWARE_MODE)
+
 
 #pragma pack(pop)
 
