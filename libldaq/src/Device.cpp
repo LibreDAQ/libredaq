@@ -288,7 +288,7 @@ void Device::thread_rx()
 						adc24b_x4_data.num_channels = 4;
 						adc24b_x4_data.adc_data_volts.resize(1*adc24b_x4_data.num_channels);
 
-						const double k_res = (2.048/(2<<23 -1))/m_pga_value;
+						const double k_res = (2.048/((2<<23) -1))/m_pga_value;
 
 						for (unsigned int i=0;i<adc24b_x4_data.adc_data_volts.size();i++)
 						{  // Convert from 24bit -> double

@@ -17,7 +17,7 @@ void my_callback_ENC(const libredaq::TCallbackData_ENC &data)
 		printf("TIME: %10u ENCODERS: %8li %8li %8li %8li\n", (unsigned long)data.device_timestamp, data.enc_ticks[0],data.enc_ticks[1],data.enc_ticks[2],data.enc_ticks[3]);
 	}
 
-#if 0
+#if 1
 	static FILE* f=fopen("enc.txt","wt");
 	fprintf(f,"%10u", (unsigned long)data.device_timestamp);
 	for (int k=0;k<data.enc_ticks.size();k++)
@@ -39,7 +39,7 @@ int main(int argc, char **argv)
 	daq.set_callback_ENC(&my_callback_ENC);
 
 	printf("Starting ENCODERS task...\n");
-	daq.start_task_encoders(10000);
+	daq.start_task_encoders(50000);
 
 	libredaq::sleep_ms(10000);
 

@@ -90,8 +90,8 @@ namespace libredaq
 			  */
 			inline T peek(const int idx=0) 
 			{
-				const size_t i = m_next_read+idx;
-				if (m_next_read>=m_size) m_next_read-=m_size;
+				size_t i = m_next_read+idx;
+				if (i>=m_size) i-=m_size;
 				return m_data[i];
 			}
 

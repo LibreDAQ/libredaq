@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	daq.set_callback_ADC(&my_callback_ADC);
 
 	printf("Starting PGA ADC task...\n");
-	daq.start_task_pga_adc(320 /* rate (SPS) */, 128 /*PGA gain*/ );
+	daq.start_task_pga_adc(2000 /* rate (SPS) */, 128 /*PGA gain*/ );
 
 	libredaq::sleep_ms(15000);
 	
