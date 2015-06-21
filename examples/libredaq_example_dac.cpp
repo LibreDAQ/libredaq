@@ -13,7 +13,7 @@ int main(int argc, char **argv)
 	libredaq::Device  daq;
 
 	// Establish communications:
-	const std::string sSerialPort = "COM26";
+	const std::string sSerialPort = "COM9";
 	daq.connect_serial_port(sSerialPort);
 
 	printf("Starting sending DAC values...\n");

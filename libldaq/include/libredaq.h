@@ -71,6 +71,12 @@ namespace libredaq
 		  * \return false on any error (and dumps details to stderr)
 		  */
 		bool start_task_adc( unsigned int sampling_rate_hz );
+
+		/** Start capturing Analog-to-Digital (ADC) channels in a module with a Programmable Gain Amplifier (PGA)
+		  * \return false on any error (and dumps details to stderr)
+		  */
+		bool start_task_pga_adc( unsigned int sampling_rate_hz, unsigned int PGA_gain );
+
 		void set_callback_ADC(callback_adc_t user_function) { m_callback_adc = user_function; }
 
 		/** Start capturing Quadrature Encoders channels
@@ -95,6 +101,8 @@ namespace libredaq
 		// Functors for callbacks:
 		callback_adc_t  m_callback_adc;
 		callback_enc_t  m_callback_enc;
+
+		double   m_pga_value;
 
 	}; // end class
 

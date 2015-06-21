@@ -11,10 +11,10 @@
 void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
 {
 	static int i=0;
-	if (++i==10000)
+	if (++i==100)
 	{
 		i=0;
-		printf("TIME: %10u ADC DATA: 0=%5.03f 1=%5.03f 2=%5.03f 3=%5.03f 4=%5.03f\n", (unsigned long)data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3],data.adc_data_volts[4] );
+		printf("TIME: %10u ADC DATA: 0=%5.05f 1=%5.05f 2=%5.05f 3=%5.05f\n", (unsigned long)data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3]);
 	}
 
 #if 1
@@ -37,13 +37,9 @@ int main(int argc, char **argv)
 
 	daq.set_callback_ADC(&my_callback_ADC);
 
-#if 0
-	daq.switch_firmware_mode(1);
-#else
-	daq.switch_firmware_mode(0);
-	printf("Starting ADC task...\n");
-	daq.start_task_adc(5000);  // 20000
-#endif
+	printf("Starting PGA ADC task...\n");
+	daq.start_task_pga_adc(320 /* rate (SPS) */, 128 /*PGA gain*/ );
+
 	libredaq::sleep_ms(15000);
 	
 	printf("Stopping ADC task...\n");

@@ -93,22 +93,32 @@ void Device::disconnect()
 
 bool Device::stop_all_tasks()
 {
-	TFrameDAQ_StopAllTasks cmd;
+	TFrame_LDAQCMD_StopAllTasks cmd;
 	return internal_send_cmd(&cmd,sizeof(cmd),"end_all_tasks");
 }
 
 
 bool Device::start_task_adc( unsigned int sampling_rate_hz )
 {
-	TFrameDAQ_ADC_Start cmd;
+	TFrame_LDAQCMD_ADC_Start cmd;
 	// TODO: Check sanity of required rate for this board!
 	cmd.sampling_rate_hz = sampling_rate_hz;
 	return internal_send_cmd(&cmd,sizeof(cmd),"start_task_adc");
 }
 
+bool Device::start_task_pga_adc( unsigned int sampling_rate_hz, unsigned int PGA_gain )
+{
+	TFrame_LDAQCMD_ADC_AMP_Start cmd;
+	// TODO: Check sanity of required rate for this board!
+	cmd.sampling_rate_hz = sampling_rate_hz;
+	cmd.desired_gain = PGA_gain;
+	m_pga_value = PGA_gain;
+	return internal_send_cmd(&cmd,sizeof(cmd),"start_task_pga_adc");
+}
+
 bool Device::start_task_encoders( unsigned int sampling_rate_hz )
 {
-	TFrameDAQ_ENC_Start cmd;
+	TFrame_LDAQCMD_ENC_Start cmd;
 
 	// TODO: Check sanity of required rate for this board!
 	cmd.sampling_rate_hz = sampling_rate_hz;
@@ -118,7 +128,7 @@ bool Device::start_task_encoders( unsigned int sampling_rate_hz )
 
 bool Device::dac_set_values(uint16_t *vals)
 {
-	TFrameDAQ_DAC_SetValues cmd;
+	TFrame_LDAQCMD_DAC_SetValues cmd;
 	// TODO: Check sanity of required rate for this board!
 	for (int i=0;i<4;i++) 
 		cmd.dac_values[i] = vals[i];
@@ -127,7 +137,7 @@ bool Device::dac_set_values(uint16_t *vals)
 
 bool Device::switch_firmware_mode(uint8_t mode)
 {
-	TFrameDAQ_SwitchFirmwareMode cmd;
+	TFrame_LDAQCMD_SwitchFirmwareMode cmd;
 	cmd.new_firmware_mode = mode;
 	return internal_send_cmd(&cmd,sizeof(cmd),"switch_firmware_mode");
 }
@@ -137,7 +147,7 @@ void Device::thread_rx()
 	libredaq::utils::circular_buffer<unsigned char> &rx_buf = *PTR_RX_BUFFER;
 
 	// ----------- These vars are declared here to avoid wasting time reallocating the mem buffers -----------
-	TCallbackData_ADC adc16b_x8_data;
+	TCallbackData_ADC adc16b_x8_data, adc24b_x4_data;
 	TCallbackData_ENC enc32b_x4_data;
 	// ------------------------------------------------------------------------------------------
 
@@ -226,12 +236,13 @@ void Device::thread_rx()
 			// -----------------------------------
 			switch(opcode)
 			{
-			case FRAME_ADC16b_x8:
+			case FRAME_ADC_16bx8:
 				{
-					TFrameDAQ_ADC adc16b_x8(0); //TFrameDAQ_ADC<8,int16_t>
+					TFrame_LDAQDATA_ADC_16bx8 adc16b_x8;
 					::memcpy(&adc16b_x8,frame_buf,sizeof(adc16b_x8));
 					//onReceive_ADC16b_x8(adc16b_x8);
 
+					// TODO: Handle depending on slot_idx and its known features!
 					if (m_callback_adc) {
 						adc16b_x8_data.device_timestamp = adc16b_x8.time;
 						adc16b_x8_data.num_channels = 8;
@@ -247,9 +258,9 @@ void Device::thread_rx()
 				}
 				break;
 
-			case FRAME_ENC32b_x4:
+			case FRAME_ENC_32bx4:
 				{
-					TFrameDAQ_ENC enc(0); //TFrameDAQ_ADC<8,int16_t>
+					TFrame_LDAQDATA_ENC_32bx4 enc;
 					::memcpy(&enc,frame_buf,sizeof(enc));
 					//onReceive_ENC32b_x4(enc);
 
@@ -262,6 +273,31 @@ void Device::thread_rx()
 							enc32b_x4_data.enc_ticks[i] = enc.tickpos[i];
 
 						(*m_callback_enc)(enc32b_x4_data);
+					}
+				}
+				break;
+
+			case FRAME_ADC_24bx4:
+				{
+					TFrame_LDAQDATA_ADC_24bx4 adc24b_x4;
+					::memcpy(&adc24b_x4,frame_buf,sizeof(adc24b_x4));
+
+					// TODO: Handle depending on slot_idx and its known features!
+					if (m_callback_adc) {
+						adc24b_x4_data.device_timestamp = adc24b_x4.time;
+						adc24b_x4_data.num_channels = 4;
+						adc24b_x4_data.adc_data_volts.resize(1*adc24b_x4_data.num_channels);
+
+						const double k_res = (2.048/(2<<23 -1))/m_pga_value;
+
+						for (unsigned int i=0;i<adc24b_x4_data.adc_data_volts.size();i++)
+						{  // Convert from 24bit -> double
+							const uint8_t *ptr = &adc24b_x4.adcs[i*3];
+							int32_t val =  (((uint32_t)ptr[2])<<16) | (((uint32_t)ptr[1])<<8) | (uint32_t)(ptr[0]);
+							adc24b_x4_data.adc_data_volts[i] =  val * k_res;
+						}
+
+						(*m_callback_adc)(adc24b_x4_data);
 					}
 				}
 				break;
