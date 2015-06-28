@@ -40,6 +40,11 @@ endif()
 add_subdirectory(libldaq)
 
 # ======================================
+# App: LibreDAQStudio
+# ======================================
+add_subdirectory(LibreDAQStudio)
+
+# ======================================
 # Examples:
 # ======================================
 add_subdirectory(examples)

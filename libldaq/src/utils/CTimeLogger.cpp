@@ -19,6 +19,7 @@
 
 #include <iostream>
 #include <fstream>
+#include <algorithm>  // min()
 
 using namespace std;
 using namespace libredaq;
