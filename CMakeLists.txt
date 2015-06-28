@@ -38,6 +38,7 @@ endif()
 #  C++ Library
 # ======================================
 add_subdirectory(libldaq)
+SET(libldaq_DIR "${libredaq_BINARY_DIR}")
 
 # ======================================
 # App: LibreDAQStudio
