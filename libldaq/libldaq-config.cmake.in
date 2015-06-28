@@ -1,0 +1,59 @@
+# =========================================================================
+#  libldaq CMake configuration file
+#
+#             ** File generated automatically, do not modify **
+#
+#  Usage from an external project: 
+#   In your CMakeLists.txt, add these lines:
+#
+#    FIND_PACKAGE( libldaq REQUIRED )
+#    TARGET_LINK_LIBRARIES(MY_TARGET_NAME ${libldaq_LIBRARIES})
+#
+#   This file will define the following variables:
+#    - libldaq_LIBRARIES: The list of libraries to links against.
+#    - libldaq_INCLUDE_DIRS: The list of include directories
+#    - libldaq_LINK_DIRECTORIES: The list of link directories
+#    - libldaq_VERSION: The libldaq version (e.g. "1.0.0"). 
+#    - libldaq_VERSION_{MAJOR,MINOR,PATCH}: 3 variables for the version parts
+#
+# =========================================================================
+
+# libldaq version numbers:
+SET(libldaq_VERSION_MAJOR @CMAKE_LIBREDAQ_VERSION_NUMBER_MAJOR@)
+SET(libldaq_VERSION_MINOR @CMAKE_LIBREDAQ_VERSION_NUMBER_MINOR@)
+SET(libldaq_VERSION_PATCH @CMAKE_LIBREDAQ_VERSION_NUMBER_PATCH@)
+SET(libldaq_VERSION "@CMAKE_LIBREDAQ_VERSION_NUMBER_MAJOR@.@CMAKE_LIBREDAQ_VERSION_NUMBER_MINOR@.@CMAKE_LIBREDAQ_VERSION_NUMBER_PATCH@")
+
+
+# Extract the directory where *this* file has been installed (determined at cmake run-time)
+get_filename_component(THIS_libldaq_CONFIG_PATH "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+# libldaq source dir
+SET(libldaq_SOURCE_DIR "@THE_libldaq_SOURCE_DIR@")
+SET(libldaq_LIBRARIES_INCL_DIR "@THE_libldaq_LIBS_INCL_DIR@")
+
+SET(libldaq_DIR "@THE_CMAKE_BINARY_DIR@")  # libldaq binary dir
+SET(libldaq_INCLUDE_DIRS "@THE_INCLUDE_DIRECTORIES@")  # libldaq include directories
+SET(libldaq_LINK_DIRECTORIES "@THE_LINK_DIRECTORIES@")  # libldaq library directories
+
+# ======================================================
+#   libldaq list of libraries the user should link against:
+# ======================================================
+SET(libldaq_LIBRARIES "@libldaq_LINKER_LIBRARIES@")
+
+# The include dir:
+INCLUDE_DIRECTORIES("${libldaq_LIBRARIES_INCL_DIR}")
+LIST(APPEND libldaq_INCLUDE_DIRS "${libldaq_LIBRARIES_INCL_DIR}")
+LIST(APPEND libldaq_LIBRARIES  
+	optimized 
+	  libldaq@LIBLDAQ_DLL_VERSION_POSTFIX@ 
+	debug 
+	  libldaq@LIBLDAQ_DLL_VERSION_POSTFIX@-dbg
+)
+
+
+# ======================================================
+# Link directories to add to the user project:
+# ======================================================
+LINK_DIRECTORIES("${libldaq_DIR}/lib")
+LIST(APPEND libldaq_LINK_DIRECTORIES "${libldaq_DIR}/lib")
