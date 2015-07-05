@@ -16,6 +16,10 @@ ELSE()
 		mainwindow.ui
 	)
 	qt5_wrap_ui(FORMS_HEADERS ${FORMS})
+
+	set(RESOURCES
+		libredaqstudio.qrc
+	)
 	qt5_add_resources(RESOURCES_RCC ${RESOURCES})
 
 	# Tell CMake to create the helloworld executable
@@ -23,6 +27,7 @@ ELSE()
 		main.cpp
 		mainwindow.cpp mainwindow.h
 		${FORMS_HEADERS}
+		${RESOURCES_RCC}
 		)
 
 	# Use the Widgets module from Qt 5.
