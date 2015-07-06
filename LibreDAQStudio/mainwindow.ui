@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>567</width>
-    <height>416</height>
+    <width>731</width>
+    <height>506</height>
    </rect>
   </property>
   <property name="minimumSize">
@@ -124,7 +124,7 @@ stop:0.6 rgba(255, 255, 255, 0));
          </widget>
         </item>
         <item>
-         <widget class="QTreeView" name="treeView"/>
+         <widget class="QTreeView" name="tvDevices"/>
         </item>
         <item>
          <widget class="QFrame" name="frame_4">
@@ -173,54 +173,31 @@ stop:0.6 rgba(255, 255, 255, 0));
         <enum>QFrame::Raised</enum>
        </property>
        <layout class="QVBoxLayout" name="verticalLayout_2">
-        <property name="leftMargin">
-         <number>0</number>
-        </property>
-        <property name="topMargin">
-         <number>0</number>
-        </property>
-        <property name="rightMargin">
-         <number>0</number>
-        </property>
-        <property name="bottomMargin">
-         <number>0</number>
-        </property>
         <item>
-         <widget class="QGroupBox" name="groupBox_2">
-          <property name="title">
-           <string> Plots </string>
+         <widget class="QTabWidget" name="tabRHS">
+          <property name="currentIndex">
+           <number>0</number>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_4">
-           <property name="leftMargin">
-            <number>0</number>
-           </property>
-           <property name="topMargin">
-            <number>0</number>
-           </property>
-           <property name="rightMargin">
-            <number>0</number>
-           </property>
-           <property name="bottomMargin">
-            <number>0</number>
-           </property>
-           <item>
-            <widget class="QScrollArea" name="scrollArea">
-             <property name="widgetResizable">
-              <bool>true</bool>
-             </property>
-             <widget class="QWidget" name="scrollAreaWidgetContents">
-              <property name="geometry">
-               <rect>
-                <x>0</x>
-                <y>0</y>
-                <width>275</width>
-                <height>243</height>
-               </rect>
-              </property>
-             </widget>
-            </widget>
-           </item>
-          </layout>
+          <widget class="QWidget" name="tabInputs">
+           <attribute name="title">
+            <string>Inputs</string>
+           </attribute>
+           <layout class="QVBoxLayout" name="verticalLayout_3">
+            <item>
+             <widget class="QTextBrowser" name="textBrowser_2"/>
+            </item>
+           </layout>
+          </widget>
+          <widget class="QWidget" name="tabOutputs">
+           <attribute name="title">
+            <string>Outputs</string>
+           </attribute>
+          </widget>
+          <widget class="QWidget" name="tabControl">
+           <attribute name="title">
+            <string>Control</string>
+           </attribute>
+          </widget>
          </widget>
         </item>
         <item>
@@ -231,13 +208,16 @@ stop:0.6 rgba(255, 255, 255, 0));
           <property name="flat">
            <bool>false</bool>
           </property>
-          <layout class="QVBoxLayout" name="verticalLayout_3">
-           <item>
+          <layout class="QGridLayout" name="gridLayout">
+           <item row="0" column="0">
             <widget class="QPushButton" name="pushButton">
              <property name="text">
               <string>PushButton</string>
              </property>
             </widget>
+           </item>
+           <item row="1" column="0">
+            <widget class="QTextBrowser" name="textBrowser"/>
            </item>
           </layout>
          </widget>
@@ -253,7 +233,7 @@ stop:0.6 rgba(255, 255, 255, 0));
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>567</width>
+     <width>731</width>
      <height>21</height>
     </rect>
    </property>
@@ -285,7 +265,7 @@ stop:0.6 rgba(255, 255, 255, 0));
     <enum>TopToolBarArea</enum>
    </attribute>
    <attribute name="toolBarBreak">
-    <bool>true</bool>
+    <bool>false</bool>
    </attribute>
    <addaction name="actionRe_scan_devices"/>
    <addaction name="separator"/>
