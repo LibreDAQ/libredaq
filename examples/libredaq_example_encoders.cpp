@@ -14,12 +14,12 @@ void my_callback_ENC(const libredaq::TCallbackData_ENC &data)
 	if (++i==5000)
 	{
 		i=0;
-		printf("TIME: %10u ENCODERS: %8li %8li %8li %8li\n", (unsigned long)data.device_timestamp, data.enc_ticks[0],data.enc_ticks[1],data.enc_ticks[2],data.enc_ticks[3]);
+		printf("TIME: %15.7f ENCODERS: %8li %8li %8li %8li\n", data.device_timestamp, data.enc_ticks[0],data.enc_ticks[1],data.enc_ticks[2],data.enc_ticks[3]);
 	}
 
 #if 1
 	static FILE* f=fopen("enc.txt","wt");
-	fprintf(f,"%10u", (unsigned long)data.device_timestamp);
+	fprintf(f,"%15.7f", data.device_timestamp);
 	for (int k=0;k<data.enc_ticks.size();k++)
 		fprintf(f," %li",data.enc_ticks[k] );
 	fprintf(f,"\n");

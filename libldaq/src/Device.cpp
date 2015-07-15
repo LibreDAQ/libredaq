@@ -42,7 +42,12 @@ Device::Device() :
 	m_rx_buf(new circular_buffer<unsigned char>(RX_BUFFER_SIZE) ),
 	m_all_threads_must_exit(false),
 	// Callbacks:
-	m_callback_adc(NULL)
+	m_callback_adc(NULL),
+	m_callback_enc(NULL),
+
+	// Other vars:
+	m_pga_value(1.0),
+	m_device_tick_period(1/50e3)
 {
 	*PTR_HANDLE_RX_THREAD  = libredaq::system::createThreadFromObjectMethod(this, &Device::thread_rx );
 }
@@ -76,6 +81,8 @@ bool Device::connect_serial_port( const std::string &serialPortName )
 		// Start ...
 		// ........
 		//TODO: Send ID command and wait to detect the board model and features
+
+		//TODO: Auto-detect m_device_tick_period
 
 		return true; // ok
 	}
@@ -244,7 +251,7 @@ void Device::thread_rx()
 
 					// TODO: Handle depending on slot_idx and its known features!
 					if (m_callback_adc) {
-						adc16b_x8_data.device_timestamp = adc16b_x8.time;
+						adc16b_x8_data.device_timestamp = adc16b_x8.time*m_device_tick_period;
 						adc16b_x8_data.num_channels = 8;
 						adc16b_x8_data.adc_data_volts.resize(1*adc16b_x8_data.num_channels);
 
@@ -265,7 +272,7 @@ void Device::thread_rx()
 					//onReceive_ENC32b_x4(enc);
 
 					if (m_callback_enc) {
-						enc32b_x4_data.device_timestamp = enc.time;
+						enc32b_x4_data.device_timestamp = enc.time*m_device_tick_period;
 						enc32b_x4_data.num_channels = 4;
 						enc32b_x4_data.enc_ticks.resize(1*enc32b_x4_data.num_channels);
 
@@ -284,7 +291,7 @@ void Device::thread_rx()
 
 					// TODO: Handle depending on slot_idx and its known features!
 					if (m_callback_adc) {
-						adc24b_x4_data.device_timestamp = adc24b_x4.time;
+						adc24b_x4_data.device_timestamp = adc24b_x4.time*m_device_tick_period;
 						adc24b_x4_data.num_channels = 4;
 						adc24b_x4_data.adc_data_volts.resize(1*adc24b_x4_data.num_channels);
 

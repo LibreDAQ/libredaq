@@ -20,7 +20,7 @@ namespace libredaq
 	/** Data for callbacks of type ADC */
 	struct TCallbackData_ADC
 	{
-		unsigned long        device_timestamp;  //!< Device specific. See XXX() for converting to computer time
+		double               device_timestamp;  //!< Timestamp in seconds.
 		unsigned int         num_channels;      //!< Number of ADC channels
 		std::vector<double>  adc_data_volts;    //!< Interlaced ADC data, in volts: [A0 ... A7](for t=0), [A0 ... A7](for t=1), etc.
 	};
@@ -30,7 +30,7 @@ namespace libredaq
 	/** Data for callbacks of type ENCODER */
 	struct TCallbackData_ENC
 	{
-		unsigned long         device_timestamp;  //!< Device specific. See XXX() for converting to computer time
+		double                device_timestamp;  //!< Timestamp in seconds
 		unsigned int          num_channels;      //!< Number of ADC channels
 		std::vector<int32_t>  enc_ticks;         //!< Interlaced ENCODER data, in ticks: [ENC0 ... ENC3](for t=0), [ENC0 ... ENC7](for t=1), etc.
 	};
@@ -102,7 +102,8 @@ namespace libredaq
 		callback_adc_t  m_callback_adc;
 		callback_enc_t  m_callback_enc;
 
-		double   m_pga_value;
+		double  m_pga_value;
+		double  m_device_tick_period; //!< 1 / frequency of the systick (to convert timestamps to seconds)
 
 	}; // end class
 

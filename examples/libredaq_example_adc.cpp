@@ -14,12 +14,12 @@ void my_callback_ADC(const libredaq::TCallbackData_ADC &data)
 	if (++i==10000)
 	{
 		i=0;
-		printf("TIME: %10u ADC DATA: 0=%5.03f 1=%5.03f 2=%5.03f 3=%5.03f 4=%5.03f\n", (unsigned long)data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3],data.adc_data_volts[4] );
+		printf("TIME: %15.7f ADC DATA: 0=%5.03f 1=%5.03f 2=%5.03f 3=%5.03f 4=%5.03f\n", data.device_timestamp, data.adc_data_volts[0],data.adc_data_volts[1],data.adc_data_volts[2],data.adc_data_volts[3],data.adc_data_volts[4] );
 	}
 
 #if 1
 	static FILE* f=fopen("adc.txt","wt");
-	fprintf(f,"%10u", (unsigned long)data.device_timestamp);
+	fprintf(f,"%15.7f", data.device_timestamp);
 	for (int k=0;k<data.adc_data_volts.size();k++)
 		fprintf(f," %5.05f",data.adc_data_volts[k] );
 	fprintf(f,"\n");

@@ -8,7 +8,7 @@ set(CMAKE_AUTOMOC ON)
 
 find_package(Qt5Widgets QUIET)  # Find the QtWidgets library
 IF (NOT Qt5Widgets_FOUND)
-	MESSAGE(STATUS "*WARNING* Qt5 not found. Cannot build LibreDAQStudio. \n  Add the installation prefix of Qt5Widgets to CMAKE_PREFIX_PATH \n  or set Qt5Widgets_DIR to a directory containing one of the above files, typically: 'C:\Qt\5.X\msvcXXXX_64\lib\cmake\Qt5Widgets'")
+	MESSAGE(STATUS "*WARNING* Qt5 not found. Cannot build LibreDAQStudio. \n  Add the installation prefix of Qt5Widgets to CMAKE_PREFIX_PATH \n  or set Qt5Widgets_DIR to a directory containing one of the above files, typically: 'C:\\Qt\\5.X\\msvcXXXX_64\\lib\\cmake\\Qt5Widgets'")
 ELSE()
 	FIND_PACKAGE(libldaq REQUIRED)
 
