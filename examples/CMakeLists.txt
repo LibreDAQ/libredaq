@@ -5,6 +5,10 @@ project(libredaq_examples)
 #include_directories("${libldaq_SOURCE_DIR}/include")
 FIND_PACKAGE(libldaq REQUIRED)
 
+IF(MSVC)
+	ADD_DEFINITIONS(-D_CRT_SECURE_NO_WARNINGS)
+ENDIF(MSVC)
+
 # === Declare examples ===
 MACRO(DECLARE_EXAMPLE _NAME)
 	add_executable(${_NAME} "${_NAME}.cpp")
@@ -22,4 +26,5 @@ DECLARE_EXAMPLE(libredaq_example_adc)
 DECLARE_EXAMPLE(libredaq_example_encoders)
 DECLARE_EXAMPLE(libredaq_example_dac)
 DECLARE_EXAMPLE(libredaq_example_pga_adc)
+DECLARE_EXAMPLE(libredaq_example_adc_enc)
 	

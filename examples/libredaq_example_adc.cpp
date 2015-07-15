@@ -38,6 +38,7 @@ int main(int argc, char **argv)
 	daq.set_callback_ADC(&my_callback_ADC);
 
 #if 0
+	// Use special firmware mode: high-speed ADC (100 KSPS)
 	daq.switch_firmware_mode(1);
 #else
 	daq.switch_firmware_mode(0);
