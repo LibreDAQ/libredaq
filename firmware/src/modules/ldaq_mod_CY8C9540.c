@@ -172,7 +172,7 @@ static bool i2c_write_byte(bool send_start, bool send_stop, uint8_t byte)
 }
 
 // Read a byte from I2C bus
-uint8_t i2c_read_byte(bool nack, bool send_stop) 
+static uint8_t i2c_read_byte(bool nack, bool send_stop) 
 {
 	unsigned char byte = 0;
 	unsigned bit;

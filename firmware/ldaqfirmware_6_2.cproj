@@ -2,7 +2,7 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectVersion>7.0</ProjectVersion>
+    <ProjectVersion>6.2</ProjectVersion>
     <ToolchainName>com.Atmel.ARMGCC.C</ToolchainName>
     <ProjectGuid>{047d0c1f-5f55-405a-bd4c-36f249fc90cf}</ProjectGuid>
     <avrdevice>atsam3u2c</avrdevice>
@@ -209,7 +209,7 @@
         <documentation help="http://asf.atmel.com/docs/3.21.0/common.applications.user_application.user_board.sam3u/html/index.html" />
         <offline-documentation help="" />
         <dependencies>
-          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.25.0" />
+          <content-extension eid="atmel.asf" uuidref="Atmel.ASF" version="3.10.1" />
         </dependencies>
         <project id="common.applications.user_application.user_board.sam3u" value="Add" config="" content-id="Atmel.ASF" />
         <board id="board.user_board.sam3u" value="Add" config="" content-id="Atmel.ASF" />
@@ -284,8 +284,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -302,18 +300,11 @@
     <ListValues>
       <Value>../cmsis/linkerScripts</Value>
       <Value>../src/ASF/thirdparty/CMSIS/Lib/GCC</Value>
-      <Value>%24(ProjectDir)\Device_Startup</Value>
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam/utils/linker_scripts/sam3u/sam3u2/gcc/flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
-  <armgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
-    </ListValues>
-  </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DUDD_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.DefaultIncludePath>False</armgcc.preprocessingassembler.general.DefaultIncludePath>
   <armgcc.preprocessingassembler.general.IncludePaths>
@@ -349,8 +340,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -410,8 +399,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -429,18 +416,11 @@
     <ListValues>
       <Value>../cmsis/linkerScripts</Value>
       <Value>../src/ASF/thirdparty/CMSIS/Lib/GCC</Value>
-      <Value>%24(ProjectDir)\Device_Startup</Value>
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam/utils/linker_scripts/sam3u/sam3u2/gcc/flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
-  <armgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
-    </ListValues>
-  </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DUDD_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.DefaultIncludePath>False</armgcc.preprocessingassembler.general.DefaultIncludePath>
@@ -477,8 +457,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -539,8 +517,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -558,18 +534,11 @@
     <ListValues>
       <Value>../cmsis/linkerScripts</Value>
       <Value>../src/ASF/thirdparty/CMSIS/Lib/GCC</Value>
-      <Value>%24(ProjectDir)\Device_Startup</Value>
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam/utils/linker_scripts/sam3u/sam3u2/gcc/flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
-  <armgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
-    </ListValues>
-  </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DUDD_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.DefaultIncludePath>False</armgcc.preprocessingassembler.general.DefaultIncludePath>
@@ -606,8 +575,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -669,8 +636,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -687,18 +652,11 @@
     <ListValues>
       <Value>../cmsis/linkerScripts</Value>
       <Value>../src/ASF/thirdparty/CMSIS/Lib/GCC</Value>
-      <Value>%24(ProjectDir)\Device_Startup</Value>
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
   <armgcc.linker.memorysettings.ExternalRAM>False</armgcc.linker.memorysettings.ExternalRAM>
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam/utils/linker_scripts/sam3u/sam3u2/gcc/flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
-  <armgcc.assembler.general.IncludePaths>
-    <ListValues>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
-    </ListValues>
-  </armgcc.assembler.general.IncludePaths>
   <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DUDD_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.DefaultIncludePath>False</armgcc.preprocessingassembler.general.DefaultIncludePath>
   <armgcc.preprocessingassembler.general.IncludePaths>
@@ -734,8 +692,6 @@
       <Value>../src/ASF/sam/drivers/wdt</Value>
       <Value>../src/ASF/sam/drivers/usart</Value>
       <Value>../src/ASF/sam/drivers/tc</Value>
-      <Value>%24(PackRepoDir)\atmel\SAM3U_DFP\1.0.49\include</Value>
-      <Value>%24(PackRepoDir)\arm\CMSIS\4.2.0\CMSIS\Include\</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
@@ -743,27 +699,9 @@
     <OutputPath>bin\MINI_Release\</OutputPath>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Device_Startup\startup_sam3u.c">
-      <SubType>compile</SubType>
-    </Compile>
-    <Compile Include="Device_Startup\system_sam3u.c">
-      <SubType>compile</SubType>
-    </Compile>
     <Compile Include="src\ASF\sam\drivers\tc\tc.c">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="Device_Startup\sam3u2c_flash.ld">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="Device_Startup\sam3u2c_sram.ld">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="Device_Startup\sam3u_flash.ld">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="Device_Startup\sam3u_sram.ld">
-      <SubType>compile</SubType>
-    </None>
     <None Include="src\ASF\sam\drivers\tc\tc.h">
       <SubType>compile</SubType>
     </None>
@@ -1357,7 +1295,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Device_Startup\" />
     <Folder Include="src\" />
     <Folder Include="src\ASF\" />
     <Folder Include="src\ASF\common\" />
