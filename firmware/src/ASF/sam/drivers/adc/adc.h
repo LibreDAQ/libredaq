@@ -3,7 +3,7 @@
  *
  * \brief Analog-to-Digital Converter (ADC/ADC12B) driver for SAM.
  *
- * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2011-2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
@@ -260,11 +260,11 @@ void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep);
 void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep,
 		const uint8_t uc_fwup);
 #elif SAM3U || SAM4C || SAM4CP || SAM4CM
-//void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep); // LDAQ: Removed redundant declaration (repeated above)
+void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep);
 #endif
 void adc_set_resolution(Adc *p_adc, const enum adc_resolution_t resolution);
 void adc_start(Adc *p_adc);
-void adc_stop(Adc *p_adc);
+void adc_reset(Adc *p_adc);
 void adc_enable_channel(Adc *p_adc, const enum adc_channel_num_t adc_ch);
 void adc_disable_channel(Adc *p_adc, const enum adc_channel_num_t adc_ch);
 void adc_enable_all_channel(Adc *p_adc);
@@ -356,7 +356,7 @@ void adc12b_configure_power_save(Adc12b *p_adc, const uint8_t uc_sleep,
 		const uint8_t uc_offmode);
 void adc12b_configure_timing(Adc12b *p_adc, const uint32_t ul_sh);
 void adc12b_start(Adc12b *p_adc);
-void adc12b_stop(Adc12b *p_adc);
+void adc12b_reset(Adc12b *p_adc);
 void adc12b_enable_channel(Adc12b *p_adc, const enum adc_channel_num_t adc_ch);
 void adc12b_disable_channel(Adc12b *p_adc, const enum adc_channel_num_t adc_ch);
 void adc12b_enable_all_channel(Adc12b *p_adc);
@@ -490,7 +490,7 @@ Pdc *adc12b_get_pdc_base(const Adc12b *p_adc);
  * driven
  */
 /**
- * \page adc_use_case_1 Use case #1
+ * \page adc_use_case_1 Advanced use cases
  * In this use case the ADC module and one channel are configured for:
  * - 12-bit, unsigned conversions
  * - Internal bandgap as 3.3 V reference

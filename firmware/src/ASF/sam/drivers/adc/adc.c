@@ -3,7 +3,7 @@
  *
  * \brief Analog-to-Digital Converter (ADC/ADC12B) driver for SAM.
  *
- * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2011-2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
@@ -339,11 +339,11 @@ void adc_start(Adc *p_adc)
 }
 
 /**
- * \brief Stop analog-to-digital conversion.
+ * \brief Reset ADC.
  *
  * \param p_adc Pointer to an ADC instance.
  */
-void adc_stop(Adc *p_adc)
+void adc_reset(Adc *p_adc)
 {
 	p_adc->ADC_CR = ADC_CR_SWRST;
 }
@@ -855,14 +855,14 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 	ul_prescal = ((p_adc->ADC_MR & ADC_MR_PRESCAL_Msk) >>
 			ADC_MR_PRESCAL_Pos);
 	ul_adcfreq = ul_mck / ((ul_prescal + 1) * 2);
-	//printf("ADC clock frequency = %d Hz\r\n", (int)ul_adcfreq);
+	printf("ADC clock frequency = %d Hz\r\n", (int)ul_adcfreq);
 
 	if (ul_adcfreq < ADC_FREQ_MIN) {
-		//printf("adc frequency too low (out of specification: %d Hz)\r\n",
+		printf("adc frequency too low (out of specification: %d Hz)\r\n",
 			(int)ADC_FREQ_MIN);
 	}
 	if (ul_adcfreq > ADC_FREQ_MAX) {
-		//printf("adc frequency too high (out of specification: %d Hz)\r\n",
+		printf("adc frequency too high (out of specification: %d Hz)\r\n",
 			(int)ADC_FREQ_MAX);
 	}
 
@@ -872,7 +872,7 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 		/* 40ms */
 		if (ADC_STARTUP_NORM * ul_adcfreq / 1000000 >
 				calcul_startup(ul_startup)) {
-			//printf("Startup time too small: %d, programmed: %d\r\n",
+			printf("Startup time too small: %d, programmed: %d\r\n",
 					(int)(ADC_STARTUP_NORM * ul_adcfreq /
 							1000000),
 					(int)calcul_startup(ul_startup));
@@ -886,7 +886,7 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 			/* Sleep 40ms */
 			if (ADC_STARTUP_NORM * ul_adcfreq / 1000000 >
 					calcul_startup(ul_startup)) {
-				//printf("Startup time too small: %d, programmed: %d\r\n",
+				printf("Startup time too small: %d, programmed: %d\r\n",
 					(int)(ADC_STARTUP_NORM * ul_adcfreq / 1000000),
 					(int)(calcul_startup(ul_startup)));
 			}
@@ -895,7 +895,7 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 				/* Fast Wake Up Sleep Mode: 12ms */
 				if (ADC_STARTUP_FAST * ul_adcfreq / 1000000 >
 						calcul_startup(ul_startup)) {
-					//printf("Startup time too small: %d, programmed: %d\r\n",
+					printf("Startup time too small: %d, programmed: %d\r\n",
 						(int)(ADC_STARTUP_NORM * ul_adcfreq / 1000000),
 						(int)(calcul_startup(ul_startup)));
 				}

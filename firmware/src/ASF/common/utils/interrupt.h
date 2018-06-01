@@ -3,7 +3,7 @@
  *
  * \brief Global interrupt management for 8- and 32-bit AVR
  *
- * Copyright (c) 2010-2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2010-2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #ifndef UTILS_INTERRUPT_H
@@ -48,11 +48,11 @@
 
 #include <parts.h>
 
-#if XMEGA || MEGA || TINY
+#if XMEGA || MEGA
 #  include "interrupt/interrupt_avr8.h"
 #elif UC3
 #  include "interrupt/interrupt_avr32.h"
-#elif SAM
+#elif SAM || SAMB
 #  include "interrupt/interrupt_sam_nvic.h"
 #else
 #  error Unsupported device.
@@ -96,10 +96,10 @@
  */
 
 /**
- * \fn irqflags_t ldaq_enter_cs(void)
+ * \fn irqflags_t cpu_irq_save(void)
  * \brief Get and clear the global interrupt flags
  *
- * Use in conjunction with \ref ldaq_leave_cs.
+ * Use in conjunction with \ref cpu_irq_restore.
  *
  * \return Current state of interrupt flags.
  *
@@ -107,10 +107,10 @@
  */
 
 /**
- * \fn void ldaq_leave_cs(irqflags_t flags)
+ * \fn void cpu_irq_restore(irqflags_t flags)
  * \brief Restore global interrupt flags
  *
- * Use in conjunction with \ref ldaq_enter_cs.
+ * Use in conjunction with \ref cpu_irq_save.
  *
  * \param flags State to set interrupt flag to.
  */

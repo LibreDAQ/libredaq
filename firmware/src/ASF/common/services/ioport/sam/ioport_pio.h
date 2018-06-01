@@ -3,7 +3,7 @@
  *
  * \brief SAM architecture specific IOPORT service implementation header file.
  *
- * Copyright (c) 2012-2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2012-2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #ifndef IOPORT_SAM_H
@@ -73,21 +73,21 @@
 #define IOPORT_MODE_MUX_MASK            (0x7 << 0) /*!< MUX bits mask */
 #define IOPORT_MODE_MUX_BIT0            (  1 << 0) /*!< MUX BIT0 mask */
 
-#if SAM3N || SAM3S || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP
+#if SAM3N || SAM3S || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70
 #define IOPORT_MODE_MUX_BIT1            (  1 << 1) /*!< MUX BIT1 mask */
 #endif
 
 #define IOPORT_MODE_MUX_A               (  0 << 0) /*!< MUX function A */
 #define IOPORT_MODE_MUX_B               (  1 << 0) /*!< MUX function B */
 
-#if SAM3N || SAM3S || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP
+#if SAM3N || SAM3S || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70
 #define IOPORT_MODE_MUX_C               (  2 << 0) /*!< MUX function C */
 #define IOPORT_MODE_MUX_D               (  3 << 0) /*!< MUX function D */
 #endif
 
 #define IOPORT_MODE_PULLUP              (  1 << 3) /*!< Pull-up */
 
-#if SAM3N || SAM3S || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP
+#if SAM3N || SAM3S || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70
 #define IOPORT_MODE_PULLDOWN            (  1 << 4) /*!< Pull-down */
 #endif
 
@@ -298,12 +298,15 @@ __always_inline static void arch_ioport_set_pin_level(ioport_pin_t pin,
 }
 
 __always_inline static void arch_ioport_set_port_level(ioport_port_t port,
-		ioport_port_mask_t mask, ioport_port_mask_t level)
+		ioport_port_mask_t mask, enum ioport_value level)
 {
 	Pio *base = arch_ioport_port_to_base(port);
 
-	base->PIO_SODR = mask & level;
-	base->PIO_CODR = mask & ~level;
+	if (level){
+		base->PIO_SODR = mask;
+	} else {
+		base->PIO_CODR = mask;
+	}
 }
 
 __always_inline static bool arch_ioport_get_pin_level(ioport_pin_t pin)

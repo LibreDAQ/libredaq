@@ -3,7 +3,7 @@
  *
  * \brief Global interrupt management for SAM D20, SAM3 and SAM4 (NVIC based)
  *
- * Copyright (c) 2012-2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2012-2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
@@ -150,7 +150,7 @@ static volatile bool     cpu_irq_prev_interrupt_state;
 
 static inline irqflags_t cpu_irq_save(void)
 {
-	irqflags_t flags = cpu_irq_is_enabled();
+	volatile irqflags_t flags = cpu_irq_is_enabled();
 	cpu_irq_disable();
 	return flags;
 }
@@ -185,9 +185,5 @@ void cpu_irq_leave_critical(void);
 #ifdef __cplusplus
 }
 #endif
-
-// LDAQ / LibreDAQ: Added to allow preemptive interrupts:
-#include <utils/ldaq_util_macros.h>
-
 
 #endif /* UTILS_INTERRUPT_INTERRUPT_H */

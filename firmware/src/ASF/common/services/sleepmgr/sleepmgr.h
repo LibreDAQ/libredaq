@@ -3,7 +3,7 @@
  *
  * \brief Sleep manager
  *
- * Copyright (c) 2010 - 2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2010-2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #ifndef SLEEPMGR_H
@@ -49,7 +49,7 @@
 #include <compiler.h>
 #include <parts.h>
 
-#if (SAM3S || SAM3U || SAM3N || SAM3XA || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
+#if (SAM3S || SAM3U || SAM3N || SAM3XA || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAMS70 || SAME70)
 # include "sam/sleepmgr.h"
 #elif XMEGA
 # include "xmega/sleepmgr.h"
@@ -59,10 +59,12 @@
 # include "sam4l/sleepmgr.h"
 #elif MEGA
 # include "mega/sleepmgr.h"
-#elif (SAMD20 || SAMD21 || SAMR21 || SAMD11)
+#elif (SAMD20 || SAMD21 || SAMR21 || SAMD11 || SAMDA1)
 # include "samd/sleepmgr.h"
-#elif (SAML21)
+#elif (SAML21 || SAML22 || SAMR30)
 # include "saml/sleepmgr.h"
+#elif (SAMC21)
+# include "samc/sleepmgr.h"
 #else
 # error Unsupported device.
 #endif
@@ -147,15 +149,20 @@ static inline void sleepmgr_lock_mode(enum sleepmgr_mode mode)
 #ifdef CONFIG_SLEEPMGR_ENABLE
 	irqflags_t flags;
 
-	Assert(sleepmgr_locks[mode] < 0xff);
+	if(sleepmgr_locks[mode] >= 0xff) {
+		while (true) {
+			// Warning: maximum value of sleepmgr_locks buffer is no more than 255.
+			// Check APP or change the data type to uint16_t.
+		}
+	}
 
 	// Enter a critical section
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 
 	++sleepmgr_locks[mode];
 
 	// Leave the critical section
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 #else
 	UNUSED(mode);
 #endif /* CONFIG_SLEEPMGR_ENABLE */
@@ -174,15 +181,20 @@ static inline void sleepmgr_unlock_mode(enum sleepmgr_mode mode)
 #ifdef CONFIG_SLEEPMGR_ENABLE
 	irqflags_t flags;
 
-	Assert(sleepmgr_locks[mode]);
+	if(sleepmgr_locks[mode] == 0) {
+		while (true) {
+			// Warning: minimum value of sleepmgr_locks buffer is no less than 0.
+			// Check APP.
+		}
+	}
 
 	// Enter a critical section
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 
 	--sleepmgr_locks[mode];
 
 	// Leave the critical section
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 #else
 	UNUSED(mode);
 #endif /* CONFIG_SLEEPMGR_ENABLE */

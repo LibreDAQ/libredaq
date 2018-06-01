@@ -3,7 +3,7 @@
  *
  * \brief USB configuration file for CDC application
  *
- * Copyright (c) 2009-2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2009-2015 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
@@ -49,16 +49,14 @@
 
 #include "compiler.h"
 
-// LDAQ values:
-
 /**
  * USB Device Configuration
  * @{
  */
 
 //! Device definition (mandatory)
-#define  USB_DEVICE_VENDOR_ID             0x03EB
-#define  USB_DEVICE_PRODUCT_ID            0x2044
+#define  USB_DEVICE_VENDOR_ID             USB_VID_ATMEL
+#define  USB_DEVICE_PRODUCT_ID            USB_PID_ATMEL_ASF_CDC
 #define  USB_DEVICE_MAJOR_VERSION         1
 #define  USB_DEVICE_MINOR_VERSION         0
 #define  USB_DEVICE_POWER                 250 // Consumption on Vbus line (mA)
@@ -84,7 +82,7 @@
  * @{
  */
 //! To authorize the High speed
-#if (UC3A3||UC3A4||SAM3U1||SAM3U2)
+#if (UC3A3||UC3A4)
 #define  USB_DEVICE_HS_SUPPORT
 #endif
 //@}

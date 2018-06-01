@@ -12,6 +12,7 @@
 #include <comms/ldaq_process_cmds.h>
 #include <system/ldaq_rt_scheduler.h>
 #include <conf_libredaq_firmware.h>
+#include <utils/ldaq_util_macros.h>
 
 struct circular_buffer_fixsize  buffer_usb_rx;
 

@@ -17,9 +17,9 @@
 #include <comms/ldaq_comms.h>
 #include <firmware_modes/ldaq_firmware_modes.h>
 
-#warning TODO: Remove, just for debugging!!
-#include <modules/ldaq_mod_ADS1248.h>
-#include <modules/ldaq_mod_CY8C9540.h>
+// for debugging
+//#include <modules/ldaq_mod_ADS1248.h>
+//#include <modules/ldaq_mod_CY8C9540.h>
 
 int main (void)
 {
@@ -39,8 +39,6 @@ int main (void)
 	pio_set_pin_high(LED1_GPIO);pio_set_pin_low (LED2_GPIO); delay_ms(150);
 	pio_set_pin_low(LED1_GPIO); pio_set_pin_low (LED2_GPIO); delay_ms(150);
 	pio_set_pin_high(LED1_GPIO);pio_set_pin_high(LED2_GPIO);
-
-	//mod_cy8c9540_init();
 
 	// Main infinite loop:
 	// ---------------------------------------------------------

@@ -3,7 +3,7 @@
  *
  * \brief USB Device Driver for UDPHS. Compliant with common UDD driver.
  *
- * Copyright (c) 2012 - 2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2012-2015 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -40,7 +40,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
@@ -648,7 +648,7 @@ void udd_enable(void)
 
 	udd_enable_periph_ck();
 
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 
 	//** Enable USB hardware
 	udd_enable_periph();
@@ -696,14 +696,14 @@ void udd_enable(void)
 #  endif
 #endif
 
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 
 void udd_disable(void)
 {
 	irqflags_t flags;
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	// Disable USB
 	udd_reset_periph();
 	sysclk_disable_usb();
@@ -717,14 +717,14 @@ void udd_disable(void)
 	udd_vbus_monitor_sleep_mode(false);
 # endif
 
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 
 void udd_attach(void)
 {
 	irqflags_t flags;
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 
 	// At startup the USB bus state is unknown,
 	// therefore the state is considered IDLE to not miss any USB event
@@ -750,7 +750,7 @@ void udd_attach(void)
 	udd_ack_wake_up();
 
 	udd_disable_periph_ck();
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 
@@ -1090,13 +1090,13 @@ bool udd_ep_run(udd_ep_id_t ep, bool b_shortpacket,
 		return false; // Endpoint is halted
 	}
 
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	if (ptr_job->busy == true) {
-		ldaq_leave_cs(flags);
+		cpu_irq_restore(flags);
 		return false; // Job already on going
 	}
 	ptr_job->busy = true;
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 
 	// No job running. Let's setup a new one.
 	ptr_job->buf = buf;
@@ -1257,11 +1257,11 @@ static void udd_reset_ep_ctrl(void)
 
 	dbg_print("rst(0:%08x) ", UDPHS->UDPHS_EPT[0].UDPHS_EPTCFG);
 	udd_enable_endpoint(0);
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	udd_enable_setup_received_interrupt(0);
 	udd_enable_out_received_interrupt(0);
 	udd_enable_endpoint_interrupt(0);
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 static void udd_ctrl_init(void)
@@ -1270,14 +1270,14 @@ static void udd_ctrl_init(void)
 
 	dbg_print("ctlInit ");
 
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	// In case of abort of IN Data Phase:
 	// No need to abort IN transfer (rise TXINI),
 	// because it is automatically done by hardware when a Setup packet is received.
 	// But the interrupt must be disabled to don't generate interrupt TXINI
 	// after SETUP reception.
 	udd_disable_in_send_interrupt(0);
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 
 	// In case of OUT ZLP event is no processed before Setup event occurs
 	udd_ack_out_received(0);
@@ -1356,9 +1356,9 @@ static void udd_ctrl_setup_received(void)
 		udd_ep_control_state = UDD_EPCTRL_DATA_OUT;
 		// To detect a protocol error, enable nak interrupt on data IN phase
 		udd_ack_nak_in(0);
-		flags = ldaq_enter_cs();
+		flags = cpu_irq_save();
 		udd_enable_nak_in_interrupt(0);
-		ldaq_leave_cs(flags);
+		cpu_irq_restore(flags);
 	}
 }
 
@@ -1371,9 +1371,9 @@ static void udd_ctrl_in_sent(void)
 	uint8_t *ptr_dest, *ptr_src;
 	irqflags_t flags;
 
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	udd_disable_in_send_interrupt(0);
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 
 	if (UDD_EPCTRL_HANDSHAKE_WAIT_IN_ZLP == udd_ep_control_state) {
 		dbg_print("ZlpE\n\r");
@@ -1427,11 +1427,11 @@ static void udd_ctrl_in_sent(void)
 	// Thereby, an OUT ZLP reception must check before IN data write
 	// and if no OUT ZLP is received the data must be written quickly (800us)
 	// before an eventually ZLP OUT and SETUP reception
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	if (Is_udd_out_received(0)) {
 		dbg_print("Abort ");
 		// IN DATA phase aborted by OUT ZLP
-		ldaq_leave_cs(flags);
+		cpu_irq_restore(flags);
 		udd_ep_control_state = UDD_EPCTRL_HANDSHAKE_WAIT_OUT_ZLP;
 		return; // Exit of IN DATA phase
 	}
@@ -1448,7 +1448,7 @@ static void udd_ctrl_in_sent(void)
 	udd_enable_in_send_interrupt(0);
 	// In case of abort of DATA IN phase, no need to enable nak OUT interrupt
 	// because OUT endpoint is already free and ZLP OUT accepted.
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 
@@ -1539,9 +1539,9 @@ static void udd_ctrl_out_received(void)
 	udd_ack_out_received(0);
 	// To detect a protocol error, enable nak interrupt on data IN phase
 	udd_ack_nak_in(0);
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	udd_enable_nak_in_interrupt(0);
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 
@@ -1593,7 +1593,7 @@ static void udd_ctrl_send_zlp_in(void)
 	udd_ep_control_state = UDD_EPCTRL_HANDSHAKE_WAIT_IN_ZLP;
 
 	// Validate and send empty IN packet on control endpoint
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	// Send ZLP on IN endpoint
 	udd_ack_in_send(0);
 	udd_raise_tx_pkt_ready(0);
@@ -1601,7 +1601,7 @@ static void udd_ctrl_send_zlp_in(void)
 	// To detect a protocol error, enable nak interrupt on data OUT phase
 	udd_ack_nak_out(0);
 	udd_enable_nak_out_interrupt(0);
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 
@@ -1614,10 +1614,10 @@ static void udd_ctrl_send_zlp_out(void)
 	// because the buffer of control endpoint is already free
 
 	// To detect a protocol error, enable nak interrupt on data IN phase
-	flags = ldaq_enter_cs();
+	flags = cpu_irq_save();
 	udd_ack_nak_in(0);
 	udd_enable_nak_in_interrupt(0);
-	ldaq_leave_cs(flags);
+	cpu_irq_restore(flags);
 }
 
 
@@ -1792,17 +1792,17 @@ static void udd_ep_trans_done(udd_ep_id_t ep)
 
 		// Disable IRQs to have a short sequence
 		// between read of EOT_STA and DMA enable
-		flags = ldaq_enter_cs();
+		flags = cpu_irq_save();
 		if (!(udd_endpoint_dma_get_status(ep)
 				& UDPHS_DMASTATUS_END_TR_ST)) {
 			udd_endpoint_dma_set_control(ep, udd_dma_ctrl);
 			ptr_job->buf_cnt += next_trans;
 			ptr_job->buf_load = next_trans;
 			udd_enable_endpoint_dma_interrupt(ep);
-			ldaq_leave_cs(flags);
+			cpu_irq_restore(flags);
 			return;
 		}
-		ldaq_leave_cs(flags);
+		cpu_irq_restore(flags);
 
 		// Here a ZLP has been received
 		// and the DMA transfer must be not started.

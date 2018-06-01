@@ -4,7 +4,7 @@
  * \brief Common IOPORT service main header file for AVR, UC3 and ARM
  *        architectures.
  *
- * Copyright (c) 2012-2014 Atmel Corporation. All rights reserved.
+ * Copyright (c) 2012-2016 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
@@ -41,7 +41,7 @@
  * \asf_license_stop
  *
  */
- /**
+/*
  * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 #ifndef IOPORT_H
@@ -111,6 +111,13 @@ enum ioport_sense {
 	IOPORT_SENSE_LEVEL_LOW, /*!< IOPORT sense low level  */
 	IOPORT_SENSE_LEVEL_HIGH,/*!< IOPORT sense High level  */
 };
+#elif XMEGA
+enum ioport_sense {
+	IOPORT_SENSE_BOTHEDGES, /*!< IOPORT sense both rising and falling edges */
+	IOPORT_SENSE_RISING,    /*!< IOPORT sense rising edges */
+	IOPORT_SENSE_FALLING,   /*!< IOPORT sense falling edges */
+	IOPORT_SENSE_LEVEL_LOW, /*!< IOPORT sense low level */
+};
 #else
 enum ioport_sense {
 	IOPORT_SENSE_BOTHEDGES, /*!< IOPORT sense both rising and falling edges */
@@ -132,7 +139,7 @@ enum ioport_sense {
 #elif SAM
 # if SAM4L
 #  include "sam/ioport_gpio.h"
-# elif (SAMD20 | SAMD21)
+# elif (SAMD20 | SAMD21 | SAML21)
 #  include "sam0/ioport.h"
 # else
 #  include "sam/ioport_pio.h"
@@ -289,7 +296,7 @@ static inline void ioport_set_pin_level(ioport_pin_t pin, bool level)
  * \param level Level of the pins to be modified
  */
 static inline void ioport_set_port_level(ioport_port_t port,
-		ioport_port_mask_t mask, ioport_port_mask_t level)
+		ioport_port_mask_t mask, enum ioport_value level)
 {
 	arch_ioport_set_port_level(port, mask, level);
 }
