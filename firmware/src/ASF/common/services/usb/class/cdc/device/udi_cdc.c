@@ -235,7 +235,7 @@ static volatile uint8_t udi_cdc_nb_comm_enabled = 0;
 
 //! Status of CDC DATA interfaces
 static volatile uint8_t udi_cdc_nb_data_enabled = 0;
-static volatile bool udi_cdc_data_running = false;
+/*static*/ volatile bool udi_cdc_data_running = false;
 //! Buffer to receive data
 COMPILER_WORD_ALIGNED static uint8_t udi_cdc_rx_buf[UDI_CDC_PORT_NB][2][UDI_CDC_RX_BUFFERS];
 //! Data available in RX buffers

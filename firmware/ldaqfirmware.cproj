@@ -878,9 +878,6 @@
     <None Include="src\ASF\common\boards\board.h">
       <SubType>compile</SubType>
     </None>
-    <Compile Include="src\ASF\common\boards\user_board\init.c">
-      <SubType>compile</SubType>
-    </Compile>
     <None Include="src\ASF\common\utils\interrupt.h">
       <SubType>compile</SubType>
     </None>
@@ -896,18 +893,6 @@
     <Compile Include="src\ASF\sam\drivers\tc\tc.c">
       <SubType>compile</SubType>
     </Compile>
-    <None Include="Device_Startup\sam3u2c_flash.ld">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="Device_Startup\sam3u2c_sram.ld">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="Device_Startup\sam3u_flash.ld">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="Device_Startup\sam3u_sram.ld">
-      <SubType>compile</SubType>
-    </None>
     <None Include="src\ASF\sam\drivers\tc\tc.h">
       <SubType>compile</SubType>
     </None>
