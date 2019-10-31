@@ -85,10 +85,11 @@ void my_callback_ENC(const libredaq::TCallbackData_ENC &data) {
     spc.loops_without_update_speed_buffer = 0;
   }
 
-  ROS_INFO_THROTTLE(0.5, "TIME: %15.7f ENCODERS: %8f %8f %8f %8f\n",
-                    data.device_timestamp, (double)data.enc_ticks[0],
-                    (double)data.enc_ticks[1], (double)data.enc_ticks[2],
-                    (double)data.enc_ticks[3]);
+  ROS_INFO_THROTTLE(
+      0.5, "TIME: %15.7f CALLBACK=%6.03f Hz ENCODERS: %8f %8f %8f %8f\n",
+      data.device_timestamp, At_inv, (double)data.enc_ticks[0],
+      (double)data.enc_ticks[1], (double)data.enc_ticks[2],
+      (double)data.enc_ticks[3]);
 }
 
 int main(int argc, char *argv[]) {
@@ -117,11 +118,14 @@ int main(int argc, char *argv[]) {
 
     std::string frame_id;
     nh.getParam("frame_id", frame_id);
-    ROS_INFO("frame_id = '%s'", frame_id.c_str());
     nh.getParam("PUBLISH_RATE", PUBLISH_RATE);
     nh.getParam("SPEED_FILTER_SAMPLES_LEN", SPEED_FILTER_SAMPLES_LEN);
     nh.getParam("SPEED_FILTER_IDLE_ITER_LOOPS_BEFORE_RESET",
                 SPEED_FILTER_IDLE_ITER_LOOPS_BEFORE_RESET);
+
+    ROS_INFO("frame_id = '%s'", frame_id.c_str());
+    ROS_INFO("SPEED_FILTER_SAMPLES_LEN = %i", SPEED_FILTER_SAMPLES_LEN);
+    ROS_INFO("PUBLISH_RATE = %f", PUBLISH_RATE);
 
     // First time: create publishers:
     const std::string topic_path = "joint_states";
@@ -142,7 +146,7 @@ int main(int argc, char *argv[]) {
     daq.set_callback_ENC(&my_callback_ENC);
 
     printf("Starting ENCODERS task...\n");
-    daq.start_task_encoders(PUBLISH_RATE * 4);
+    daq.start_task_encoders(PUBLISH_RATE * 100);
 
     ros::Rate rate(PUBLISH_RATE);
     ROS_INFO("Publishing encoder states at %.03f Hz", PUBLISH_RATE);
@@ -198,6 +202,7 @@ int main(int argc, char *argv[]) {
 
           if (SPEED_FILTER_SAMPLES_LEN > 0) {
             if (!spc.speed_buffer_updated) {
+              ROS_WARN("No speed data for this loop!");
               if (int(++spc.loops_without_update_speed_buffer) >=
                   SPEED_FILTER_IDLE_ITER_LOOPS_BEFORE_RESET) {
                 libredaq::EncoderDecimatedSpeed e;
