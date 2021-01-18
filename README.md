@@ -27,6 +27,10 @@ This repository includes the sources for:
 }
 ```
 
+# CircuitHub
+
+* [LibreDAQ Base board](https://circuithub.com/projects/LibreDAQ/ldaq-base-v11)
+
 # Videos:
 
 [YouTube playlist](https://www.youtube.com/playlist?list=PLOJ3GF0x2_eULIKMOQqdDnZAjOUo_N2IJ)
