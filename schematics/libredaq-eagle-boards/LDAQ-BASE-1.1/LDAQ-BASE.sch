@@ -21551,70 +21551,6 @@ Source: &lt;a href="https://www.semtech.com/uploads/documents/ts30011_12_13.pdf"
 </deviceset>
 </devicesets>
 </library>
-<library name="PJ-102A">
-<description>&lt;DC Power Connectors Power Jacks&lt;/b&gt;&lt;p&gt;
-&lt;author&gt;Created by SamacSys&lt;/author&gt;</description>
-<packages>
-<package name="PJ-102AH">
-<description>&lt;b&gt;PJ-102AH&lt;/b&gt;&lt;br&gt;
-</description>
-<pad name="1" x="4.3" y="-3" drill="1.9" diameter="3"/>
-<pad name="2" x="4.3" y="3" drill="1.9" diameter="3"/>
-<pad name="3" x="-0.4" y="0" drill="1.9" diameter="3"/>
-<text x="4.035" y="6.411" size="1.27" layer="25" align="center">&gt;NAME</text>
-<text x="4.035" y="6.411" size="1.27" layer="27" align="center">&gt;VALUE</text>
-<wire x1="9" y1="10.7" x2="0" y2="10.7" width="0.2" layer="51"/>
-<wire x1="0" y1="10.7" x2="0" y2="-3.7" width="0.2" layer="51"/>
-<wire x1="0" y1="-3.7" x2="9" y2="-3.7" width="0.2" layer="51"/>
-<wire x1="9" y1="-3.7" x2="9" y2="10.7" width="0.2" layer="51"/>
-<circle x="4.261" y="-5.051" radius="0.11885" width="0.2" layer="25"/>
-<wire x1="9" y1="-3.7" x2="9" y2="10.7" width="0.2" layer="21"/>
-<wire x1="9" y1="10.7" x2="0" y2="10.7" width="0.2" layer="21"/>
-<wire x1="0" y1="10.7" x2="0" y2="3.5" width="0.2" layer="21"/>
-</package>
-</packages>
-<symbols>
-<symbol name="PJ-102A">
-<wire x1="5.08" y1="2.54" x2="15.24" y2="2.54" width="0.254" layer="94"/>
-<wire x1="15.24" y1="-5.08" x2="15.24" y2="2.54" width="0.254" layer="94"/>
-<wire x1="15.24" y1="-5.08" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
-<wire x1="5.08" y1="2.54" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
-<text x="16.51" y="7.62" size="1.778" layer="95" align="center-left">&gt;NAME</text>
-<text x="16.51" y="5.08" size="1.778" layer="96" align="center-left">&gt;VALUE</text>
-<pin name="1" x="20.32" y="-2.54" length="middle" rot="R180"/>
-<pin name="2" x="20.32" y="0" length="middle" rot="R180"/>
-<pin name="3" x="0" y="0" length="middle"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="PJ-102A" prefix="J">
-<description>&lt;b&gt;DC Power Connectors Power Jacks&lt;/b&gt;&lt;p&gt;
-Source: &lt;a href="https://www.cui.com/product/resource/pj-102a.pdf"&gt; Datasheet &lt;/a&gt;</description>
-<gates>
-<gate name="G$1" symbol="PJ-102A" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="PJ-102AH">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="DESCRIPTION" value="DC Power Connectors Power Jacks" constant="no"/>
-<attribute name="HEIGHT" value="mm" constant="no"/>
-<attribute name="MANUFACTURER_NAME" value="CUI Devices" constant="no"/>
-<attribute name="MANUFACTURER_PART_NUMBER" value="PJ-102A" constant="no"/>
-<attribute name="MOUSER_PART_NUMBER" value="490-PJ-102A" constant="no"/>
-<attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.co.uk/ProductDetail/CUI-Devices/PJ-102A?qs=WyjlAZoYn50UKjtnxOz%252Bqg%3D%3D" constant="no"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="FM4004W-W">
 <description>&lt;Rectifiers 1A, 400V&lt;/b&gt;&lt;p&gt;
 &lt;author&gt;Created by SamacSys&lt;/author&gt;</description>
@@ -21868,91 +21804,6 @@ Source: &lt;a href="http://www.ti.com/lit/ds/symlink/txb0108.pdf"&gt; Datasheet 
 </deviceset>
 </devicesets>
 </library>
-<library name="3221-10-0100-00">
-<packages>
-<package name="CNC_3221-10-0100-00">
-<wire x1="-6.325" y1="2.55" x2="6.325" y2="2.55" width="0.127" layer="51"/>
-<wire x1="6.325" y1="2.55" x2="6.325" y2="-2.55" width="0.127" layer="51"/>
-<wire x1="6.325" y1="-2.55" x2="-6.325" y2="-2.55" width="0.127" layer="51"/>
-<wire x1="-6.325" y1="-2.55" x2="-6.325" y2="2.55" width="0.127" layer="51"/>
-<wire x1="-6.325" y1="2.55" x2="6.325" y2="2.55" width="0.127" layer="21"/>
-<wire x1="6.325" y1="2.55" x2="6.325" y2="-2.55" width="0.127" layer="21"/>
-<wire x1="6.325" y1="-2.55" x2="-6.325" y2="-2.55" width="0.127" layer="21"/>
-<wire x1="-6.325" y1="-2.55" x2="-6.325" y2="2.55" width="0.127" layer="21"/>
-<wire x1="-6.575" y1="2.8" x2="6.575" y2="2.8" width="0.05" layer="39"/>
-<wire x1="-6.575" y1="-2.8" x2="-6.575" y2="2.8" width="0.05" layer="39"/>
-<wire x1="6.575" y1="-2.8" x2="-6.575" y2="-2.8" width="0.05" layer="39"/>
-<wire x1="6.575" y1="2.8" x2="6.575" y2="-2.8" width="0.05" layer="39"/>
-<text x="-6.508859375" y="3.004090625" size="1.78041875" layer="25">&gt;NAME</text>
-<text x="-6.51105" y="-5.39415" size="1.78101875" layer="27">&gt;VALUE</text>
-<circle x="-2.555" y="-3.048" radius="0.1" width="0.2" layer="51"/>
-<circle x="-2.555" y="-3.048" radius="0.1" width="0.2" layer="21"/>
-<pad name="1" x="-2.54" y="-0.635" drill="0.7" diameter="1.1" shape="square"/>
-<pad name="2" x="-2.54" y="0.635" drill="0.7" diameter="1.1"/>
-<pad name="3" x="-1.27" y="-0.635" drill="0.7" diameter="1.1"/>
-<pad name="4" x="-1.27" y="0.635" drill="0.7" diameter="1.1"/>
-<pad name="5" x="0" y="-0.635" drill="0.7" diameter="1.1"/>
-<pad name="6" x="0" y="0.635" drill="0.7" diameter="1.1"/>
-<pad name="7" x="1.27" y="-0.635" drill="0.7" diameter="1.1"/>
-<pad name="8" x="1.27" y="0.635" drill="0.7" diameter="1.1"/>
-<pad name="9" x="2.54" y="-0.635" drill="0.7" diameter="1.1"/>
-<pad name="10" x="2.54" y="0.635" drill="0.7" diameter="1.1"/>
-</package>
-</packages>
-<symbols>
-<symbol name="3221-10-0100-00">
-<wire x1="-5.08" y1="7.62" x2="5.08" y2="7.62" width="0.2" layer="94"/>
-<wire x1="5.08" y1="7.62" x2="5.08" y2="-7.62" width="0.2" layer="94"/>
-<wire x1="5.08" y1="-7.62" x2="-5.08" y2="-7.62" width="0.2" layer="94"/>
-<wire x1="-5.08" y1="-7.62" x2="-5.08" y2="7.62" width="0.2" layer="94"/>
-<text x="-5.08038125" y="8.38263125" size="1.77813125" layer="95">&gt;NAME</text>
-<text x="-5.33816875" y="-8.38855" size="1.779390625" layer="96" rot="MR180">&gt;VALUE</text>
-<pin name="1" x="-10.16" y="5.08" length="middle" direction="pas"/>
-<pin name="2" x="10.16" y="5.08" length="middle" direction="pas" rot="R180"/>
-<pin name="3" x="-10.16" y="2.54" length="middle" direction="pas"/>
-<pin name="4" x="10.16" y="2.54" length="middle" direction="pas" rot="R180"/>
-<pin name="5" x="-10.16" y="0" length="middle" direction="pas"/>
-<pin name="6" x="10.16" y="0" length="middle" direction="pas" rot="R180"/>
-<pin name="7" x="-10.16" y="-2.54" length="middle" direction="pas"/>
-<pin name="8" x="10.16" y="-2.54" length="middle" direction="pas" rot="R180"/>
-<pin name="9" x="-10.16" y="-5.08" length="middle" direction="pas"/>
-<pin name="10" x="10.16" y="-5.08" length="middle" direction="pas" rot="R180"/>
-</symbol>
-</symbols>
-<devicesets>
-<deviceset name="3221-10-0100-00" prefix="J">
-<description>Idc Box Header .050" 10pos</description>
-<gates>
-<gate name="G$1" symbol="3221-10-0100-00" x="0" y="0"/>
-</gates>
-<devices>
-<device name="" package="CNC_3221-10-0100-00">
-<connects>
-<connect gate="G$1" pin="1" pad="1"/>
-<connect gate="G$1" pin="10" pad="10"/>
-<connect gate="G$1" pin="2" pad="2"/>
-<connect gate="G$1" pin="3" pad="3"/>
-<connect gate="G$1" pin="4" pad="4"/>
-<connect gate="G$1" pin="5" pad="5"/>
-<connect gate="G$1" pin="6" pad="6"/>
-<connect gate="G$1" pin="7" pad="7"/>
-<connect gate="G$1" pin="8" pad="8"/>
-<connect gate="G$1" pin="9" pad="9"/>
-</connects>
-<technologies>
-<technology name="">
-<attribute name="DESCRIPTION" value=" Connector Header Through Hole 10 position 0.050 (1.27mm) "/>
-<attribute name="DIGI-KEY_PART_NUMBER" value="1175-1733-ND"/>
-<attribute name="MF" value="CNC Tech"/>
-<attribute name="MP" value="3221-10-0100-00"/>
-<attribute name="PACKAGE" value="None"/>
-</technology>
-</technologies>
-</device>
-</devices>
-</deviceset>
-</devicesets>
-</library>
 <library name="SamacSys_Parts">
 <description>&lt;b&gt;https://componentsearchengine.com&lt;/b&gt;&lt;p&gt;
 &lt;author&gt;Created by SamacSys&lt;/author&gt;</description>
@@ -22043,6 +21894,58 @@ Source: &lt;a href="http://www.ti.com/lit/ds/symlink/txb0108.pdf"&gt; Datasheet 
 <wire x1="16.75" y1="-5.5" x2="-2.75" y2="-5.5" width="0.1" layer="51"/>
 <wire x1="-2.75" y1="-5.5" x2="-2.75" y2="4.05" width="0.1" layer="51"/>
 </package>
+<package name="48402211">
+<description>&lt;b&gt;4840.2211-1&lt;/b&gt;&lt;br&gt;
+</description>
+<pad name="1" x="0" y="0" drill="3.84" diameter="5.66"/>
+<pad name="2" x="0" y="-6" drill="3.36" diameter="5.04"/>
+<pad name="3" x="4.9" y="-3" drill="3.36" diameter="5.04"/>
+<text x="1.41" y="-4.825" size="1.27" layer="25" align="center">&gt;NAME</text>
+<text x="1.41" y="-4.825" size="1.27" layer="27" align="center">&gt;VALUE</text>
+<wire x1="-4.6" y1="0.8" x2="4.4" y2="0.8" width="0.2" layer="51"/>
+<wire x1="4.4" y1="0.8" x2="4.4" y2="-13.7" width="0.2" layer="51"/>
+<wire x1="4.4" y1="-13.7" x2="-4.6" y2="-13.7" width="0.2" layer="51"/>
+<wire x1="-4.6" y1="-13.7" x2="-4.6" y2="0.8" width="0.2" layer="51"/>
+<wire x1="-5.6" y1="5.05" x2="8.42" y2="5.05" width="0.1" layer="51"/>
+<wire x1="8.42" y1="5.05" x2="8.42" y2="-14.7" width="0.1" layer="51"/>
+<wire x1="8.42" y1="-14.7" x2="-5.6" y2="-14.7" width="0.1" layer="51"/>
+<wire x1="-5.6" y1="-14.7" x2="-5.6" y2="5.05" width="0.1" layer="51"/>
+<wire x1="-4.6" y1="0.8" x2="-4.6" y2="-13.7" width="0.1" layer="21"/>
+<wire x1="-4.6" y1="-13.7" x2="4.4" y2="-13.7" width="0.1" layer="21"/>
+<wire x1="4.4" y1="-13.7" x2="4.4" y2="-6" width="0.1" layer="21"/>
+<wire x1="0" y1="4" x2="0" y2="4" width="0.2" layer="21"/>
+<wire x1="0" y1="4" x2="-0.2" y2="4" width="0.2" layer="21" curve="180"/>
+<wire x1="-0.2" y1="4" x2="-0.2" y2="4" width="0.2" layer="21"/>
+<wire x1="-0.2" y1="4" x2="0" y2="4" width="0.2" layer="21" curve="180"/>
+</package>
+<package name="M503610542">
+<description>&lt;b&gt;M50-3610542-2&lt;/b&gt;&lt;br&gt;
+</description>
+<smd name="1" x="-2.54" y="-2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="2" x="-2.54" y="2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="3" x="-1.27" y="-2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="4" x="-1.27" y="2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="5" x="0" y="-2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="6" x="0" y="2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="7" x="1.27" y="-2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="8" x="1.27" y="2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="9" x="2.54" y="-2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<smd name="10" x="2.54" y="2" dx="2.5" dy="0.65" layer="1" rot="R90"/>
+<hole x="-1.905" y="0" drill="0.8"/>
+<hole x="1.905" y="0" drill="0.8"/>
+<text x="0" y="0" size="1.27" layer="25" align="center">&gt;NAME</text>
+<text x="0" y="0" size="1.27" layer="27" align="center">&gt;VALUE</text>
+<wire x1="-3.175" y1="1.7" x2="3.175" y2="1.7" width="0.2" layer="51"/>
+<wire x1="3.175" y1="1.7" x2="3.175" y2="-1.7" width="0.2" layer="51"/>
+<wire x1="3.175" y1="-1.7" x2="-3.175" y2="-1.7" width="0.2" layer="51"/>
+<wire x1="-3.175" y1="-1.7" x2="-3.175" y2="1.7" width="0.2" layer="51"/>
+<wire x1="-4.175" y1="4.25" x2="4.175" y2="4.25" width="0.1" layer="51"/>
+<wire x1="4.175" y1="4.25" x2="4.175" y2="-4.25" width="0.1" layer="51"/>
+<wire x1="4.175" y1="-4.25" x2="-4.175" y2="-4.25" width="0.1" layer="51"/>
+<wire x1="-4.175" y1="-4.25" x2="-4.175" y2="4.25" width="0.1" layer="51"/>
+<wire x1="-3.175" y1="1.7" x2="-3.175" y2="-1.7" width="0.1" layer="21"/>
+<wire x1="3.175" y1="1.7" x2="3.175" y2="-1.7" width="0.1" layer="21"/>
+</package>
 </packages>
 <symbols>
 <symbol name="39357-0009">
@@ -22088,6 +21991,35 @@ Source: &lt;a href="http://www.ti.com/lit/ds/symlink/txb0108.pdf"&gt; Datasheet 
 <pin name="3" x="0" y="-5.08" length="middle"/>
 <pin name="4" x="0" y="-7.62" length="middle"/>
 <pin name="5" x="0" y="-10.16" length="middle"/>
+</symbol>
+<symbol name="4840.2211">
+<wire x1="5.08" y1="2.54" x2="15.24" y2="2.54" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-5.08" x2="15.24" y2="2.54" width="0.254" layer="94"/>
+<wire x1="15.24" y1="-5.08" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
+<wire x1="5.08" y1="2.54" x2="5.08" y2="-5.08" width="0.254" layer="94"/>
+<text x="16.51" y="7.62" size="1.778" layer="95" align="center-left">&gt;NAME</text>
+<text x="16.51" y="5.08" size="1.778" layer="96" align="center-left">&gt;VALUE</text>
+<pin name="1" x="0" y="0" length="middle"/>
+<pin name="2" x="0" y="-2.54" length="middle"/>
+<pin name="3" x="20.32" y="0" length="middle" rot="R180"/>
+</symbol>
+<symbol name="M50-3610542">
+<wire x1="5.08" y1="2.54" x2="17.78" y2="2.54" width="0.254" layer="94"/>
+<wire x1="17.78" y1="-12.7" x2="17.78" y2="2.54" width="0.254" layer="94"/>
+<wire x1="17.78" y1="-12.7" x2="5.08" y2="-12.7" width="0.254" layer="94"/>
+<wire x1="5.08" y1="2.54" x2="5.08" y2="-12.7" width="0.254" layer="94"/>
+<text x="19.05" y="7.62" size="1.778" layer="95" align="center-left">&gt;NAME</text>
+<text x="19.05" y="5.08" size="1.778" layer="96" align="center-left">&gt;VALUE</text>
+<pin name="1" x="0" y="0" length="middle"/>
+<pin name="2" x="22.86" y="0" length="middle" rot="R180"/>
+<pin name="3" x="0" y="-2.54" length="middle"/>
+<pin name="4" x="22.86" y="-2.54" length="middle" rot="R180"/>
+<pin name="5" x="0" y="-5.08" length="middle"/>
+<pin name="6" x="22.86" y="-5.08" length="middle" rot="R180"/>
+<pin name="7" x="0" y="-7.62" length="middle"/>
+<pin name="8" x="22.86" y="-7.62" length="middle" rot="R180"/>
+<pin name="9" x="0" y="-10.16" length="middle"/>
+<pin name="10" x="22.86" y="-10.16" length="middle" rot="R180"/>
 </symbol>
 </symbols>
 <devicesets>
@@ -22175,6 +22107,65 @@ Source: &lt;a href="https://www.phoenixcontact.com/online/portal/in?uri=pxc-oc-i
 <attribute name="MANUFACTURER_PART_NUMBER" value="1984646" constant="no"/>
 <attribute name="MOUSER_PART_NUMBER" value="" constant="no"/>
 <attribute name="MOUSER_PRICE-STOCK" value="" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="4840.2211" prefix="J">
+<description>&lt;b&gt;DC Power Connectors DC SOCKET 2.35MM PCB MOUNT&lt;/b&gt;&lt;p&gt;
+Source: &lt;a href="http://www.schurterinc.com/bundles/snceschurter/epim/_ProdPool_/newDS/en/typ_4840.2211.pdf"&gt; Datasheet &lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="4840.2211" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="48402211">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="DESCRIPTION" value="DC Power Connectors DC SOCKET 2.35MM PCB MOUNT" constant="no"/>
+<attribute name="HEIGHT" value="11mm" constant="no"/>
+<attribute name="MANUFACTURER_NAME" value="SCHURTER" constant="no"/>
+<attribute name="MANUFACTURER_PART_NUMBER" value="4840.2211" constant="no"/>
+<attribute name="MOUSER_PART_NUMBER" value="693-4840.2211" constant="no"/>
+<attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.co.uk/ProductDetail/Schurter/48402211?qs=wwP%252BWDYHj0YnjLRL9j928g%3D%3D" constant="no"/>
+</technology>
+</technologies>
+</device>
+</devices>
+</deviceset>
+<deviceset name="M50-3610542" prefix="J">
+<description>&lt;b&gt;HARWIN - M50-3610542 - CONNECTOR, HEADER, 10POS, 2ROW, 1.27MM&lt;/b&gt;&lt;p&gt;
+Source: &lt;a href="https://cdn.harwin.com/pdfs/M50-361.pdf"&gt; Datasheet &lt;/a&gt;</description>
+<gates>
+<gate name="G$1" symbol="M50-3610542" x="0" y="0"/>
+</gates>
+<devices>
+<device name="" package="M503610542">
+<connects>
+<connect gate="G$1" pin="1" pad="1"/>
+<connect gate="G$1" pin="10" pad="10"/>
+<connect gate="G$1" pin="2" pad="2"/>
+<connect gate="G$1" pin="3" pad="3"/>
+<connect gate="G$1" pin="4" pad="4"/>
+<connect gate="G$1" pin="5" pad="5"/>
+<connect gate="G$1" pin="6" pad="6"/>
+<connect gate="G$1" pin="7" pad="7"/>
+<connect gate="G$1" pin="8" pad="8"/>
+<connect gate="G$1" pin="9" pad="9"/>
+</connects>
+<technologies>
+<technology name="">
+<attribute name="DESCRIPTION" value="HARWIN - M50-3610542 - CONNECTOR, HEADER, 10POS, 2ROW, 1.27MM" constant="no"/>
+<attribute name="HEIGHT" value="5.03mm" constant="no"/>
+<attribute name="MANUFACTURER_NAME" value="Harwin" constant="no"/>
+<attribute name="MANUFACTURER_PART_NUMBER" value="M50-3610542" constant="no"/>
+<attribute name="MOUSER_PART_NUMBER" value="855-M50-3610542" constant="no"/>
+<attribute name="MOUSER_PRICE-STOCK" value="https://www.mouser.co.uk/ProductDetail/Harwin/M50-3610542?qs=wpKP3X6Fz6rduxWSJOLkHQ%3D%3D" constant="no"/>
 </technology>
 </technologies>
 </device>
@@ -22374,7 +22365,7 @@ Source: &lt;a href="https://www.phoenixcontact.com/online/portal/in?uri=pxc-oc-i
 <part name="U$6" library="libredaq-comps" deviceset="LOGO_INDALO" device=""/>
 <part name="C38" library="SparkFun-Capacitors" deviceset="0.1UF-25V(+80/-20%)(0603)" device="" value="4.7uF"/>
 <part name="U3" library="TS30012-M050QFNR" deviceset="TS30012-M050QFNR" device=""/>
-<part name="J1" library="PJ-102A" deviceset="PJ-102A" device=""/>
+<part name="J1" library="SamacSys_Parts" deviceset="4840.2211" device=""/>
 <part name="GND37" library="supply1" deviceset="GND" device=""/>
 <part name="D2" library="FM4004W-W" deviceset="FM4004W-W" device=""/>
 <part name="U6" library="TXB0108PWR" deviceset="TXB0108PWR" device=""/>
@@ -22386,7 +22377,7 @@ Source: &lt;a href="https://www.phoenixcontact.com/online/portal/in?uri=pxc-oc-i
 <part name="C40" library="SparkFun-Capacitors" deviceset="0.1UF-25V(+80/-20%)(0603)" device="" value="0.1uF"/>
 <part name="GND60" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND61" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
-<part name="J2" library="3221-10-0100-00" deviceset="3221-10-0100-00" device=""/>
+<part name="J2" library="SamacSys_Parts" deviceset="M50-3610542" device=""/>
 <part name="C41" library="SparkFun-Capacitors" deviceset="0.1UF-25V(+80/-20%)(0603)" device="" value="0.1uF"/>
 <part name="GND62" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
 <part name="GND63" library="SparkFun-Aesthetics" deviceset="GND" device=""/>
@@ -22422,7 +22413,7 @@ as recommended by Atmel.</text>
 <text x="15.24" y="38.1" size="1.778" layer="91">*VERY IMPORTANT*
 Put this capacitor CLOSE to the chip</text>
 <text x="25.4" y="289.56" size="1.778" layer="91">JTAG connector: 10 pins IDC 
-1175-1733-ND</text>
+</text>
 <text x="381" y="406.4" size="1.778" layer="91">Amphenol ICC / FCI
 10018783-10201TLF</text>
 </plain>
@@ -23049,9 +23040,9 @@ Put this capacitor CLOSE to the chip</text>
 <attribute name="NAME" x="173.99" y="99.06" size="1.778" layer="95" align="center-left"/>
 <attribute name="VALUE" x="173.99" y="96.52" size="1.778" layer="96" align="center-left"/>
 </instance>
-<instance part="J1" gate="G$1" x="15.24" y="170.18" smashed="yes">
-<attribute name="NAME" x="31.75" y="177.8" size="1.778" layer="95" align="center-left"/>
-<attribute name="VALUE" x="31.75" y="175.26" size="1.778" layer="96" align="center-left"/>
+<instance part="J1" gate="G$1" x="35.56" y="167.64" smashed="yes" rot="R180">
+<attribute name="NAME" x="19.05" y="160.02" size="1.778" layer="95" rot="R180" align="center-left"/>
+<attribute name="VALUE" x="19.05" y="162.56" size="1.778" layer="96" rot="R180" align="center-left"/>
 </instance>
 <instance part="GND37" gate="1" x="12.7" y="170.18" smashed="yes" rot="R270">
 <attribute name="VALUE" x="10.16" y="172.72" size="1.778" layer="96" rot="R270"/>
@@ -23090,9 +23081,9 @@ Put this capacitor CLOSE to the chip</text>
 <instance part="GND61" gate="1" x="157.48" y="190.5" smashed="yes" rot="R180">
 <attribute name="VALUE" x="160.02" y="193.04" size="1.778" layer="96" rot="R180"/>
 </instance>
-<instance part="J2" gate="G$1" x="35.56" y="307.34" smashed="yes">
-<attribute name="NAME" x="30.47961875" y="315.72263125" size="1.77813125" layer="95"/>
-<attribute name="VALUE" x="30.22183125" y="298.95145" size="1.779390625" layer="96" rot="MR180"/>
+<instance part="J2" gate="G$1" x="27.94" y="312.42" smashed="yes">
+<attribute name="NAME" x="22.85961875" y="320.80263125" size="1.77813125" layer="95"/>
+<attribute name="VALUE" x="32.76183125" y="319.27145" size="1.779390625" layer="96" rot="MR180"/>
 </instance>
 <instance part="C41" gate="G$1" x="17.78" y="309.88" smashed="yes" rot="MR180">
 <attribute name="NAME" x="19.304" y="306.959" size="1.778" layer="95" rot="MR180"/>
@@ -23540,15 +23531,6 @@ Put this capacitor CLOSE to the chip</text>
 <junction x="162.56" y="104.14"/>
 </segment>
 <segment>
-<pinref part="J1" gate="G$1" pin="2"/>
-<wire x1="35.56" y1="170.18" x2="38.1" y2="170.18" width="0.1524" layer="91"/>
-<pinref part="GND14" gate="1" pin="GND"/>
-</segment>
-<segment>
-<pinref part="J1" gate="G$1" pin="3"/>
-<pinref part="GND37" gate="1" pin="GND"/>
-</segment>
-<segment>
 <pinref part="U6" gate="G$1" pin="GND"/>
 <pinref part="GND56" gate="1" pin="GND"/>
 </segment>
@@ -23566,16 +23548,26 @@ Put this capacitor CLOSE to the chip</text>
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="5"/>
-<wire x1="25.4" y1="307.34" x2="22.86" y2="307.34" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="307.34" x2="22.86" y2="307.34" width="0.1524" layer="91"/>
 <wire x1="22.86" y1="307.34" x2="22.86" y2="302.26" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="3"/>
-<wire x1="25.4" y1="309.88" x2="22.86" y2="309.88" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="309.88" x2="22.86" y2="309.88" width="0.1524" layer="91"/>
 <wire x1="22.86" y1="309.88" x2="22.86" y2="307.34" width="0.1524" layer="91"/>
 <junction x="22.86" y="307.34"/>
 <pinref part="GND63" gate="1" pin="GND"/>
 <pinref part="J2" gate="G$1" pin="9"/>
-<wire x1="25.4" y1="302.26" x2="22.86" y2="302.26" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="302.26" x2="22.86" y2="302.26" width="0.1524" layer="91"/>
 <junction x="22.86" y="302.26"/>
+</segment>
+<segment>
+<pinref part="GND37" gate="1" pin="GND"/>
+<pinref part="J1" gate="G$1" pin="3"/>
+<wire x1="15.24" y1="170.18" x2="15.24" y2="167.64" width="0.1524" layer="91"/>
+</segment>
+<segment>
+<pinref part="J1" gate="G$1" pin="2"/>
+<pinref part="GND14" gate="1" pin="GND"/>
+<wire x1="35.56" y1="170.18" x2="38.1" y2="170.18" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="3.3V" class="0">
@@ -23823,7 +23815,7 @@ Put this capacitor CLOSE to the chip</text>
 </segment>
 <segment>
 <pinref part="J2" gate="G$1" pin="1"/>
-<wire x1="25.4" y1="312.42" x2="17.78" y2="312.42" width="0.1524" layer="91"/>
+<wire x1="27.94" y1="312.42" x2="17.78" y2="312.42" width="0.1524" layer="91"/>
 <wire x1="17.78" y1="312.42" x2="17.78" y2="314.96" width="0.1524" layer="91"/>
 <pinref part="C41" gate="G$1" pin="2"/>
 <junction x="17.78" y="312.42"/>
@@ -23936,7 +23928,7 @@ Put this capacitor CLOSE to the chip</text>
 <segment>
 <label x="50.8" y="312.42" size="1.778" layer="95"/>
 <pinref part="R12" gate="A" pin="1"/>
-<wire x1="45.72" y1="312.42" x2="66.04" y2="312.42" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="312.42" x2="66.04" y2="312.42" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="2"/>
 </segment>
 <segment>
@@ -23949,7 +23941,7 @@ Put this capacitor CLOSE to the chip</text>
 <segment>
 <label x="50.8" y="309.88" size="1.778" layer="95"/>
 <pinref part="R12" gate="B" pin="1"/>
-<wire x1="45.72" y1="309.88" x2="66.04" y2="309.88" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="309.88" x2="66.04" y2="309.88" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="4"/>
 </segment>
 <segment>
@@ -23962,7 +23954,7 @@ Put this capacitor CLOSE to the chip</text>
 <segment>
 <label x="50.8" y="307.34" size="1.778" layer="95"/>
 <pinref part="R12" gate="R" pin="1"/>
-<wire x1="45.72" y1="307.34" x2="66.04" y2="307.34" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="307.34" x2="66.04" y2="307.34" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="6"/>
 </segment>
 <segment>
@@ -23975,7 +23967,7 @@ Put this capacitor CLOSE to the chip</text>
 <segment>
 <label x="50.8" y="304.8" size="1.778" layer="95"/>
 <pinref part="R12" gate="D" pin="1"/>
-<wire x1="45.72" y1="304.8" x2="66.04" y2="304.8" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="304.8" x2="66.04" y2="304.8" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="8"/>
 </segment>
 <segment>
@@ -23987,7 +23979,7 @@ Put this capacitor CLOSE to the chip</text>
 <net name="!JTAG_RESET" class="0">
 <segment>
 <label x="50.8" y="302.26" size="1.778" layer="95"/>
-<wire x1="45.72" y1="302.26" x2="53.34" y2="302.26" width="0.1524" layer="91"/>
+<wire x1="50.8" y1="302.26" x2="53.34" y2="302.26" width="0.1524" layer="91"/>
 <pinref part="J2" gate="G$1" pin="10"/>
 </segment>
 <segment>
@@ -24280,12 +24272,12 @@ Put this capacitor CLOSE to the chip</text>
 <wire x1="43.18" y1="160.02" x2="48.26" y2="160.02" width="0.1524" layer="91"/>
 <wire x1="48.26" y1="160.02" x2="48.26" y2="167.64" width="0.1524" layer="91"/>
 <label x="33.02" y="160.02" size="1.778" layer="95"/>
-<pinref part="J1" gate="G$1" pin="1"/>
-<wire x1="35.56" y1="167.64" x2="43.18" y2="167.64" width="0.1524" layer="91"/>
 <wire x1="43.18" y1="167.64" x2="43.18" y2="160.02" width="0.1524" layer="91"/>
 <junction x="43.18" y="160.02"/>
 <pinref part="D2" gate="G$1" pin="A"/>
 <wire x1="48.26" y1="167.64" x2="58.42" y2="167.64" width="0.1524" layer="91"/>
+<pinref part="J1" gate="G$1" pin="1"/>
+<wire x1="35.56" y1="167.64" x2="43.18" y2="167.64" width="0.1524" layer="91"/>
 </segment>
 </net>
 <net name="D0" class="0">
