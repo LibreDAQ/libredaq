@@ -22223,6 +22223,7 @@ Put this capacitor CLOSE to the chip</text>
 </text>
 <text x="381" y="406.4" size="1.778" layer="91">Amphenol ICC / FCI
 10018783-10201TLF</text>
+<text x="274.32" y="322.58" size="1.778" layer="91">f=24 MHz</text>
 </plain>
 <instances>
 <instance part="USB" gate="G$1" x="10.16" y="91.44" smashed="yes" rot="MR0">
