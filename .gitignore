@@ -18,3 +18,5 @@ firmware/.vs
 *.s#*
 *.job
 schematics/libredaq-eagle-boards/LDAQ-BASE-1.1/LDAQ-BASE.pro
+*.l#1
+*.zip
