@@ -7,7 +7,7 @@
 <setting keepoldvectorfont="yes"/>
 <setting verticaltext="up"/>
 </settings>
-<grid distance="0.05" unitdist="inch" unit="mil" style="lines" multiple="1" display="no" altdistance="0.1" altunitdist="mm" altunit="mm"/>
+<grid distance="0.05" unitdist="inch" unit="mm" style="lines" multiple="1" display="no" altdistance="0.1" altunitdist="mm" altunit="mm"/>
 <layers>
 <layer number="1" name="Top" color="4" fill="1" visible="yes" active="yes"/>
 <layer number="16" name="Bottom" color="1" fill="1" visible="yes" active="yes"/>
@@ -154,15 +154,15 @@
 <wire x1="0" y1="25" x2="0" y2="0" width="0" layer="20"/>
 <hole x="2.73" y="22.19" drill="3"/>
 <hole x="2.73" y="2.73" drill="3"/>
-<text x="3.59" y="6.32" size="1.016" layer="21" rot="R90">1.5 kHz accelerometer</text>
-<text x="22.61" y="23.5" size="1.016" layer="21">X</text>
-<text x="20.29" y="23.5" size="1.016" layer="21">Y</text>
-<text x="18.09" y="23.5" size="1.016" layer="21">Z</text>
-<text x="5.01" y="23.5" size="1.016" layer="21">GND</text>
-<text x="9.14" y="23.5" size="1.016" layer="21">3.3V</text>
-<text x="29.03" y="4.22" size="0.8128" layer="21" rot="R90">Universidad de Almería (C) 2021</text>
-<text x="26.96" y="5.02" size="0.8128" layer="21" rot="R90">By: José Luis Blanco Claraco</text>
-<text x="2.02" y="7.62" size="1.016" layer="21" rot="R90">ADXL354 module</text>
+<text x="2.69" y="6.12" size="0.6096" layer="21" rot="R90">1.5 kHz accelerometer</text>
+<text x="22.61" y="23.5" size="0.6096" layer="21">X</text>
+<text x="20.29" y="23.5" size="0.6096" layer="21">Y</text>
+<text x="18.09" y="23.5" size="0.6096" layer="21">Z</text>
+<text x="5.01" y="23.5" size="0.6096" layer="21">GND</text>
+<text x="9.14" y="23.5" size="0.6096" layer="21">3.3V</text>
+<text x="28.53" y="4.82" size="0.6096" layer="21" rot="R90">Universidad de Almería (C) 2021</text>
+<text x="26.96" y="5.02" size="0.6096" layer="21" rot="R90">By: José Luis Blanco Claraco</text>
+<text x="1.52" y="6.02" size="0.6096" layer="21" rot="R90">ADXL354 module</text>
 <wire x1="6.345" y1="4.915" x2="8.25" y2="4.915" width="0.1524" layer="21"/>
 <wire x1="7.615" y1="5.55" x2="8.25" y2="4.915" width="0.1524" layer="21"/>
 <wire x1="8.25" y1="4.915" x2="7.615" y2="4.28" width="0.1524" layer="21"/>
@@ -171,11 +171,11 @@
 <wire x1="6.345" y1="6.82" x2="6.98" y2="6.185" width="0.1524" layer="21"/>
 <text x="8.885" y="4.915" size="0.8" layer="21">X</text>
 <text x="6.98" y="6.82" size="0.8" layer="21">Y</text>
-<text x="7.05" y="14.69" size="0.8128" layer="21" rot="R270">Open: ±2 g
+<text x="7.25" y="13.39" size="0.6096" layer="21" rot="R270">Open: ±2 g
 Closed: ±8 g</text>
 <hole x="26.86" y="22.19" drill="3"/>
 <hole x="26.86" y="2.73" drill="3"/>
-<text x="12.54" y="23.5" size="1.016" layer="21">RefOut</text>
+<text x="12.54" y="23.5" size="0.6096" layer="21">RefOut</text>
 </plain>
 <libraries>
 <library name="ADXL354CEZ-RL7">
