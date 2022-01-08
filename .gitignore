@@ -22,3 +22,5 @@ schematics/libredaq-eagle-boards/LDAQ-BASE-1.1/LDAQ-BASE.pro
 *.zip
 *.l#2
 *.l#3
+firmware_ldaq/firmware_ldaq/Debug
+firmware_ldaq/firmware_ldaq/Release
