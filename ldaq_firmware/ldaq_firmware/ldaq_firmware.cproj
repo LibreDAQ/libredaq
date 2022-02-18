@@ -350,8 +350,6 @@
     <Folder Include="src\" />
     <Folder Include="src\ASF\" />
     <Folder Include="src\ASF\common\" />
-    <Folder Include="src\ASF\common\boards\" />
-    <Folder Include="src\ASF\common\boards\user_board\" />
     <Folder Include="src\ASF\common\utils\" />
     <Folder Include="src\ASF\common\utils\interrupt\" />
     <Folder Include="src\ASF\sam\" />
@@ -380,8 +378,81 @@
     <Folder Include="src\ASF\thirdparty\CMSIS\Lib\" />
     <Folder Include="src\ASF\thirdparty\CMSIS\Lib\GCC\" />
     <Folder Include="src\config\" />
+    <Folder Include="src\firmware_modes" />
+    <Folder Include="src\comms" />
+    <Folder Include="src\utils" />
+    <Folder Include="src\system" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\comms\ldaq_comms.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\comms\ldaq_comms.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\comms\ldaq_frames.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\comms\ldaq_general_control_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\comms\ldaq_process_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\comms\ldaq_process_cmds.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\conf_clock.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\conf_libredaq_board.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\conf_libredaq_board_base.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\conf_libredaq_board_mini.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\conf_libredaq_firmware.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\conf_sleepmgr.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\config\conf_usb.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\firmware_modes\ldaq_firmware_modes.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\firmware_modes\ldaq_firmware_modes_common.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\firmware_modes\ldaq_firmware_mode_highspeed_adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\firmware_modes\ldaq_firmware_mode_normal.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\system\board_init.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\system\ldaq_rt_scheduler.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\system\ldaq_rt_scheduler.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\utils\circular_buffer_fixsize.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\utils\circular_buffer_fixsize.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\utils\ldaq_util_macros.h">
+      <SubType>compile</SubType>
+    </Compile>
     <None Include="src\asf.h">
       <SubType>compile</SubType>
     </None>
@@ -505,12 +576,6 @@
     <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_pmc.h">
       <SubType>compile</SubType>
     </None>
-    <None Include="src\ASF\common\boards\board.h">
-      <SubType>compile</SubType>
-    </None>
-    <Compile Include="src\ASF\common\boards\user_board\init.c">
-      <SubType>compile</SubType>
-    </Compile>
     <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_supc.h">
       <SubType>compile</SubType>
     </None>
@@ -593,9 +658,6 @@
       <SubType>compile</SubType>
     </None>
     <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_rstc.h">
-      <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\common\boards\user_board\user_board.h">
       <SubType>compile</SubType>
     </None>
     <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_usart2.h">
@@ -700,6 +762,9 @@
     <Compile Include="src\main.c">
       <SubType>compile</SubType>
     </Compile>
+    <None Include="src\config\DECLARE_LDAQ_SLOT_BUS_SIGNAL.x">
+      <SubType>compile</SubType>
+    </None>
   </ItemGroup>
   <Import Project="$(AVRSTUDIO_EXE_PATH)\\Vs\\Compiler.targets" />
 </Project>

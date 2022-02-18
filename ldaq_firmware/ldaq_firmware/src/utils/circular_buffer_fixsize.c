@@ -6,5 +6,5 @@
   |   See <http://www.gnu.org/licenses/>                                    |
   +-------------------------------------------------------------------------+  */
 
-#pragma once
-#include "conf_libredaq_board.h"
+#include <utils/circular_buffer_fixsize.h>
+

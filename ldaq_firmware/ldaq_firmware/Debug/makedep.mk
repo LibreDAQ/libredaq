@@ -2,7 +2,23 @@
 # Automatically-generated file. Do not edit or delete the file
 ################################################################################
 
-src\ASF\common\boards\user_board\init.c
+src\comms\ldaq_comms.c
+
+src\comms\ldaq_general_control_cmds.c
+
+src\comms\ldaq_process_cmds.c
+
+src\firmware_modes\ldaq_firmware_modes_common.c
+
+src\firmware_modes\ldaq_firmware_mode_highspeed_adc.c
+
+src\firmware_modes\ldaq_firmware_mode_normal.c
+
+src\system\board_init.c
+
+src\system\ldaq_rt_scheduler.c
+
+src\utils\circular_buffer_fixsize.c
 
 src\ASF\common\utils\interrupt\interrupt_sam_nvic.c
 
