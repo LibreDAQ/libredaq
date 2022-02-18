@@ -1,45 +1,35 @@
-/**
- * \file
- *
- * \brief Flash Linker script for SAM.
- *
- * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
- *
- * \asf_license_start
- *
- * \page License
- *
- * Redistribution and use in source and binary forms, with or without
- * modification, are permitted provided that the following conditions are met:
- *
- * 1. Redistributions of source code must retain the above copyright notice,
- *    this list of conditions and the following disclaimer.
- *
- * 2. Redistributions in binary form must reproduce the above copyright notice,
- *    this list of conditions and the following disclaimer in the documentation
- *    and/or other materials provided with the distribution.
- *
- * 3. The name of Atmel may not be used to endorse or promote products derived
- *    from this software without specific prior written permission.
- *
- * 4. This software may only be redistributed and used in connection with an
- *    Atmel microcontroller product.
- *
- * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
- * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
- * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
- * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
- * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
- * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
- * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
- * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
- * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
- * POSSIBILITY OF SUCH DAMAGE.
- *
- * \asf_license_stop
- *
- */
+/* ---------------------------------------------------------------------------- */
+/*                  Atmel Microcontroller Software Support                      */
+/*                       SAM Software Package License                           */
+/* ---------------------------------------------------------------------------- */
+/* Copyright (c) %copyright_year%, Atmel Corporation                                        */
+/*                                                                              */
+/* All rights reserved.                                                         */
+/*                                                                              */
+/* Redistribution and use in source and binary forms, with or without           */
+/* modification, are permitted provided that the following condition is met:    */
+/*                                                                              */
+/* - Redistributions of source code must retain the above copyright notice,     */
+/* this list of conditions and the disclaimer below.                            */
+/*                                                                              */
+/* Atmel's name may not be used to endorse or promote products derived from     */
+/* this software without specific prior written permission.                     */
+/*                                                                              */
+/* DISCLAIMER:  THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR   */
+/* IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF */
+/* MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE   */
+/* DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR ANY DIRECT, INDIRECT,      */
+/* INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT */
+/* LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA,  */
+/* OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF    */
+/* LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING         */
+/* NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, */
+/* EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.                           */
+/* ---------------------------------------------------------------------------- */
+
+/*------------------------------------------------------------------------------
+ *      Linker script for running in internal FLASH on the ATSAM3U1C
+ *----------------------------------------------------------------------------*/
 
 OUTPUT_FORMAT("elf32-littlearm", "elf32-littlearm", "elf32-littlearm")
 OUTPUT_ARCH(arm)
@@ -48,24 +38,21 @@ SEARCH_DIR(.)
 /* Memory Spaces Definitions */
 MEMORY
 {
-	flash  (W!RX) : ORIGIN = 0x00080000, LENGTH = 0x00010000 /* Flash, 64K */
-	sram0  (W!RX) : ORIGIN = 0x20000000, LENGTH = 0x00002000 /* Sram0, 8K */
-	sram1  (W!RX) : ORIGIN = 0x20080000, LENGTH = 0x00002000 /* Sram1, 8K */
-/*	rom (rx)    : ORIGIN = ORIGIN(flash), LENGTH = LENGTH(flash) */ /* Flash, 64K */
-/*	ram (rwx)   : ORIGIN = ORIGIN( sram1)-LENGTH( sram0), LENGTH = LENGTH( sram0)+LENGTH( sram1) */ /* sram, 16K */
-	rom (rx)    : ORIGIN = 0x00080000, LENGTH = 0x00010000 /* Flash, 64K */
-	ram (rwx)   : ORIGIN = 0x2007E000, LENGTH = 0x00004000 /* sram, 16K */
+  rom (rx)  : ORIGIN = 0x00080000, LENGTH = 0x00010000
+  ram (rwx) : ORIGIN = 0x20000000, LENGTH = 0x00004000
 }
 
-/* The stack size used by the application. NOTE: you need to adjust  */
-__stack_size__ = DEFINED(__stack_size__) ? __stack_size__ : 0x2000;
-__ram_end__ = ORIGIN(ram) + LENGTH(ram) - 4;
+/* The stack size used by the application. NOTE: you need to adjust according to your application. */
+STACK_SIZE = DEFINED(STACK_SIZE) ? STACK_SIZE : 0x400;
 
-/* Section Definitions */ 
-SECTIONS 
-{ 
-    .text : 
-    { 
+/* The heapsize used by the application. NOTE: you need to adjust according to your application. */
+HEAP_SIZE = DEFINED(HEAP_SIZE) ? HEAP_SIZE : 0x200;
+
+/* Section Definitions */
+SECTIONS
+{
+    .text :
+    {
         . = ALIGN(4);
         _sfixed = .;
         KEEP(*(.vectors .vectors.*))
@@ -111,17 +98,17 @@ SECTIONS
 
         . = ALIGN(4);
         _efixed = .;            /* End of text section */
-    } > flash
+    } > rom
 
     /* .ARM.exidx is sorted, so has to go in its own output section.  */
     PROVIDE_HIDDEN (__exidx_start = .);
     .ARM.exidx :
     {
       *(.ARM.exidx* .gnu.linkonce.armexidx.*)
-    } > flash
+    } > rom
     PROVIDE_HIDDEN (__exidx_end = .);
 
-    . = ALIGN(4); 
+    . = ALIGN(4);
     _etext = .;
 
     .relocate : AT (_etext)
@@ -132,11 +119,11 @@ SECTIONS
         *(.data .data.*);
         . = ALIGN(4);
         _erelocate = .;
-    } > sram0
+    } > ram
 
-    /* .bss section which is used for uninitialized data */ 
+    /* .bss section which is used for uninitialized data */
     .bss (NOLOAD) :
-    { 
+    {
         . = ALIGN(4);
         _sbss = . ;
         _szero = .;
@@ -145,18 +132,29 @@ SECTIONS
         . = ALIGN(4);
         _ebss = . ;
         _ezero = .;
-    } > sram1
+    } > ram
 
     /* stack section */
     .stack (NOLOAD):
     {
         . = ALIGN(8);
-         _sstack = .;
-        . = . + __stack_size__;
+        _sstack = .;
+        . = . + STACK_SIZE;
         . = ALIGN(8);
         _estack = .;
-    } > sram1
+    } > ram
 
-    . = ALIGN(4); 
-    _end = . ; 
+    /* heap section */
+    .heap (NOLOAD):
+    {
+        . = ALIGN(8);
+         _sheap = .;
+        . = . + HEAP_SIZE;
+        . = ALIGN(8);
+        _eheap = .;
+    } > ram
+
+    . = ALIGN(4);
+    _end = . ;
+    _ram_end_ = ORIGIN(ram) + LENGTH(ram) -1 ;
 }

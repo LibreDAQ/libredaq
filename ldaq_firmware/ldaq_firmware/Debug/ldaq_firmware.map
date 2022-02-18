@@ -1430,11 +1430,8 @@ Discarded input sections
 Memory Configuration
 
 Name             Origin             Length             Attributes
-flash            0x00080000         0x00010000         w !xr
-sram0            0x20000000         0x00002000         w !xr
-sram1            0x20080000         0x00002000         w !xr
 rom              0x00080000         0x00010000         xr
-ram              0x2007e000         0x00004000         xrw
+ram              0x20000000         0x00004000         xrw
 *default*        0x00000000         0xffffffff
 
 Linker script and memory map
@@ -1459,8 +1456,8 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
 END GROUP
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtend.o
 LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtn.o
-                0x00002000                __stack_size__ = DEFINED (__stack_size__)?__stack_size__:0x2000
-                0x20081ffc                __ram_end__ = ((ORIGIN (ram) + LENGTH (ram)) - 0x4)
+                0x00000400                STACK_SIZE = DEFINED (STACK_SIZE)?STACK_SIZE:0x400
+                0x00000200                HEAP_SIZE = DEFINED (HEAP_SIZE)?HEAP_SIZE:0x200
 
 .text           0x00080000      0x36c
                 0x00080000                . = ALIGN (0x4)
@@ -1627,37 +1624,47 @@ LOAD c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin
                 0x2000042c                . = ALIGN (0x4)
                 0x2000042c                _erelocate = .
 
-.bss            0x20080000       0x40
-                0x20080000                . = ALIGN (0x4)
-                0x20080000                _sbss = .
-                0x20080000                _szero = .
+.bss            0x2000042c       0x40 load address 0x00080798
+                0x2000042c                . = ALIGN (0x4)
+                0x2000042c                _sbss = .
+                0x2000042c                _szero = .
  *(.bss .bss.*)
- .bss           0x20080000       0x1c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
+ .bss           0x2000042c       0x1c c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/thumb/v7-m/crtbegin.o
  *(COMMON)
- COMMON         0x2008001c       0x21 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
-                0x2008001c                __lock___atexit_recursive_mutex
-                0x20080020                __lock___arc4random_mutex
-                0x20080024                __lock___env_recursive_mutex
-                0x20080028                __lock___sinit_recursive_mutex
-                0x2008002c                __lock___malloc_recursive_mutex
-                0x20080030                __lock___at_quick_exit_mutex
-                0x20080034                __lock___dd_hash_mutex
-                0x20080038                __lock___tz_mutex
-                0x2008003c                __lock___sfp_recursive_mutex
-                0x20080040                . = ALIGN (0x4)
- *fill*         0x2008003d        0x3 
-                0x20080040                _ebss = .
-                0x20080040                _ezero = .
+ COMMON         0x20000448       0x21 c:/program files (x86)/atmel/studio/7.0/toolchain/arm/arm-gnu-toolchain/bin/../lib/gcc/arm-none-eabi/6.3.1/../../../../arm-none-eabi/lib/thumb/v7-m\libc.a(lib_a-lock.o)
+                0x20000448                __lock___atexit_recursive_mutex
+                0x2000044c                __lock___arc4random_mutex
+                0x20000450                __lock___env_recursive_mutex
+                0x20000454                __lock___sinit_recursive_mutex
+                0x20000458                __lock___malloc_recursive_mutex
+                0x2000045c                __lock___at_quick_exit_mutex
+                0x20000460                __lock___dd_hash_mutex
+                0x20000464                __lock___tz_mutex
+                0x20000468                __lock___sfp_recursive_mutex
+                0x2000046c                . = ALIGN (0x4)
+ *fill*         0x20000469        0x3 
+                0x2000046c                _ebss = .
+                0x2000046c                _ezero = .
 
-.stack          0x20080040     0x2000
-                0x20080040                . = ALIGN (0x8)
-                0x20080040                _sstack = .
-                0x20082040                . = (. + __stack_size__)
- *fill*         0x20080040     0x2000 
-                0x20082040                . = ALIGN (0x8)
-                0x20082040                _estack = .
-                0x20082040                . = ALIGN (0x4)
-                0x20082040                _end = .
+.stack          0x2000046c      0x404 load address 0x000807d8
+                0x20000470                . = ALIGN (0x8)
+ *fill*         0x2000046c        0x4 
+                0x20000470                _sstack = .
+                0x20000870                . = (. + STACK_SIZE)
+ *fill*         0x20000470      0x400 
+                0x20000870                . = ALIGN (0x8)
+                0x20000870                _estack = .
+
+.heap           0x20000870      0x200 load address 0x00080bdc
+                0x20000870                . = ALIGN (0x8)
+                0x20000870                _sheap = .
+                0x20000a70                . = (. + HEAP_SIZE)
+ *fill*         0x20000870      0x200 
+                0x20000a70                . = ALIGN (0x8)
+                0x20000a70                _eheap = .
+                0x20000a70                . = ALIGN (0x4)
+                0x20000a70                _end = .
+                0x20003fff                _ram_end_ = ((ORIGIN (ram) + LENGTH (ram)) - 0x1)
 OUTPUT(ldaq_firmware.elf elf32-littlearm)
 
 .ARM.attributes
