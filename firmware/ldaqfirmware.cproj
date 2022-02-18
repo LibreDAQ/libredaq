@@ -952,192 +952,192 @@
     <None Include="src\ASF\sam\utils\cmsis\sam3u\include\sam3u.h">
       <SubType>compile</SubType>
     </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_udphs.h">
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\adc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_chipid.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\adc12b.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_matrix.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\chipid.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_dmac.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\dmac.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_pwm.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\efc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_spi.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\gpbr.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_pio.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\hsmci.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_rtt.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\matrix.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_tc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\pdc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_efc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\pio.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_gpbr.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\pmc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_pdc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\pwm.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_hsmci.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\rstc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_pmc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\rtc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_smc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\rtt.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_ssc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\smc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_rstc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\spi.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_rtc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\ssc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_twi.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\supc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_uart.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\tc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_wdt.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\twi.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_adc12b.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\uart.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_supc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\udphs.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_usart.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\usart.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\component\component_adc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\component\wdt.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_usart0.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\adc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_usart1.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\adc12b.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_usart2.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\chipid.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_usart3.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\dmac.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_adc12b.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\efc0.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_uart.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\efc1.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_dmac.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\gpbr.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_gpbr.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\hsmci.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_hsmci.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\matrix.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_udphs.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\pioa.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_supc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\piob.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_spi.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\pioc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_efc0.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\pmc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_efc1.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\pwm.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_rtc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\rstc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_chipid.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\rtc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_pmc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\rtt.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_matrix.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\smc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_pioa.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\spi.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_piob.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\ssc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_pioc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\supc.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_rtt.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\tc0.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_twi0.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\twi0.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_tc0.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\twi1.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_twi1.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\uart.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_smc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\udphs.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_pwm.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\usart0.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_adc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\usart1.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_rstc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\usart2.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_ssc.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\usart3.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\instance_wdt.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\instance\wdt.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\pio_sam3u1c.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\sam3u1c.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\pio_sam3u2c.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\sam3u1e.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\pio_sam3u1e.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\sam3u2c.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\pio_sam3u2e.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\sam3u2e.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\pio_sam3u4c.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\sam3u4c.h">
       <SubType>compile</SubType>
-    </None>
-    <None Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\pio_sam3u4e.h">
+    </Compile>
+    <Compile Include="src\ASF\sam\utils\cmsis\sam3u\include\pio\sam3u4e.h">
       <SubType>compile</SubType>
-    </None>
+    </Compile>
     <Compile Include="src\ASF\sam\utils\cmsis\sam3u\source\templates\exceptions.c">
       <SubType>compile</SubType>
     </Compile>

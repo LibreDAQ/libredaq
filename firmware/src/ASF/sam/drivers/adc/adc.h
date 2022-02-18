@@ -38,6 +38,7 @@
 #define ADC_H_INCLUDED
 
 #include "compiler.h"
+#include "component/adc.h"
 
 /// @cond 0
 /**INDENT-OFF**/
