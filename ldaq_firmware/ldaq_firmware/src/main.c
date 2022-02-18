@@ -1,16 +1,16 @@
 /*+-------------------------------------------------------------------------+
-  |                             LibreDAQ                                    |
-  |                                                                         |
-  | Copyright (C) 2015  Jose Luis Blanco Claraco                            |
-  | Distributed under GNU General Public License version 3                  |
-  |   See <http://www.gnu.org/licenses/>                                    |
-  +-------------------------------------------------------------------------+  */
+|                             LibreDAQ                                    |
+|                                                                         |
+| Copyright (C) 2015  Jose Luis Blanco Claraco                            |
+| Distributed under GNU General Public License version 3                  |
+|   See <http://www.gnu.org/licenses/>                                    |
++-------------------------------------------------------------------------+  */
 
 /**
- * \mainpage User Application template doxygen documentation
- *
- *
- */
+* \mainpage User Application template doxygen documentation
+*
+*
+*/
 #include <asf.h>
 
 #include <system/ldaq_rt_scheduler.h>
@@ -25,8 +25,14 @@ int main (void)
 {
 	// Init everything:
 	// ---------------------------------------------------------
+	irq_initialize_vectors();
+	cpu_irq_enable();
+	sleepmgr_init();
+	sysclk_init();
+	board_init();
+
 	wdt_disable(WDT);  // Make sure the WDT is disabled.
-	//sysclk_init();     // Initialize system clock
+	sysclk_init();     // Initialize system clock
 	board_init();      // Init peripherals
 	ldaq_comms_init(); // This also sets up the USB stack
 	rt_sched_init();   // LibreDAQ Real-time Scheduler system
