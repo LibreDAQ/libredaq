@@ -7,8 +7,7 @@
   +-------------------------------------------------------------------------+  */
 
 
-#include <sam3u.h> //<sysclk.h>
-
+#include <sysclk.h>
 #include <system/ldaq_rt_scheduler.h>
 #include <firmware_modes/ldaq_firmware_modes.h>
 #include <utils/ldaq_util_macros.h>

@@ -17,6 +17,8 @@
 #ifndef USER_BOARD_H
 #define USER_BOARD_H
 
+#include "conf_libredaq_board.h"  // Added for LDAQ
+
 #include <conf_board.h>
 
 // External oscillator settings.

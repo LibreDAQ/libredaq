@@ -32,12 +32,26 @@
       <framework-data>
   <options>
     <option id="common.boards" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.basic.clock" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.delay" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.basic.gpio" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.basic.serial" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="common.services.usb.class.device" value="Add" config="cdc" content-id="Atmel.ASF" />
+    <option id="sam.drivers.adc" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="sam.drivers.pwm" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="sam.drivers.tc.appnote" value="Add" config="" content-id="Atmel.ASF" />
+    <option id="sam.drivers.wdt" value="Add" config="" content-id="Atmel.ASF" />
     <option id="sam.utils.linker_scripts#atsam3u1" value="Add" config="" content-id="Atmel.ASF" />
   </options>
-  <configurations />
+  <configurations>
+    <configuration key="config.compiler.armgcc.printf" value="iprintf" default="iprintf" content-id="Atmel.ASF" />
+    <configuration key="config.compiler.armgcc.scanf" value="iscanf" default="iscanf" content-id="Atmel.ASF" />
+    <configuration key="config.sam.drivers.udphs.device.sleepmgr" value="with_sleepmgr" default="with_sleepmgr" content-id="Atmel.ASF" />
+    <configuration key="config.sam.pio.pio_handler" value="yes" default="yes" content-id="Atmel.ASF" />
+  </configurations>
   <files>
     <file path="src/main.c" framework="" version="" source="common/applications/user_application/main.c" changed="False" content-id="Atmel.ASF" />
-    <file path="src/config/conf_board.h" framework="" version="" source="common/applications/user_application/user_board/config/conf_board.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/Config/conf_board.h" framework="" version="3.49.1" source="sam\drivers\tc\tc_capture_waveform_example\sam4e16e_sam4e_ek\conf_board.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/common/boards/board.h" framework="" version="" source="common/boards/board.h" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/common/boards/user_board/init.c" framework="" version="" source="common/boards/user_board/init.c" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/common/boards/user_board/user_board.h" framework="" version="" source="common/boards/user_board/user_board.h" changed="False" content-id="Atmel.ASF" />
@@ -142,6 +156,67 @@
     <file path="src/ASF/thirdparty/CMSIS/README.txt" framework="" version="" source="thirdparty/CMSIS/README.txt" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/thirdparty/CMSIS/license.txt" framework="" version="" source="thirdparty/CMSIS/license.txt" changed="False" content-id="Atmel.ASF" />
     <file path="src/ASF/sam/utils/linker_scripts/sam3u/sam3u1/gcc/flash.ld" framework="" version="3.49.1" source="sam\utils\linker_scripts\sam3u\sam3u1\gcc\flash.ld" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pio/pio.c" framework="" version="3.49.1" source="sam\drivers\pio\pio.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pio/pio.h" framework="" version="3.49.1" source="sam\drivers\pio\pio.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pmc/pmc.c" framework="" version="3.49.1" source="sam\drivers\pmc\pmc.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pmc/sleep.c" framework="" version="3.49.1" source="sam\drivers\pmc\sleep.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pmc/pmc.h" framework="" version="3.49.1" source="sam\drivers\pmc\pmc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pmc/sleep.h" framework="" version="3.49.1" source="sam\drivers\pmc\sleep.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/sam3u/sysclk.c" framework="" version="3.49.1" source="common\services\clock\sam3u\sysclk.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/sam3u/genclk.h" framework="" version="3.49.1" source="common\services\clock\sam3u\genclk.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/sam3u/sysclk.h" framework="" version="3.49.1" source="common\services\clock\sam3u\sysclk.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/genclk.h" framework="" version="3.49.1" source="common\services\clock\genclk.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/osc.h" framework="" version="3.49.1" source="common\services\clock\osc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/sam3u/osc.h" framework="" version="3.49.1" source="common\services\clock\sam3u\osc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/sam3u/pll.h" framework="" version="3.49.1" source="common\services\clock\sam3u\pll.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/sysclk.h" framework="" version="3.49.1" source="common\services\clock\sysclk.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/clock/pll.h" framework="" version="3.49.1" source="common\services\clock\pll.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/ioport/sam/ioport_pio.h" framework="" version="3.49.1" source="common\services\ioport\sam\ioport_pio.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/ioport/ioport.h" framework="" version="3.49.1" source="common\services\ioport\ioport.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/sleepmgr/sam/sleepmgr.c" framework="" version="3.49.1" source="common\services\sleepmgr\sam\sleepmgr.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/sleepmgr/sleepmgr.h" framework="" version="3.49.1" source="common\services\sleepmgr\sleepmgr.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/sleepmgr/sam/sleepmgr.h" framework="" version="3.49.1" source="common\services\sleepmgr\sam\sleepmgr.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/usb_atmel.h" framework="" version="3.49.1" source="common\services\usb\usb_atmel.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/usb_protocol.h" framework="" version="3.49.1" source="common\services\usb\usb_protocol.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/class/cdc/usb_protocol_cdc.h" framework="" version="3.49.1" source="common\services\usb\class\cdc\usb_protocol_cdc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/class/cdc/device/udi_cdc.c" framework="" version="3.49.1" source="common\services\usb\class\cdc\device\udi_cdc.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/class/cdc/device/udi_cdc_desc.c" framework="" version="3.49.1" source="common\services\usb\class\cdc\device\udi_cdc_desc.c" changed="False" content-id="Atmel.ASF" />
+    <file path="atmel_devices_cdc.cat" framework="" version="3.49.1" source="common\services\usb\class\cdc\device\atmel_devices_cdc.cat" changed="False" content-id="Atmel.ASF" />
+    <file path="atmel_devices_cdc.inf" framework="" version="3.49.1" source="common\services\usb\class\cdc\device\atmel_devices_cdc.inf" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/class/cdc/device/udi_cdc.h" framework="" version="3.49.1" source="common\services\usb\class\cdc\device\udi_cdc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/class/cdc/device/udi_cdc_conf.h" framework="" version="3.49.1" source="common\services\usb\class\cdc\device\udi_cdc_conf.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/udc/udc.c" framework="" version="3.49.1" source="common\services\usb\udc\udc.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/udc/udc.h" framework="" version="3.49.1" source="common\services\usb\udc\udc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/udc/udd.h" framework="" version="3.49.1" source="common\services\usb\udc\udd.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/udc/udc_desc.h" framework="" version="3.49.1" source="common\services\usb\udc\udc_desc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/usb/udc/udi.h" framework="" version="3.49.1" source="common\services\usb\udc\udi.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pio/pio_handler.c" framework="" version="3.49.1" source="sam\drivers\pio\pio_handler.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pio/pio_handler.h" framework="" version="3.49.1" source="sam\drivers\pio\pio_handler.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/udphs/udphs_device.c" framework="" version="3.49.1" source="sam\drivers\udphs\udphs_device.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/udphs/udphs_device.h" framework="" version="3.49.1" source="sam\drivers\udphs\udphs_device.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/gpio/sam_gpio/sam_gpio.h" framework="" version="3.49.1" source="common\services\gpio\sam_gpio\sam_gpio.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/gpio/gpio.h" framework="" version="3.49.1" source="common\services\gpio\gpio.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/uart/uart.c" framework="" version="3.49.1" source="sam\drivers\uart\uart.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/uart/uart.h" framework="" version="3.49.1" source="sam\drivers\uart\uart.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/serial/usart_serial.c" framework="" version="3.49.1" source="common\services\serial\usart_serial.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/serial/sam_uart/uart_serial.h" framework="" version="3.49.1" source="common\services\serial\sam_uart\uart_serial.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/serial/serial.h" framework="" version="3.49.1" source="common\services\serial\serial.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/Config/conf_uart_serial.h" framework="" version="3.49.1" source="common\services\serial\sam_uart\module_config\conf_uart_serial.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/usart/usart.c" framework="" version="3.49.1" source="sam\drivers\usart\usart.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/usart/usart.h" framework="" version="3.49.1" source="sam\drivers\usart\usart.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pwm/pwm.c" framework="" version="3.49.1" source="sam\drivers\pwm\pwm.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/pwm/pwm.h" framework="" version="3.49.1" source="sam\drivers\pwm\pwm.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/adc/adc_sam3u.c" framework="" version="3.49.1" source="sam\drivers\adc\adc_sam3u.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/adc/adc.c" framework="" version="3.49.1" source="sam\drivers\adc\adc.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/adc/adc.h" framework="" version="3.49.1" source="sam\drivers\adc\adc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/delay/sam/cycle_counter.c" framework="" version="3.49.1" source="common\services\delay\sam\cycle_counter.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/delay/sam/cycle_counter.h" framework="" version="3.49.1" source="common\services\delay\sam\cycle_counter.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/common/services/delay/delay.h" framework="" version="3.49.1" source="common\services\delay\delay.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/tc/tc.c" framework="" version="3.49.1" source="sam\drivers\tc\tc.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/tc/tc.h" framework="" version="3.49.1" source="sam\drivers\tc\tc.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/tc/tc_capture_waveform_example/tc_capture_waveform_example.h" framework="" version="3.49.1" source="sam\drivers\tc\tc_capture_waveform_example\tc_capture_waveform_example.h" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/wdt/wdt.c" framework="" version="3.49.1" source="sam\drivers\wdt\wdt.c" changed="False" content-id="Atmel.ASF" />
+    <file path="src/ASF/sam/drivers/wdt/wdt.h" framework="" version="3.49.1" source="sam\drivers\wdt\wdt.h" changed="False" content-id="Atmel.ASF" />
   </files>
   <documentation help="https://asf.microchip.com/docs/3.49.1/common.applications.user_application.user_board.sam3u/html/index.html" />
   <offline-documentation help="" />
@@ -169,7 +244,7 @@
     <avrtoolinterface>JTAG</avrtoolinterface>
     <avrtoolinterfaceclock>7500000</avrtoolinterfaceclock>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Release' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Release_LDAQ_BASE' ">
     <ToolchainSettings>
       <ArmGcc>
   <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
@@ -184,6 +259,8 @@
       <Value>BOARD=USER_BOARD</Value>
       <Value>ARM_MATH_CM3=true</Value>
       <Value>printf=iprintf</Value>
+      <Value>UDD_ENABLE</Value>
+      <Value>LDAQ_BOARD_BASE</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -200,6 +277,26 @@
       <Value>../src/ASF/common/boards/user_board</Value>
       <Value>../src</Value>
       <Value>../src/config</Value>
+      <Value>../src/ASF/sam/drivers/pio</Value>
+      <Value>../src/ASF/sam/drivers/pmc</Value>
+      <Value>../src/ASF/common/services/clock</Value>
+      <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
+      <Value>../src/ASF/common/services/usb</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc/device</Value>
+      <Value>../src/ASF/common/services/usb/udc</Value>
+      <Value>../src/ASF/sam/drivers/udphs</Value>
+      <Value>../src/ASF/common/services/gpio</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
+      <Value>../src/ASF/common/services/serial/sam_uart</Value>
+      <Value>../src/ASF/common/services/serial</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/adc</Value>
+      <Value>../src/ASF/common/services/delay</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>../src/ASF/sam/drivers/wdt</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize for size (-Os)</armgcc.compiler.optimization.level>
@@ -219,6 +316,7 @@
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
+  <armgcc.linker.memorysettings.ExternalRAM />
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam/utils/linker_scripts/sam3u/sam3u1/gcc/flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
   <armgcc.assembler.general.IncludePaths>
     <ListValues>
@@ -234,9 +332,29 @@
       <Value>../src/ASF/common/boards/user_board</Value>
       <Value>../src</Value>
       <Value>../src/config</Value>
+      <Value>../src/ASF/sam/drivers/pio</Value>
+      <Value>../src/ASF/sam/drivers/pmc</Value>
+      <Value>../src/ASF/common/services/clock</Value>
+      <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
+      <Value>../src/ASF/common/services/usb</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc/device</Value>
+      <Value>../src/ASF/common/services/usb/udc</Value>
+      <Value>../src/ASF/sam/drivers/udphs</Value>
+      <Value>../src/ASF/common/services/gpio</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
+      <Value>../src/ASF/common/services/serial/sam_uart</Value>
+      <Value>../src/ASF/common/services/serial</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/adc</Value>
+      <Value>../src/ASF/common/services/delay</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>../src/ASF/sam/drivers/wdt</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DUDD_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>../src/ASF/common/boards</Value>
@@ -251,12 +369,32 @@
       <Value>../src/ASF/common/boards/user_board</Value>
       <Value>../src</Value>
       <Value>../src/config</Value>
+      <Value>../src/ASF/sam/drivers/pio</Value>
+      <Value>../src/ASF/sam/drivers/pmc</Value>
+      <Value>../src/ASF/common/services/clock</Value>
+      <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
+      <Value>../src/ASF/common/services/usb</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc/device</Value>
+      <Value>../src/ASF/common/services/usb/udc</Value>
+      <Value>../src/ASF/sam/drivers/udphs</Value>
+      <Value>../src/ASF/common/services/gpio</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
+      <Value>../src/ASF/common/services/serial/sam_uart</Value>
+      <Value>../src/ASF/common/services/serial</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/adc</Value>
+      <Value>../src/ASF/common/services/delay</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>../src/ASF/sam/drivers/wdt</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
 </ArmGcc>
     </ToolchainSettings>
   </PropertyGroup>
-  <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+  <PropertyGroup Condition=" '$(Configuration)' == 'Debug_LDAQ_BASE' ">
     <ToolchainSettings>
       <ArmGcc>
   <armgcc.common.outputfiles.hex>True</armgcc.common.outputfiles.hex>
@@ -271,6 +409,8 @@
       <Value>BOARD=USER_BOARD</Value>
       <Value>ARM_MATH_CM3=true</Value>
       <Value>printf=iprintf</Value>
+      <Value>UDD_ENABLE</Value>
+      <Value>LDAQ_BOARD_BASE</Value>
     </ListValues>
   </armgcc.compiler.symbols.DefSymbols>
   <armgcc.compiler.directories.IncludePaths>
@@ -287,6 +427,26 @@
       <Value>../src/ASF/common/boards/user_board</Value>
       <Value>../src</Value>
       <Value>../src/config</Value>
+      <Value>../src/ASF/sam/drivers/pio</Value>
+      <Value>../src/ASF/sam/drivers/pmc</Value>
+      <Value>../src/ASF/common/services/clock</Value>
+      <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
+      <Value>../src/ASF/common/services/usb</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc/device</Value>
+      <Value>../src/ASF/common/services/usb/udc</Value>
+      <Value>../src/ASF/sam/drivers/udphs</Value>
+      <Value>../src/ASF/common/services/gpio</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
+      <Value>../src/ASF/common/services/serial/sam_uart</Value>
+      <Value>../src/ASF/common/services/serial</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/adc</Value>
+      <Value>../src/ASF/common/services/delay</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>../src/ASF/sam/drivers/wdt</Value>
     </ListValues>
   </armgcc.compiler.directories.IncludePaths>
   <armgcc.compiler.optimization.level>Optimize (-O1)</armgcc.compiler.optimization.level>
@@ -307,6 +467,7 @@
     </ListValues>
   </armgcc.linker.libraries.LibrarySearchPaths>
   <armgcc.linker.optimization.GarbageCollectUnusedSections>True</armgcc.linker.optimization.GarbageCollectUnusedSections>
+  <armgcc.linker.memorysettings.ExternalRAM />
   <armgcc.linker.miscellaneous.LinkerFlags>-Wl,--entry=Reset_Handler -Wl,--cref -mthumb -T../src/ASF/sam/utils/linker_scripts/sam3u/sam3u1/gcc/flash.ld</armgcc.linker.miscellaneous.LinkerFlags>
   <armgcc.assembler.general.IncludePaths>
     <ListValues>
@@ -322,10 +483,30 @@
       <Value>../src/ASF/common/boards/user_board</Value>
       <Value>../src</Value>
       <Value>../src/config</Value>
+      <Value>../src/ASF/sam/drivers/pio</Value>
+      <Value>../src/ASF/sam/drivers/pmc</Value>
+      <Value>../src/ASF/common/services/clock</Value>
+      <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
+      <Value>../src/ASF/common/services/usb</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc/device</Value>
+      <Value>../src/ASF/common/services/usb/udc</Value>
+      <Value>../src/ASF/sam/drivers/udphs</Value>
+      <Value>../src/ASF/common/services/gpio</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
+      <Value>../src/ASF/common/services/serial/sam_uart</Value>
+      <Value>../src/ASF/common/services/serial</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/adc</Value>
+      <Value>../src/ASF/common/services/delay</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>../src/ASF/sam/drivers/wdt</Value>
     </ListValues>
   </armgcc.assembler.general.IncludePaths>
   <armgcc.assembler.debugging.DebugLevel>Default (-g)</armgcc.assembler.debugging.DebugLevel>
-  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf</armgcc.preprocessingassembler.general.AssemblerFlags>
+  <armgcc.preprocessingassembler.general.AssemblerFlags>-DARM_MATH_CM3=true -DBOARD=USER_BOARD -Dprintf=iprintf -Dscanf=iscanf -DUDD_ENABLE</armgcc.preprocessingassembler.general.AssemblerFlags>
   <armgcc.preprocessingassembler.general.IncludePaths>
     <ListValues>
       <Value>../src/ASF/common/boards</Value>
@@ -340,6 +521,26 @@
       <Value>../src/ASF/common/boards/user_board</Value>
       <Value>../src</Value>
       <Value>../src/config</Value>
+      <Value>../src/ASF/sam/drivers/pio</Value>
+      <Value>../src/ASF/sam/drivers/pmc</Value>
+      <Value>../src/ASF/common/services/clock</Value>
+      <Value>../src/ASF/common/services/ioport</Value>
+      <Value>../src/ASF/common/services/sleepmgr</Value>
+      <Value>../src/ASF/common/services/usb</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc</Value>
+      <Value>../src/ASF/common/services/usb/class/cdc/device</Value>
+      <Value>../src/ASF/common/services/usb/udc</Value>
+      <Value>../src/ASF/sam/drivers/udphs</Value>
+      <Value>../src/ASF/common/services/gpio</Value>
+      <Value>../src/ASF/sam/drivers/uart</Value>
+      <Value>../src/ASF/common/services/serial/sam_uart</Value>
+      <Value>../src/ASF/common/services/serial</Value>
+      <Value>../src/ASF/sam/drivers/usart</Value>
+      <Value>../src/ASF/sam/drivers/pwm</Value>
+      <Value>../src/ASF/sam/drivers/adc</Value>
+      <Value>../src/ASF/common/services/delay</Value>
+      <Value>../src/ASF/sam/drivers/tc</Value>
+      <Value>../src/ASF/sam/drivers/wdt</Value>
     </ListValues>
   </armgcc.preprocessingassembler.general.IncludePaths>
   <armgcc.preprocessingassembler.debugging.DebugLevel>Default (-Wa,-g)</armgcc.preprocessingassembler.debugging.DebugLevel>
@@ -350,9 +551,38 @@
     <Folder Include="src\" />
     <Folder Include="src\ASF\" />
     <Folder Include="src\ASF\common\" />
+    <Folder Include="src\ASF\common\services\" />
+    <Folder Include="src\ASF\common\services\clock\" />
+    <Folder Include="src\ASF\common\services\clock\sam3u\" />
+    <Folder Include="src\ASF\common\services\delay\" />
+    <Folder Include="src\ASF\common\services\delay\sam\" />
+    <Folder Include="src\ASF\common\services\gpio\" />
+    <Folder Include="src\ASF\common\services\gpio\sam_gpio\" />
+    <Folder Include="src\ASF\common\services\ioport\" />
+    <Folder Include="src\ASF\common\services\ioport\sam\" />
+    <Folder Include="src\ASF\common\services\serial\" />
+    <Folder Include="src\ASF\common\services\serial\sam_uart\" />
+    <Folder Include="src\ASF\common\services\sleepmgr\" />
+    <Folder Include="src\ASF\common\services\sleepmgr\sam\" />
+    <Folder Include="src\ASF\common\services\usb\" />
+    <Folder Include="src\ASF\common\services\usb\class\" />
+    <Folder Include="src\ASF\common\services\usb\class\cdc\" />
+    <Folder Include="src\ASF\common\services\usb\class\cdc\device\" />
+    <Folder Include="src\ASF\common\services\usb\udc\" />
     <Folder Include="src\ASF\common\utils\" />
     <Folder Include="src\ASF\common\utils\interrupt\" />
     <Folder Include="src\ASF\sam\" />
+    <Folder Include="src\ASF\sam\drivers\" />
+    <Folder Include="src\ASF\sam\drivers\adc\" />
+    <Folder Include="src\ASF\sam\drivers\pio\" />
+    <Folder Include="src\ASF\sam\drivers\pmc\" />
+    <Folder Include="src\ASF\sam\drivers\pwm\" />
+    <Folder Include="src\ASF\sam\drivers\tc\" />
+    <Folder Include="src\ASF\sam\drivers\tc\tc_capture_waveform_example\" />
+    <Folder Include="src\ASF\sam\drivers\uart\" />
+    <Folder Include="src\ASF\sam\drivers\udphs\" />
+    <Folder Include="src\ASF\sam\drivers\usart\" />
+    <Folder Include="src\ASF\sam\drivers\wdt\" />
     <Folder Include="src\ASF\sam\utils\" />
     <Folder Include="src\ASF\sam\utils\cmsis\" />
     <Folder Include="src\ASF\sam\utils\cmsis\sam3u\" />
@@ -380,10 +610,260 @@
     <Folder Include="src\config\" />
     <Folder Include="src\firmware_modes" />
     <Folder Include="src\comms" />
+    <Folder Include="src\modules" />
     <Folder Include="src\utils" />
     <Folder Include="src\system" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="src\ASF\sam\drivers\tc\tc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\wdt\wdt.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\wdt\wdt.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam\drivers\tc\tc_capture_waveform_example\tc_capture_waveform_example.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam\drivers\tc\tc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\delay\delay.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\common\services\delay\sam\cycle_counter.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\common\services\delay\sam\cycle_counter.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\sam\drivers\adc\adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\adc\adc.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\sam\drivers\adc\adc_sam3u.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\pwm\pwm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\pwm\pwm.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\sam\drivers\usart\usart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\usart\usart.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\config\conf_uart_serial.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\serial\serial.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\serial\sam_uart\uart_serial.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\common\services\serial\usart_serial.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\uart\uart.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\uart\uart.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\modules\ldaq_adc_common.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_adc_common.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_embedded_adc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_embedded_adc.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_embedded_pwm.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_embedded_pwm.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_embedded_pwm_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_ad7606.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_ad7606.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_ad7606_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_ADS1248.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_ADS1248.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_ADS1248_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_CY8C9540.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_CY8C9540.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_CY8C9540_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_dac_MAX5500.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_dac_MAX5500.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_dac_MAX5500_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_HCTL2032.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_HCTL2032.h">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\modules\ldaq_mod_HCTL2032_cmds.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\common\services\gpio\gpio.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\gpio\sam_gpio\sam_gpio.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\common\services\sleepmgr\sam\sleepmgr.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\common\services\usb\class\cdc\device\udi_cdc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\common\services\usb\udc\udc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\pio\pio_handler.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\udphs\udphs_device.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\udphs\udphs_device.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam\drivers\pio\pio_handler.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\udc\udi.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\udc\udc_desc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\udc\udd.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\udc\udc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\class\cdc\device\udi_cdc_conf.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\class\cdc\device\udi_cdc.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\common\services\usb\class\cdc\device\udi_cdc_desc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="atmel_devices_cdc.cat">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="atmel_devices_cdc.inf">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\class\cdc\usb_protocol_cdc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\usb_protocol.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\usb\usb_atmel.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\sleepmgr\sam\sleepmgr.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\sleepmgr\sleepmgr.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\ioport\ioport.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\ioport\sam\ioport_pio.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\pll.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\sysclk.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\sam3u\pll.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\sam3u\osc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\osc.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\genclk.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\sam3u\sysclk.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\common\services\clock\sam3u\genclk.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\common\services\clock\sam3u\sysclk.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\pio\pio.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <Compile Include="src\ASF\sam\drivers\pmc\pmc.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\pmc\sleep.h">
+      <SubType>compile</SubType>
+    </None>
+    <None Include="src\ASF\sam\drivers\pmc\pmc.h">
+      <SubType>compile</SubType>
+    </None>
+    <Compile Include="src\ASF\sam\drivers\pmc\sleep.c">
+      <SubType>compile</SubType>
+    </Compile>
+    <None Include="src\ASF\sam\drivers\pio\pio.h">
+      <SubType>compile</SubType>
+    </None>
     <Compile Include="src\comms\ldaq_comms.c">
       <SubType>compile</SubType>
     </Compile>
