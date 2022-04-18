@@ -20,7 +20,7 @@ SOURCE_GROUP("Utilities" FILES ${LST_UTILS_SRCS} ${LST_UTILS_HDRS})
 set(CMAKE_DEBUG_POSTFIX  "-dbg")
 IF(MSVC)
 	set(MY_LIB_PREFIX "lib")  # Libs are: "libXXX"
-ENDIF(MSVC)
+ENDIF()
 
 add_library(
 	ldaq

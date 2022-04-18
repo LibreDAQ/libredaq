@@ -29,3 +29,4 @@ ldaq_firmware/ldaq_firmware/Release/
 ldaq_firmware/ldaq_firmware/Debug/
 ldaq_firmware/ldaq_firmware/Debug_LDAQ_BASE/
 ldaq_firmware/ldaq_firmware/Release_LDAQ_BASE/
+CMakeLists.txt.user
