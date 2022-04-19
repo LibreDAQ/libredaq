@@ -8,46 +8,29 @@
 
 #include <cstdio>  // stderr,...
 #include <cstring>  // memcpy
+#include <thread>
 
 #include "ldaq_frames.h"  // common header between PC SDK and firmware
 #include "libredaq.h"
 #include "utils/CSerialPort.h"
 #include "utils/circular_buffer.h"
-#include "utils/threads.h"
 
 using namespace libredaq;
-using libredaq::system::TThreadHandle;
-using libredaq::utils::circular_buffer;
 
-// All these complications around opaque pointers are done to minimize
-// as much as possible the #include space of the user of <libredaq.h>
-#define PTR_SERIALPORT (reinterpret_cast<CSerialPort*>(m_ptr_serial_port))
-#define PTR_HANDLE_RX_THREAD \
-    (reinterpret_cast<libredaq::system::TThreadHandle*>(m_rx_thread_handle))
-#define PTR_RX_BUFFER                                                    \
-    (reinterpret_cast<libredaq::utils::circular_buffer<unsigned char>*>( \
-        m_rx_buf))
-
-const size_t RX_BUFFER_SIZE = 0x4000;
+constexpr size_t RX_BUFFER_SIZE = 0x4000;
 
 /** Sleep for the given number of milliseconds */
-void libredaq::sleep_ms(unsigned int ms) { libredaq::system::sleep(ms); }
+void libredaq::sleep_ms(unsigned int ms)
+{
+    std::this_thread::sleep_for(std::chrono::milliseconds(ms));
+}
 
 Device::Device()
-    : m_ptr_serial_port(new CSerialPort()),
-      m_rx_thread_handle(new TThreadHandle),
-      m_rx_buf(new circular_buffer<unsigned char>(RX_BUFFER_SIZE)),
-      m_all_threads_must_exit(false),
-      // Callbacks:
-      m_callback_adc(NULL),
-      m_callback_enc(NULL),
-
-      // Other vars:
-      m_pga_value(1.0),
-      m_device_tick_period(1 / 50e3)
 {
-    *PTR_HANDLE_RX_THREAD = libredaq::system::createThreadFromObjectMethod(
-        this, &Device::thread_rx);
+    m_ptr_serial_port = std::make_unique<libredaq::internal::CSerialPort>();
+    m_rx_buf =
+        std::make_unique<internal::circular_buffer<uint8_t>>(RX_BUFFER_SIZE);
+    m_rx_thread_handle = std::thread(&Device::thread_rx, this);
 }
 
 Device::~Device()
@@ -56,12 +39,7 @@ Device::~Device()
     this->disconnect();
 
     m_all_threads_must_exit = true;
-    libredaq::system::sleep(100);
-
-    // Free all objects alloc'd via opaque pointers: (these will never be NULL)
-    delete PTR_SERIALPORT;
-    delete PTR_HANDLE_RX_THREAD;
-    delete PTR_RX_BUFFER;
+    sleep_ms(100);
 }
 
 bool Device::connect_serial_port(const std::string& serialPortName)
@@ -69,12 +47,12 @@ bool Device::connect_serial_port(const std::string& serialPortName)
     try
     {
         // Open serial port:
-        PTR_SERIALPORT->open(serialPortName);
+        m_ptr_serial_port->open(serialPortName);
 
         // Timeouts (ms)
         const int ReadTotalTimeoutConstant  = 3;
         const int WriteTotalTimeoutConstant = 10;
-        PTR_SERIALPORT->setTimeouts(
+        m_ptr_serial_port->setTimeouts(
             0, 0, ReadTotalTimeoutConstant, 0,
             WriteTotalTimeoutConstant);  // See function docs for arguments
 
@@ -93,7 +71,7 @@ bool Device::connect_serial_port(const std::string& serialPortName)
     }
 }
 
-void Device::disconnect() { PTR_SERIALPORT->close(); }
+void Device::disconnect() { m_ptr_serial_port->close(); }
 
 bool Device::stop_all_tasks()
 {
@@ -147,13 +125,12 @@ bool Device::switch_firmware_mode(uint8_t mode)
 
 void Device::thread_rx()
 {
-    libredaq::utils::circular_buffer<unsigned char>& rx_buf = *PTR_RX_BUFFER;
+    auto& rx_buf = *m_rx_buf;
 
-    // ----------- These vars are declared here to avoid wasting time
-    // reallocating the mem buffers -----------
+    // These vars are declared here to avoid wasting time reallocating the mem
+    // buffers
     TCallbackData_ADC adc16b_x8_data, adc24b_x4_data;
     TCallbackData_ENC enc32b_x4_data;
-    // ------------------------------------------------------------------------------------------
 
     // Bandwidth stats:
     size_t  num_bytes_rx = 0, num_skipped_bytes_rx = 0, num_frames_rx = 0;
@@ -163,9 +140,9 @@ void Device::thread_rx()
     while (!m_all_threads_must_exit)
     {
         // Skip if we don't have an open serial link:
-        if (!PTR_SERIALPORT->isOpen())
+        if (!m_ptr_serial_port->isOpen())
         {
-            libredaq::system::sleep(100);
+            sleep_ms(100);
             continue;
         }
 
@@ -173,7 +150,8 @@ void Device::thread_rx()
         try
         {
             unsigned char buf[0x2000];
-            const size_t  nActualRead = PTR_SERIALPORT->Read(buf, sizeof(buf));
+            const size_t  nActualRead =
+                m_ptr_serial_port->Read(buf, sizeof(buf));
             if (nActualRead) rx_buf.push_many(buf, nActualRead);
 
             // Bandwidth stats:
@@ -205,8 +183,8 @@ void Device::thread_rx()
                 "from device, now closing serial port link.\nError details: "
                 "%s\n",
                 e.what());
-            // PTR_SERIALPORT->close();
-            libredaq::system::sleep(100);
+            // m_ptr_serial_port->close();
+            sleep_ms(100);
             continue;
         }
 
@@ -273,7 +251,7 @@ void Device::thread_rx()
                                 adc16b_x8.adcs[i] * 10.0 / (0x7FFF);
                         }
 
-                        (*m_callback_adc)(adc16b_x8_data);
+                        m_callback_adc(adc16b_x8_data);
                     }
                 }
                 break;
@@ -296,7 +274,7 @@ void Device::thread_rx()
                              i < enc32b_x4_data.enc_ticks.size(); i++)
                             enc32b_x4_data.enc_ticks[i] = enc.tickpos[i];
 
-                        (*m_callback_enc)(enc32b_x4_data);
+                        m_callback_enc(enc32b_x4_data);
                     }
                 }
                 break;
@@ -329,7 +307,7 @@ void Device::thread_rx()
                             adc24b_x4_data.adc_data_volts[i] = val * k_res;
                         }
 
-                        (*m_callback_adc)(adc24b_x4_data);
+                        m_callback_adc(adc24b_x4_data);
                     }
                 }
                 break;
@@ -343,7 +321,7 @@ void Device::thread_rx()
         }
 
         // Loop:
-        libredaq::system::sleep(1);
+        sleep_ms(1);
     }
 }
 
@@ -351,7 +329,7 @@ bool Device::internal_send_cmd(void* buf, size_t len, const char* error_msg_cmd)
 {
     try
     {
-        const size_t nActualWrite = PTR_SERIALPORT->Write(buf, len);
+        const size_t nActualWrite = m_ptr_serial_port->Write(buf, len);
         if (nActualWrite != len)
             throw std::runtime_error("Could not write all bytes.");
         return true;
@@ -364,7 +342,7 @@ bool Device::internal_send_cmd(void* buf, size_t len, const char* error_msg_cmd)
             "[libredaq::Device::%s] Communication error writing to device, now "
             "closing serial port link.\nError details: %s\n",
             error_msg_cmd, e.what());
-        PTR_SERIALPORT->close();
+        m_ptr_serial_port->close();
         return false;
     }
 }

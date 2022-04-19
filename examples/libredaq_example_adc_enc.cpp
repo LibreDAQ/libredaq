@@ -24,7 +24,7 @@ void my_callback_ENC(const libredaq::TCallbackData_ENC& data)
 #if 1
     static FILE* f = fopen("enc.txt", "wt");
     fprintf(f, "%15.7f", data.device_timestamp);
-    for (int k = 0; k < data.enc_ticks.size(); k++)
+    for (size_t k = 0; k < data.enc_ticks.size(); k++)
         fprintf(f, " %f", (double)data.enc_ticks[k]);
     fprintf(f, "\n");
 #endif
@@ -48,7 +48,7 @@ void my_callback_ADC(const libredaq::TCallbackData_ADC& data)
 #if 1
     static FILE* f = fopen("adc.txt", "wt");
     fprintf(f, "%15.7f", data.device_timestamp);
-    for (int k = 0; k < data.adc_data_volts.size(); k++)
+    for (size_t k = 0; k < data.adc_data_volts.size(); k++)
         fprintf(f, " %5.05f", data.adc_data_volts[k]);
     fprintf(f, "\n");
 #endif

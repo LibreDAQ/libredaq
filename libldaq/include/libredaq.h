@@ -8,12 +8,24 @@
 
 #pragma once
 
+#include <atomic>
 #include <cstdint>
+#include <functional>
+#include <memory>
 #include <string>
+#include <thread>
 #include <vector>
 
 namespace libredaq
 {
+// forward decls:
+namespace internal
+{
+class CSerialPort;
+template <typename T>
+class circular_buffer;
+}  // namespace internal
+
 /** @name Callback types
  * @{ */
 
@@ -22,24 +34,26 @@ struct TCallbackData_ADC
 {
     double       device_timestamp;  //!< Timestamp in seconds.
     unsigned int num_channels;  //!< Number of ADC channels
-    std::vector<double>
-        adc_data_volts;  //!< Interlaced ADC data, in volts: [A0 ... A7](for
-                         //!< t=0), [A0 ... A7](for t=1), etc.
+    /** Interlaced ADC data, in volts: [A0 ... A7](for t=0), [A0 ... A7](for
+     * t=1), etc. */
+    std::vector<double> adc_data_volts;
 };
+
 /** Callback for ADC data */
-typedef void (*callback_adc_t)(const TCallbackData_ADC& data);
+using callback_adc_t = std::function<void(const TCallbackData_ADC& data)>;
 
 /** Data for callbacks of type ENCODER */
 struct TCallbackData_ENC
 {
     double       device_timestamp;  //!< Timestamp in seconds
     unsigned int num_channels;  //!< Number of ADC channels
-    std::vector<int32_t>
-        enc_ticks;  //!< Interlaced ENCODER data, in ticks: [ENC0 ... ENC3](for
-                    //!< t=0), [ENC0 ... ENC7](for t=1), etc.
+    /** Interlaced ENCODER data, in ticks: [ENC0 ... ENC3](for t=0), [ENC0 ...
+     * ENC7](for t=1), etc. */
+    std::vector<int32_t> enc_ticks;
 };
+
 /** Callback for ENCODER data */
-typedef void (*callback_enc_t)(const TCallbackData_ENC& data);
+using callback_enc_t = std::function<void(const TCallbackData_ENC& data)>;
 
 /** @} */
 
@@ -85,7 +99,7 @@ class Device
     bool start_task_pga_adc(
         unsigned int sampling_rate_hz, unsigned int PGA_gain);
 
-    void set_callback_ADC(callback_adc_t user_function)
+    void set_callback_ADC(const callback_adc_t& user_function)
     {
         m_callback_adc = user_function;
     }
@@ -94,34 +108,38 @@ class Device
      * \return false on any error (and dumps details to stderr)
      */
     bool start_task_encoders(unsigned int sampling_rate_hz);
-    void set_callback_ENC(callback_enc_t user_function)
+
+    void set_callback_ENC(const callback_enc_t& user_function)
     {
         m_callback_enc = user_function;
     }
 
     bool dac_set_values(uint16_t* vals);  //!< 4 values
 
-    bool switch_firmware_mode(
-        uint8_t mode);  //!< Types are declared in firmware_mode_t
+    /// Types are declared in firmware_mode_t
+    bool switch_firmware_mode(uint8_t mode);
 
    private:
-    void* m_ptr_serial_port;  // Opaque ptr to CSerialPort
-    void* m_rx_thread_handle;  // Opaque ptr to TThreadHandle
-    void* m_rx_buf;  // Opaque ptr to circular_buffer
+    std::unique_ptr<internal::CSerialPort>              m_ptr_serial_port;
+    std::thread                                         m_rx_thread_handle;
+    std::unique_ptr<internal::circular_buffer<uint8_t>> m_rx_buf;
 
-    volatile bool m_all_threads_must_exit;
-    void          thread_rx();  //!< The running thread for
-    bool          internal_send_cmd(
-                 void* buf, size_t len,
-                 const char* error_msg_cmd);  //!< Returns false on any comms error
+    std::atomic_bool m_all_threads_must_exit{false};
+
+    /// The running thread for
+    void thread_rx();
+
+    /// Returns false on any comms error
+    bool internal_send_cmd(void* buf, size_t len, const char* error_msg_cmd);
 
     // Functors for callbacks:
     callback_adc_t m_callback_adc;
     callback_enc_t m_callback_enc;
 
-    double m_pga_value;
-    double m_device_tick_period;  //!< 1 / frequency of the systick (to convert
-                                  //!< timestamps to seconds)
+    double m_pga_value = 1.0;
+
+    /// 1 / frequency of the systick (to convert timestamps to seconds)
+    double m_device_tick_period = 1.0 / 50e3;
 
 };  // end class
 
