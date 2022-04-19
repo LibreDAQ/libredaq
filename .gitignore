@@ -7,3 +7,6 @@ build*
 install*
 *~
 LibreDAQStudio/LibreDAQStudio.pro.user
+firmware/BASE_Debug
+firmware/BASE_Release
+firmware/ldaqfirmware.atsuo
