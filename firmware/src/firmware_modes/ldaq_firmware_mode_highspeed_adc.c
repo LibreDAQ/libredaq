@@ -35,7 +35,7 @@ static void firmware_hsadc_on_enter(void)
 	
 	// Set up high-freq timer:
 	// ------------------------------
-	const uint32_t freq_desired = 100000;  // Max: 50 kHz!
+	const uint32_t freq_desired = 10000;  // Max: 50 kHz!
 	
 	//	freq_desired	The desired rate at which to call the ISR, Hz.
 	const uint32_t ul_sysclk = sysclk_get_cpu_hz();

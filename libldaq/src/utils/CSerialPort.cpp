@@ -633,10 +633,10 @@ void CSerialPort::purgeBuffers()
 #include <windows.h>
 
 #include <cctype>
-
-#include "threads.h"
+#include <thread>
 
 using namespace std;
+using namespace libredaq::internal;
 
 /* -----------------------------------------------------
 Constructor
@@ -911,7 +911,8 @@ std::string CSerialPort::ReadString(
             }
         }
         // If we are still here, string is not finished:
-        sleep_ms1);  // Wait 1 more ms for new data to arrive.
+        // Wait 1 more ms for new data to arrive.
+        std::this_thread::sleep_for(std::chrono::milliseconds(1));
     }
 
     // Timeout:
