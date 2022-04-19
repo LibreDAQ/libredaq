@@ -232,7 +232,6 @@ void Device::thread_rx()
                 {
                     TFrame_LDAQDATA_ADC_16bx8 adc16b_x8;
                     ::memcpy(&adc16b_x8, frame_buf, sizeof(adc16b_x8));
-                    // onReceive_ADC16b_x8(adc16b_x8);
 
                     // TODO: Handle depending on slot_idx and its known
                     // features!
@@ -260,7 +259,6 @@ void Device::thread_rx()
                 {
                     TFrame_LDAQDATA_ENC_32bx4 enc;
                     ::memcpy(&enc, frame_buf, sizeof(enc));
-                    // onReceive_ENC32b_x4(enc);
 
                     if (m_callback_enc)
                     {

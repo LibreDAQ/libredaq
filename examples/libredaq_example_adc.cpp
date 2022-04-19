@@ -56,7 +56,7 @@ int main(int argc, char** argv)
 #else
     daq.switch_firmware_mode(0);
     printf("Starting ADC task...\n");
-    daq.start_task_adc(5000);  // 20000
+    daq.start_task_adc(5000);
 #endif
     libredaq::sleep_ms(15000);
 
