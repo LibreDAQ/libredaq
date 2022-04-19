@@ -19,9 +19,9 @@
  LDAQ_SLOTS_MOSI : DIN
 */
 
-#define DAC_nCS_GPIO      LDAQ_SLOT1_CTRL0_GPIO
-#define DAC_nCS_PIO       LDAQ_SLOT1_CTRL0_PIO
-#define DAC_nCS_IDX       LDAQ_SLOT1_CTRL0_IDX
+#define DAC_nCS_GPIO      LDAQ_SLOT3_CTRL0_GPIO
+#define DAC_nCS_PIO       LDAQ_SLOT3_CTRL0_PIO
+#define DAC_nCS_IDX       LDAQ_SLOT3_CTRL0_IDX
 
 
 /** Initialize the device */

@@ -3,35 +3,45 @@
  *
  * \brief Parallel Input/Output (PIO) Controller driver for SAM.
  *
- * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #include "pio.h"
@@ -87,7 +97,7 @@ void pio_pull_up(Pio *p_pio, const uint32_t ul_mask,
 void pio_set_debounce_filter(Pio *p_pio, const uint32_t ul_mask,
 		const uint32_t ul_cut_off)
 {
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
 	/* Set Debouncing, 0 bit field no effect */
 	p_pio->PIO_IFSCER = ul_mask;
 #elif (SAM3XA || SAM3U)
@@ -179,7 +189,7 @@ void pio_set_peripheral(Pio *p_pio, const pio_type_t ul_type,
 	/* Disable interrupts on the pin(s) */
 	p_pio->PIO_IDR = ul_mask;
 
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
 	switch (ul_type) {
 	case PIO_PERIPH_A:
 		ul_sr = p_pio->PIO_ABCDSR[0];
@@ -188,6 +198,7 @@ void pio_set_peripheral(Pio *p_pio, const pio_type_t ul_type,
 		ul_sr = p_pio->PIO_ABCDSR[1];
 		p_pio->PIO_ABCDSR[1] &= (~ul_mask & ul_sr);
 		break;
+
 	case PIO_PERIPH_B:
 		ul_sr = p_pio->PIO_ABCDSR[0];
 		p_pio->PIO_ABCDSR[0] = (ul_mask | ul_sr);
@@ -203,6 +214,7 @@ void pio_set_peripheral(Pio *p_pio, const pio_type_t ul_type,
 		ul_sr = p_pio->PIO_ABCDSR[1];
 		p_pio->PIO_ABCDSR[1] = (ul_mask | ul_sr);
 		break;
+
 	case PIO_PERIPH_D:
 		ul_sr = p_pio->PIO_ABCDSR[0];
 		p_pio->PIO_ABCDSR[0] = (ul_mask | ul_sr);
@@ -267,7 +279,7 @@ void pio_set_input(Pio *p_pio, const uint32_t ul_mask,
 		p_pio->PIO_IFDR = ul_mask;
 	}
 
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
 	/* Enable de-glitch or de-bounce if necessary */
 	if (ul_attribute & PIO_DEGLITCH) {
 		p_pio->PIO_IFSCDR = ul_mask;
@@ -352,7 +364,7 @@ uint32_t pio_configure(Pio *p_pio, const pio_type_t ul_type,
 	switch (ul_type) {
 	case PIO_PERIPH_A:
 	case PIO_PERIPH_B:
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM)
 	case PIO_PERIPH_C:
 	case PIO_PERIPH_D:
 #endif
@@ -431,7 +443,7 @@ uint32_t pio_get_multi_driver_status(const Pio *p_pio)
 }
 
 
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
 /**
  * \brief Configure PIO pin internal pull-down.
  *
@@ -499,7 +511,7 @@ void pio_sync_output_write(Pio *p_pio, const uint32_t ul_mask)
 	p_pio->PIO_ODSR = ul_mask;
 }
 
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
 /**
  * \brief Configure PIO pin schmitt trigger. By default the Schmitt trigger is
  * active.
@@ -571,12 +583,15 @@ void pio_configure_interrupt(Pio *p_pio, const uint32_t ul_mask,
 /**
  * \brief Enable the given interrupt source.
  * The PIO must be configured as an NVIC interrupt source as well.
+ * The status register of the corresponding PIO controller is cleared
+ * prior to enabling the interrupt.
  *
  * \param p_pio Pointer to a PIO instance.
  * \param ul_mask Interrupt sources bit map.
  */
 void pio_enable_interrupt(Pio *p_pio, const uint32_t ul_mask)
 {
+	p_pio->PIO_ISR;
 	p_pio->PIO_IER = ul_mask;
 }
 
@@ -592,11 +607,11 @@ void pio_disable_interrupt(Pio *p_pio, const uint32_t ul_mask)
 }
 
 /**
- * \brief Read and clear PIO interrupt status.
+ * \brief Read PIO interrupt status.
  *
  * \param p_pio Pointer to a PIO instance.
  *
- * \return The interrupt status value.
+ * \return The interrupt status mask value.
  */
 uint32_t pio_get_interrupt_status(const Pio *p_pio)
 {
@@ -755,7 +770,7 @@ void pio_toggle_pin(uint32_t ul_pin)
  * \brief Perform complete pin(s) configuration; general attributes and PIO init
  * if necessary.
  *
- * \param ul_pin The pin index.
+ * \param ul_pin Bitmask of one or more pin(s) to configure.
  * \param ul_flags Pins attributes.
  *
  * \return Whether the pin(s) have been configured properly.
@@ -776,7 +791,7 @@ uint32_t pio_configure_pin(uint32_t ul_pin, const uint32_t ul_flags)
 		pio_pull_up(p_pio, (1 << (ul_pin & 0x1F)),
 				(ul_flags & PIO_PULLUP));
 		break;
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM)
 	case PIO_TYPE_PIO_PERIPH_C:
 		pio_set_peripheral(p_pio, PIO_PERIPH_C, (1 << (ul_pin & 0x1F)));
 		pio_pull_up(p_pio, (1 << (ul_pin & 0x1F)),
@@ -873,7 +888,7 @@ uint32_t pio_configure_pin_group(Pio *p_pio,
 		pio_set_peripheral(p_pio, PIO_PERIPH_B, ul_mask);
 		pio_pull_up(p_pio, ul_mask, (ul_flags & PIO_PULLUP));
 		break;
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM)
 	case PIO_TYPE_PIO_PERIPH_C:
 		pio_set_peripheral(p_pio, PIO_PERIPH_C, ul_mask);
 		pio_pull_up(p_pio, ul_mask, (ul_flags & PIO_PULLUP));
@@ -998,16 +1013,6 @@ uint32_t pio_get_pin_group_id(uint32_t ul_pin)
 	} else {
 		ul_id = ID_PIOA + (ul_pin >> 5);
 	}
-#elif (SAMV70 || SAMV71 || SAME70 || SAMS70)
-	ul_id = ID_PIOA + (ul_pin >> 5);
-
-	#ifdef ID_PIOD 
-	if (ul_pin >= PIO_PD0_IDX) ul_id = ID_PIOD; 
-	#endif
-	
-	#ifdef ID_PIOE 
-	if (ul_pin >= PIO_PE0_IDX) ul_id = ID_PIOE; 
-	#endif 
 #else
 	ul_id = ID_PIOA + (ul_pin >> 5);
 #endif
@@ -1028,7 +1033,7 @@ uint32_t pio_get_pin_group_mask(uint32_t ul_pin)
 	return ul_mask;
 }
 
-#if (SAM3S || SAM4S || SAM4E || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM4S || SAM4E)
 /* Capture mode enable flag */
 uint32_t pio_capture_enable_flag;
 
@@ -1137,7 +1142,7 @@ uint32_t pio_capture_get_interrupt_mask(const Pio *p_pio)
 {
 	return p_pio->PIO_PCIMR;
 }
-#if !(SAMV71 || SAMV70 || SAME70 || SAMS70)
+
 /**
  * \brief Get PDC registers base address.
  *
@@ -1151,9 +1156,8 @@ Pdc *pio_capture_get_pdc_base(const Pio *p_pio)
 	return PDC_PIOA;
 }
 #endif
-#endif
 
-#if (SAM4C || SAM4CP || SAM4CM || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4C || SAM4CP || SAM4CM)
 /**
  * \brief Set PIO IO drive.
  *
@@ -1164,8 +1168,13 @@ Pdc *pio_capture_get_pdc_base(const Pio *p_pio)
 void pio_set_io_drive(Pio *p_pio, uint32_t ul_line,
 		enum pio_io_drive_mode mode)
 {
-	p_pio->PIO_DRIVER &= ~(1 << ul_line);
-	p_pio->PIO_DRIVER |= mode << ul_line;
+	if (ul_line > 15) {
+		p_pio->PIO_DRIVER2 &= ~(3 << ((ul_line - 15) * 2));
+		p_pio->PIO_DRIVER2 |= mode << ((ul_line - 15) * 2);
+	} else {
+		p_pio->PIO_DRIVER1 &= ~(3 << (ul_line * 2));
+		p_pio->PIO_DRIVER1 |= mode << (ul_line * 2);
+	}
 }
 #endif
 

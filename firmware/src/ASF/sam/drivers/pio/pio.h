@@ -3,35 +3,45 @@
  *
  * \brief Parallel Input/Output (PIO) Controller driver for SAM.
  *
- * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef PIO_H_INCLUDED
@@ -71,7 +81,7 @@ typedef enum _pio_type {
 	PIO_NOT_A_PIN   = PIO_TYPE_NOT_A_PIN,
 	PIO_PERIPH_A    = PIO_TYPE_PIO_PERIPH_A,
 	PIO_PERIPH_B    = PIO_TYPE_PIO_PERIPH_B,
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAM4CP || SAM4CM)
 	PIO_PERIPH_C    = PIO_TYPE_PIO_PERIPH_C,
 	PIO_PERIPH_D    = PIO_TYPE_PIO_PERIPH_D,
 #endif
@@ -145,7 +155,7 @@ void pio_set_multi_driver(Pio *p_pio, const uint32_t ul_mask,
 		const uint32_t ul_multi_driver_enable);
 uint32_t pio_get_multi_driver_status(const Pio *p_pio);
 
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
 void pio_pull_down(Pio *p_pio, const uint32_t ul_mask,
 		const uint32_t ul_pull_down_enable);
 #endif
@@ -155,7 +165,7 @@ void pio_disable_output_write(Pio *p_pio, const uint32_t ul_mask);
 uint32_t pio_get_output_write_status(const Pio *p_pio);
 void pio_sync_output_write(Pio *p_pio, const uint32_t ul_mask);
 
-#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3N || SAM4S || SAM4E || SAM4N || SAM4C || SAMG || SAM4CP || SAM4CM)
 void pio_set_schmitt_trigger(Pio *p_pio, const uint32_t ul_mask);
 uint32_t pio_get_schmitt_trigger(const Pio *p_pio);
 #endif
@@ -171,7 +181,7 @@ void pio_set_additional_interrupt_mode(Pio *p_pio,
 void pio_set_writeprotect(Pio *p_pio, const uint32_t ul_enable);
 uint32_t pio_get_writeprotect_status(const Pio *p_pio);
 
-#if (SAM3S || SAM4S || SAM4E || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM4S || SAM4E)
 void pio_capture_set_mode(Pio *p_pio, uint32_t ul_mode);
 void pio_capture_enable(Pio *p_pio);
 void pio_capture_disable(Pio *p_pio);
@@ -180,9 +190,7 @@ void pio_capture_enable_interrupt(Pio *p_pio, const uint32_t ul_mask);
 void pio_capture_disable_interrupt(Pio * p_pio, const uint32_t ul_mask);
 uint32_t pio_capture_get_interrupt_status(const Pio *p_pio);
 uint32_t pio_capture_get_interrupt_mask(const Pio *p_pio);
-#if !(SAMV71 || SAMV70 || SAME70 || SAMS70)
 Pdc *pio_capture_get_pdc_base(const Pio *p_pio);
-#endif
 #endif
 
 /* GPIO Support */
@@ -202,36 +210,16 @@ void pio_toggle_pin_group(Pio *p_pio, uint32_t ul_mask);
 uint32_t pio_configure_pin_group(Pio *p_pio, uint32_t ul_mask,
 		const uint32_t ul_flags);
 
-#if (SAM4C || SAM4CP || SAM4CM || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4C || SAM4CP || SAM4CM)
 enum pio_io_drive_mode {
-	PIO_IO_DRIVE_LOW = 0,
-	PIO_IO_DRIVE_HIGH,
+	PIO_IO_DRIVE_HIGH = 0,
+	PIO_IO_DRIVE_MEDIUM,
+	PIO_IO_DRIVE_LOW,
 };
 void pio_set_io_drive(Pio *p_pio, uint32_t ul_line,
 		enum pio_io_drive_mode mode);
 #endif
 
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-void pio_keypad_enable(Pio *p_pio);
-void pio_keypad_disable(Pio *p_pio);
-void pio_keypad_set_row_num(Pio *p_pio, uint8_t num);
-uint8_t pio_keypad_get_row_num(const Pio *p_pio);
-void pio_keypad_set_column_num(Pio *p_pio, uint8_t num);
-uint8_t pio_keypad_get_column_num(const Pio *p_pio);
-void pio_keypad_set_debouncing_value(Pio *p_pio, uint16_t value);
-uint16_t pio_keypad_get_debouncing_value(const Pio *p_pio);
-void pio_keypad_enable_interrupt(Pio *p_pio, uint32_t ul_mask);
-void pio_keypad_disable_interrupt(Pio *p_pio, uint32_t ul_mask);
-uint32_t pio_keypad_get_interrupt_mask(const Pio *p_pio);
-uint32_t pio_keypad_get_press_status(const Pio *p_pio);
-uint32_t pio_keypad_get_release_status(const Pio *p_pio);
-uint8_t pio_keypad_get_simult_press_num(const Pio *p_pio);
-uint8_t pio_keypad_get_simult_release_num(const Pio *p_pio);
-uint8_t pio_keypad_get_press_row_index(const Pio *p_pio, uint8_t queue);
-uint8_t pio_keypad_get_press_column_index(const Pio *p_pio, uint8_t queue);
-uint8_t pio_keypad_get_release_row_index(const Pio *p_pio, uint8_t queue);
-uint8_t pio_keypad_get_release_column_index(const Pio *p_pio, uint8_t queue);
-#endif
 /**
  * \page sam_pio_quickstart Quick Start Guide for the SAM PIO driver
  *
@@ -336,14 +324,12 @@ uint8_t pio_keypad_get_release_column_index(const Pio *p_pio, uint8_t queue);
  * \subsection sam_pio_quickstart_use_case_2_example_code Example code
  * Add the following function to your application:
  * \code
-	void pin_edge_handler(const uint32_t id, const uint32_t index)
+	void pin_edge_handler(void)
 	{
-		if ((id == ID_PIOA) && (index == PIO_PA16)){
-			if (pio_get(PIOA, PIO_TYPE_PIO_INPUT, PIO_PA16))
-				pio_clear(PIOA, PIO_PA23);
-			else
-				pio_set(PIOA, PIO_PA23);
-		}
+	    if (pio_get(PIOA, PIO_TYPE_PIO_INPUT, PIO_PA16))
+	        pio_clear(PIOA, PIO_PA23);
+	    else
+	        pio_set(PIOA, PIO_PA23);
 	}
 \endcode
  *

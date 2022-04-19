@@ -3,35 +3,45 @@
  *
  * \brief USB Device Driver for UDPHS. Compliant with common UDD driver.
  *
- * Copyright (c) 2012-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2012 - 2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #include "conf_usb.h"
@@ -96,12 +106,6 @@
  * UDD_INTERRUPT_NB_BANK(ep)<br>
  * Feature to reduce or increase interrupt endpoints buffering (1 to 2).
  * Default value 1.
- *
- * UDD_NO_SLEEP_MGR<br>
- * Feature to work without sleep manager module.
- * Default not defined.
- * Note that with this feature defined sleep manager must not be used in
- * application.
  *
  * \section Callbacks management
  * The USB driver is fully managed by interrupt and does not request periodic
@@ -517,7 +521,7 @@ static bool udd_ep_interrupt(void);
 ISR(UDD_USB_INT_FUN)
 {
 	udd_enable_periph_ck();
-#ifndef UDD_NO_SLEEP_MGR
+
 	/* For fast wakeup clocks restore
 	 * In WAIT mode, clocks are switched to FASTRC.
 	 * After wakeup clocks should be restored, before that ISR should not
@@ -527,7 +531,7 @@ ISR(UDD_USB_INT_FUN)
 		cpu_irq_disable();
 		return;
 	}
-#endif
+
 	if (Is_udd_sof()) {
 		udd_ack_sof();
 		if (Is_udd_full_speed_mode()) {
@@ -644,7 +648,7 @@ void udd_enable(void)
 
 	udd_enable_periph_ck();
 
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 
 	//** Enable USB hardware
 	udd_enable_periph();
@@ -692,14 +696,14 @@ void udd_enable(void)
 #  endif
 #endif
 
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 
 void udd_disable(void)
 {
 	irqflags_t flags;
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	// Disable USB
 	udd_reset_periph();
 	sysclk_disable_usb();
@@ -713,14 +717,14 @@ void udd_disable(void)
 	udd_vbus_monitor_sleep_mode(false);
 # endif
 
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 
 void udd_attach(void)
 {
 	irqflags_t flags;
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 
 	// At startup the USB bus state is unknown,
 	// therefore the state is considered IDLE to not miss any USB event
@@ -746,7 +750,7 @@ void udd_attach(void)
 	udd_ack_wake_up();
 
 	udd_disable_periph_ck();
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 
@@ -1086,13 +1090,13 @@ bool udd_ep_run(udd_ep_id_t ep, bool b_shortpacket,
 		return false; // Endpoint is halted
 	}
 
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	if (ptr_job->busy == true) {
-		cpu_irq_restore(flags);
+		ldaq_leave_cs(flags);
 		return false; // Job already on going
 	}
 	ptr_job->busy = true;
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 
 	// No job running. Let's setup a new one.
 	ptr_job->buf = buf;
@@ -1253,11 +1257,11 @@ static void udd_reset_ep_ctrl(void)
 
 	dbg_print("rst(0:%08x) ", UDPHS->UDPHS_EPT[0].UDPHS_EPTCFG);
 	udd_enable_endpoint(0);
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	udd_enable_setup_received_interrupt(0);
 	udd_enable_out_received_interrupt(0);
 	udd_enable_endpoint_interrupt(0);
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 static void udd_ctrl_init(void)
@@ -1266,14 +1270,14 @@ static void udd_ctrl_init(void)
 
 	dbg_print("ctlInit ");
 
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	// In case of abort of IN Data Phase:
 	// No need to abort IN transfer (rise TXINI),
 	// because it is automatically done by hardware when a Setup packet is received.
 	// But the interrupt must be disabled to don't generate interrupt TXINI
 	// after SETUP reception.
 	udd_disable_in_send_interrupt(0);
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 
 	// In case of OUT ZLP event is no processed before Setup event occurs
 	udd_ack_out_received(0);
@@ -1352,9 +1356,9 @@ static void udd_ctrl_setup_received(void)
 		udd_ep_control_state = UDD_EPCTRL_DATA_OUT;
 		// To detect a protocol error, enable nak interrupt on data IN phase
 		udd_ack_nak_in(0);
-		flags = cpu_irq_save();
+		flags = ldaq_enter_cs();
 		udd_enable_nak_in_interrupt(0);
-		cpu_irq_restore(flags);
+		ldaq_leave_cs(flags);
 	}
 }
 
@@ -1367,9 +1371,9 @@ static void udd_ctrl_in_sent(void)
 	uint8_t *ptr_dest, *ptr_src;
 	irqflags_t flags;
 
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	udd_disable_in_send_interrupt(0);
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 
 	if (UDD_EPCTRL_HANDSHAKE_WAIT_IN_ZLP == udd_ep_control_state) {
 		dbg_print("ZlpE\n\r");
@@ -1423,11 +1427,11 @@ static void udd_ctrl_in_sent(void)
 	// Thereby, an OUT ZLP reception must check before IN data write
 	// and if no OUT ZLP is received the data must be written quickly (800us)
 	// before an eventually ZLP OUT and SETUP reception
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	if (Is_udd_out_received(0)) {
 		dbg_print("Abort ");
 		// IN DATA phase aborted by OUT ZLP
-		cpu_irq_restore(flags);
+		ldaq_leave_cs(flags);
 		udd_ep_control_state = UDD_EPCTRL_HANDSHAKE_WAIT_OUT_ZLP;
 		return; // Exit of IN DATA phase
 	}
@@ -1444,7 +1448,7 @@ static void udd_ctrl_in_sent(void)
 	udd_enable_in_send_interrupt(0);
 	// In case of abort of DATA IN phase, no need to enable nak OUT interrupt
 	// because OUT endpoint is already free and ZLP OUT accepted.
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 
@@ -1535,9 +1539,9 @@ static void udd_ctrl_out_received(void)
 	udd_ack_out_received(0);
 	// To detect a protocol error, enable nak interrupt on data IN phase
 	udd_ack_nak_in(0);
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	udd_enable_nak_in_interrupt(0);
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 
@@ -1589,7 +1593,7 @@ static void udd_ctrl_send_zlp_in(void)
 	udd_ep_control_state = UDD_EPCTRL_HANDSHAKE_WAIT_IN_ZLP;
 
 	// Validate and send empty IN packet on control endpoint
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	// Send ZLP on IN endpoint
 	udd_ack_in_send(0);
 	udd_raise_tx_pkt_ready(0);
@@ -1597,7 +1601,7 @@ static void udd_ctrl_send_zlp_in(void)
 	// To detect a protocol error, enable nak interrupt on data OUT phase
 	udd_ack_nak_out(0);
 	udd_enable_nak_out_interrupt(0);
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 
@@ -1610,10 +1614,10 @@ static void udd_ctrl_send_zlp_out(void)
 	// because the buffer of control endpoint is already free
 
 	// To detect a protocol error, enable nak interrupt on data IN phase
-	flags = cpu_irq_save();
+	flags = ldaq_enter_cs();
 	udd_ack_nak_in(0);
 	udd_enable_nak_in_interrupt(0);
-	cpu_irq_restore(flags);
+	ldaq_leave_cs(flags);
 }
 
 
@@ -1788,17 +1792,17 @@ static void udd_ep_trans_done(udd_ep_id_t ep)
 
 		// Disable IRQs to have a short sequence
 		// between read of EOT_STA and DMA enable
-		flags = cpu_irq_save();
+		flags = ldaq_enter_cs();
 		if (!(udd_endpoint_dma_get_status(ep)
 				& UDPHS_DMASTATUS_END_TR_ST)) {
 			udd_endpoint_dma_set_control(ep, udd_dma_ctrl);
 			ptr_job->buf_cnt += next_trans;
 			ptr_job->buf_load = next_trans;
 			udd_enable_endpoint_dma_interrupt(ep);
-			cpu_irq_restore(flags);
+			ldaq_leave_cs(flags);
 			return;
 		}
-		cpu_irq_restore(flags);
+		ldaq_leave_cs(flags);
 
 		// Here a ZLP has been received
 		// and the DMA transfer must be not started.

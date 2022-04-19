@@ -1,36 +1,30 @@
 /*+-------------------------------------------------------------------------+
-|                             LibreDAQ                                    |
-|                                                                         |
-| Copyright (C) 2015  Jose Luis Blanco Claraco                            |
-| Distributed under GNU General Public License version 3                  |
-|   See <http://www.gnu.org/licenses/>                                    |
-+-------------------------------------------------------------------------+  */
+  |                             LibreDAQ                                    |
+  |                                                                         |
+  | Copyright (C) 2015  Jose Luis Blanco Claraco                            |
+  | Distributed under GNU General Public License version 3                  |
+  |   See <http://www.gnu.org/licenses/>                                    |
+  +-------------------------------------------------------------------------+  */
 
 /**
-* \mainpage User Application template doxygen documentation
-*
-*
-*/
+ * \mainpage User Application template doxygen documentation
+ *
+ *
+ */
 #include <asf.h>
 
 #include <system/ldaq_rt_scheduler.h>
 #include <comms/ldaq_comms.h>
 #include <firmware_modes/ldaq_firmware_modes.h>
 
-// for debugging
-//#include <modules/ldaq_mod_ADS1248.h>
-//#include <modules/ldaq_mod_CY8C9540.h>
+#warning TODO: Remove, just for debugging!!
+#include <modules/ldaq_mod_ADS1248.h>
+#include <modules/ldaq_mod_CY8C9540.h>
 
 int main (void)
 {
 	// Init everything:
 	// ---------------------------------------------------------
-	irq_initialize_vectors();
-	cpu_irq_enable();
-	sleepmgr_init();
-	sysclk_init();
-	board_init();
-		
 	wdt_disable(WDT);  // Make sure the WDT is disabled.
 	sysclk_init();     // Initialize system clock
 	board_init();      // Init peripherals
@@ -45,6 +39,8 @@ int main (void)
 	pio_set_pin_high(LED1_GPIO);pio_set_pin_low (LED2_GPIO); delay_ms(150);
 	pio_set_pin_low(LED1_GPIO); pio_set_pin_low (LED2_GPIO); delay_ms(150);
 	pio_set_pin_high(LED1_GPIO);pio_set_pin_high(LED2_GPIO);
+
+	//mod_cy8c9540_init();
 
 	// Main infinite loop:
 	// ---------------------------------------------------------

@@ -3,42 +3,51 @@
  *
  * \brief Analog-to-Digital Converter (ADC/ADC12B) driver for SAM.
  *
- * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef ADC_H_INCLUDED
 #define ADC_H_INCLUDED
 
 #include "compiler.h"
-#include "component/adc.h"
 
 /// @cond 0
 /**INDENT-OFF**/
@@ -251,11 +260,11 @@ void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep);
 void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep,
 		const uint8_t uc_fwup);
 #elif SAM3U || SAM4C || SAM4CP || SAM4CM
-void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep);
+//void adc_configure_power_save(Adc *p_adc, const uint8_t uc_sleep); // LDAQ: Removed redundant declaration (repeated above)
 #endif
 void adc_set_resolution(Adc *p_adc, const enum adc_resolution_t resolution);
 void adc_start(Adc *p_adc);
-void adc_reset(Adc *p_adc);
+void adc_stop(Adc *p_adc);
 void adc_enable_channel(Adc *p_adc, const enum adc_channel_num_t adc_ch);
 void adc_disable_channel(Adc *p_adc, const enum adc_channel_num_t adc_ch);
 void adc_enable_all_channel(Adc *p_adc);
@@ -347,7 +356,7 @@ void adc12b_configure_power_save(Adc12b *p_adc, const uint8_t uc_sleep,
 		const uint8_t uc_offmode);
 void adc12b_configure_timing(Adc12b *p_adc, const uint32_t ul_sh);
 void adc12b_start(Adc12b *p_adc);
-void adc12b_reset(Adc12b *p_adc);
+void adc12b_stop(Adc12b *p_adc);
 void adc12b_enable_channel(Adc12b *p_adc, const enum adc_channel_num_t adc_ch);
 void adc12b_disable_channel(Adc12b *p_adc, const enum adc_channel_num_t adc_ch);
 void adc12b_enable_all_channel(Adc12b *p_adc);
@@ -481,7 +490,7 @@ Pdc *adc12b_get_pdc_base(const Adc12b *p_adc);
  * driven
  */
 /**
- * \page adc_use_case_1 Advanced use cases
+ * \page adc_use_case_1 Use case #1
  * In this use case the ADC module and one channel are configured for:
  * - 12-bit, unsigned conversions
  * - Internal bandgap as 3.3 V reference

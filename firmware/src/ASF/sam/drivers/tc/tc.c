@@ -1,43 +1,50 @@
 /**
  * \file
  *
- * \brief SAM Timer Counter (TC) driver.
+ * \brief Timer Counter (TC) driver for SAM.
  *
- * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011-2013 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
- */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
  */
 
 #include <assert.h>
 #include "tc.h"
 
-/// @cond
+/// @cond 0
 /**INDENT-OFF**/
 #ifdef __cplusplus
 extern "C" {
@@ -45,37 +52,39 @@ extern "C" {
 /**INDENT-ON**/
 /// @endcond
 
-#ifndef TC_WPMR_WPKEY_PASSWD
-#define TC_WPMR_WPKEY_PASSWD TC_WPMR_WPKEY((uint32_t)0x54494D)
-#endif
+#define TC_WPMR_WPKEY_VALUE TC_WPMR_WPKEY((uint32_t)0x54494D)
 
 /**
- * \brief Configure TC for timer, waveform generation, or capture.
+ * \defgroup sam_drivers_tc_group Timer Counter (TC)
  *
- * \param[in,out] p_tc   Module hardware register base address pointer
- * \param[in] ul_channel Channel to configure
- * \param[in] ul_mode    Control mode register bitmask value to set
+ * The Timer Counter (TC) includes three identical 32-bit Timer Counter
+ * channels. Each channel can be independently programmed to perform a wide
+ * range of functions including frequency measurement, event counting,
+ * interval measurement, pulse generation, delay timing and pulse width
+ * modulation.
  *
- * \note For more information regarding <i>ul_mode</i> configuration refer to
- * the section entitled "Channel Mode Register: Capture Mode" and/or section
- * "Waveform Operating Mode" in the device-specific datasheet.
- *
- * \note If the TC is configured for waveform generation then the external event
- * selection (EEVT) should only be set to TC_CMR_EEVT_TIOB, or the
- * equivalent value of 0, if it really is the intention to use TIOB as an
- * external event trigger. This is because this setting forces TIOB to be
- * an input, even if the external event trigger has not been enabled with
- * TC_CMR_ENETRG, and thus prevents normal operation of TIOB.
+ * @{
  */
-void tc_init(
-		Tc *p_tc,
-		uint32_t ul_channel,
-		uint32_t ul_mode)
+
+/**
+ * \brief Configure TC for timer, waveform generation or capture.
+ *
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
+ * \param ul_mode Control mode register value to set.
+ *
+ * \attention If the TC is configured for waveform generation, the external
+ * event selection (EEVT) should only be set to \c TC_CMR_EEVT_TIOB or the
+ * equivalent value \c 0 if it really is the intention to use TIOB as an
+ * external event trigger.\n
+ * This is because the setting forces TIOB to be an input even if the
+ * external event trigger has not been enabled with \c TC_CMR_ENETRG, and
+ * thus prevents normal operation of TIOB.
+ */
+void tc_init(Tc *p_tc, uint32_t ul_channel, uint32_t ul_mode)
 {
 	TcChannel *tc_channel;
 
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
@@ -94,63 +103,45 @@ void tc_init(
 }
 
 /**
- * \brief Asserts a SYNC signal to generate a software trigger on
+ * \brief Asserts a SYNC signal to generate a software trigger to
  * all channels.
  *
- * \param[out] p_tc Module hardware register base address pointer
+ * \param p_tc Pointer to a TC instance.
  *
  */
-void tc_sync_trigger(
-		Tc *p_tc)
+void tc_sync_trigger(Tc *p_tc)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
-	p_tc->TC_BCR = TC_BCR_SYNC;
+  p_tc->TC_BCR = TC_BCR_SYNC;
 }
 
 /**
- * \brief Configure the TC Block mode.
+ * \brief Configure TC Block mode.
+ * \note tc_init() must be called first.
  *
- * \note The function tc_init() must be called prior to this one.
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_blockmode Block mode register value to set.
  *
- * \param[out] p_tc        Module hardware register base address pointer
- * \param[in] ul_blockmode Block mode register value to set
- *
- * \note For more information regarding <i>ul_blockmode</i> configuration refer to
- * the section  entitled "TC Block Mode Register" in the device-specific datasheet.
  */
-void tc_set_block_mode(
-		Tc *p_tc,
-		uint32_t ul_blockmode)
+void tc_set_block_mode(Tc *p_tc, uint32_t ul_blockmode)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	p_tc->TC_BMR = ul_blockmode;
 }
 
-#if (!SAM3U) || defined(__DOXYGEN__)
+#if (!SAM3U)
 
 /**
  * \brief Configure TC for 2-bit Gray Counter for Stepper Motor.
- * \note The function tc_init() must be called prior to this one.
+ * \note tc_init() must be called first.
  *
- * \note This function is not available on SAM3U devices.
- *
- * \param[out] p_tc          Module hardware register base address pointer
- * \param[in] ul_channel     Channel to configure
- * \param[in] ul_steppermode Stepper motor mode register value to set
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
+ * \param ul_steppermode Stepper motor mode register value to set.
  *
  * \return 0 for OK.
  */
-uint32_t tc_init_2bit_gray(
-		Tc *p_tc,
-		uint32_t ul_channel,
+uint32_t tc_init_2bit_gray(Tc *p_tc, uint32_t ul_channel,
 		uint32_t ul_steppermode)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -158,20 +149,16 @@ uint32_t tc_init_2bit_gray(
 	return 0;
 }
 
-#endif /* (!SAM3U) || defined(__DOXYGEN__) */
+#endif
 
 /**
- * \brief Start the TC clock on the specified channel.
+ * \brief Start TC clock counter on the selected channel.
  *
- * \param[out] p_tc      Module hardware register base address pointer
- * \param[in] ul_channel Channel to configure
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  */
-void tc_start(
-		Tc *p_tc,
-		uint32_t ul_channel)
+void tc_start(Tc *p_tc, uint32_t ul_channel)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -179,17 +166,13 @@ void tc_start(
 }
 
 /**
- * \brief Stop the TC clock on the specified channel.
+ * \brief Stop TC clock counter on the selected channel.
  *
- * \param[out] p_tc      Module hardware register base address pointer
- * \param[in] ul_channel Channel to configure
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  */
-void tc_stop(
-		Tc *p_tc,
-		uint32_t ul_channel)
+void tc_stop(Tc *p_tc, uint32_t ul_channel)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -197,19 +180,15 @@ void tc_stop(
 }
 
 /**
- * \brief Read the counter value on the specified channel.
+ * \brief Read counter value on the selected channel.
  *
- * \param[in] p_tc       Module hardware register base address pointer
- * \param[in] ul_channel Channel to read
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  *
- * \return The counter value.
+ * \return Counter value.
  */
-uint32_t tc_read_cv(
-		Tc *p_tc,
-		uint32_t ul_channel)
+uint32_t tc_read_cv(Tc *p_tc, uint32_t ul_channel)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -217,19 +196,15 @@ uint32_t tc_read_cv(
 }
 
 /**
- * \brief Read TC Register A (RA) on the specified channel.
+ * \brief Read RA TC counter on the selected channel.
  *
- * \param[in] p_tc       Module hardware register base address pointer
- * \param[in] ul_channel Channel to read
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  *
- * \return The TC Register A (RA) value.
+ * \return RA value.
  */
-uint32_t tc_read_ra(
-		Tc *p_tc,
-		uint32_t ul_channel)
+uint32_t tc_read_ra(Tc *p_tc, uint32_t ul_channel)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -237,19 +212,15 @@ uint32_t tc_read_ra(
 }
 
 /**
- * \brief Read TC Register B (RB) on the specified channel.
+ * \brief Read RB TC counter on the selected channel.
  *
- * \param[in] p_tc       Module hardware register base address pointer
- * \param[in] ul_channel Channel to read
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  *
- * \return The TC Register B (RB) value.
+ * \return RB value.
  */
-uint32_t tc_read_rb(
-		Tc *p_tc,
-		uint32_t ul_channel)
+uint32_t tc_read_rb(Tc *p_tc, uint32_t ul_channel)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -257,19 +228,15 @@ uint32_t tc_read_rb(
 }
 
 /**
- * \brief Read TC Register C (RC) on the specified channel.
+ * \brief Read RC TC counter on the selected channel.
  *
- * \param[in] p_tc       Module hardware register base address pointer
- * \param[in] ul_channel Channel to read
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  *
- * \return The Register C (RC) value.
+ * \return RC value.
  */
-uint32_t tc_read_rc(
-		Tc *p_tc,
-		uint32_t ul_channel)
+uint32_t tc_read_rc(Tc *p_tc, uint32_t ul_channel)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -277,19 +244,15 @@ uint32_t tc_read_rc(
 }
 
 /**
- * \brief Write to TC Register A (RA) on the specified channel.
+ * \brief Write RA TC counter on the selected channel.
  *
- * \param[out] p_tc      Module hardware register base address pointer
- * \param[in] ul_channel Channel to write
- * \param[in] ul_value   Value to write
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
+ * \param ul_value Value to set in register.
  */
-void tc_write_ra(
-		Tc *p_tc,
-		uint32_t ul_channel,
+void tc_write_ra(Tc *p_tc, uint32_t ul_channel,
 		uint32_t ul_value)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -297,19 +260,15 @@ void tc_write_ra(
 }
 
 /**
- * \brief Write to TC Register B (RB) on the specified channel.
+ * \brief Write RB TC counter on the selected channel.
  *
- * \param[out] p_tc      Module hardware register base address pointer
- * \param[in] ul_channel Channel to write
- * \param[in] ul_value   Value to write
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
+ * \param ul_value Value to set in register.
  */
-void tc_write_rb(
-		Tc *p_tc,
-		uint32_t ul_channel,
+void tc_write_rb(Tc *p_tc, uint32_t ul_channel,
 		uint32_t ul_value)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -317,19 +276,15 @@ void tc_write_rb(
 }
 
 /**
- * \brief Write to TC Register C (RC) on the selected channel.
+ * \brief Write RC TC counter on the selected channel.
  *
- * \param[out] p_tc      Module hardware register base address pointer
- * \param[in] ul_channel Channel to write
- * \param[in] ul_value   Value to write
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
+ * \param ul_value Value to set in register.
  */
-void tc_write_rc(
-		Tc *p_tc,
-		uint32_t ul_channel,
+void tc_write_rc(Tc *p_tc, uint32_t ul_channel,
 		uint32_t ul_value)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 
@@ -337,37 +292,17 @@ void tc_write_rc(
 }
 
 /**
- * \brief Enable the TC interrupts on the specified channel.
+ * \brief Enable TC interrupts on the selected channel.
  *
- * \param[in,out] p_tc   Module hardware register base address pointer
- * \param[in] ul_channel Channel to configure
- * \param[in] ul_sources Bitmask of interrupt sources
- *
- * Where the input parameter <i>ul_sources</i> can be one or more of the following:
- * <table>
- * <tr>
- *    <th>Parameter Value</th>
- *    <th>Description</th>
- * </tr>
- *     <tr><td>TC_IER_COVFS</td><td>Enables the Counter Overflow Interrupt</td></tr>
- *     <tr><td>TC_IER_LOVRS</td><td>Enables the Load Overrun Interrupt</td></tr>
- *     <tr><td>TC_IER_CPAS</td><td>Enables the RA Compare Interrupt</td></tr>
- *     <tr><td>TC_IER_CPBS</td><td>Enables the RB Compare Interrupt</td></tr>
- *     <tr><td>TC_IER_CPCS</td><td>Enables the RC Compare Interrupt</td></tr>
- *     <tr><td>TC_IER_LDRAS</td><td>Enables the RA Load Interrupt</td></tr>
- *     <tr><td>TC_IER_LDRBS</td><td>Enables the RB Load Interrupt</td></tr>
- *     <tr><td>TC_IER_ETRGS</td><td>Enables the External Trigger Interrupt</td></tr>
- * </table>
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
+ * \param ul_sources Interrupt sources bit map.
  */
-void tc_enable_interrupt(
-		Tc *p_tc,
-		uint32_t ul_channel,
+void tc_enable_interrupt(Tc *p_tc, uint32_t ul_channel,
 		uint32_t ul_sources)
 {
 	TcChannel *tc_channel;
 
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
@@ -375,37 +310,17 @@ void tc_enable_interrupt(
 }
 
 /**
- * \brief Disable TC interrupts on the specified channel.
+ * \brief Disable TC interrupts on the selected channel.
  *
- * \param[in,out] p_tc   Module hardware register base address pointer
- * \param[in] ul_channel Channel to configure
- * \param[in] ul_sources A bitmask of Interrupt sources
- *
- * Where the input parameter <i>ul_sources</i> can be one or more of the following:
- * <table>
- * <tr>
- *    <th>Parameter Value</th>
- *    <th>Description</th>
- * </tr>
- *     <tr><td>TC_IDR_COVFS</td><td>Disables the Counter Overflow Interrupt</td></tr>
- *     <tr><td>TC_IDR_LOVRS</td><td>Disables the Load Overrun Interrupt</td></tr>
- *     <tr><td>TC_IDR_CPAS</td><td>Disables the RA Compare Interrupt</td></tr>
- *     <tr><td>TC_IDR_CPBS</td><td>Disables the RB Compare Interrupt</td></tr>
- *     <tr><td>TC_IDR_CPCS</td><td>Disables the RC Compare Interrupt</td></tr>
- *     <tr><td>TC_IDR_LDRAS</td><td>Disables the RA Load Interrupt</td></tr>
- *     <tr><td>TC_IDR_LDRBS</td><td>Disables the RB Load Interrupt</td></tr>
- *     <tr><td>TC_IDR_ETRGS</td><td>Disables the External Trigger Interrupt</td></tr>
- * </table>
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
+ * \param ul_sources Interrupt sources bit map.
  */
-void tc_disable_interrupt(
-		Tc *p_tc,
-		uint32_t ul_channel,
+void tc_disable_interrupt(Tc *p_tc, uint32_t ul_channel,
 		uint32_t ul_sources)
 {
 	TcChannel *tc_channel;
 
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
@@ -413,21 +328,17 @@ void tc_disable_interrupt(
 }
 
 /**
- * \brief Read the TC interrupt mask for the specified channel.
+ * \brief Read TC interrupt mask on the selected channel.
  *
- * \param[in] p_tc       Module hardware register base address pointer
- * \param[in] ul_channel Channel to read
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  *
- * \return The TC interrupt mask value.
+ * \return The interrupt mask value.
  */
-uint32_t tc_get_interrupt_mask(
-		Tc *p_tc,
-		uint32_t ul_channel)
+uint32_t tc_get_interrupt_mask(Tc *p_tc, uint32_t ul_channel)
 {
 	TcChannel *tc_channel;
 
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
@@ -435,24 +346,19 @@ uint32_t tc_get_interrupt_mask(
 }
 
 /**
- * \brief Get the current status for the specified TC channel.
+ * \brief Get current status on the selected channel.
  *
- * \param[in] p_tc       Module hardware register base address pointer
- * \param[in] ul_channel Channel number
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_channel Channel to configure.
  *
  * \return The current TC status.
  */
-uint32_t tc_get_status(
-		Tc *p_tc,
-		uint32_t ul_channel)
+uint32_t tc_get_status(Tc *p_tc, uint32_t ul_channel)
 {
 	TcChannel *tc_channel;
 
-	/* Validate inputs. */
-	Assert(p_tc);
 	Assert(ul_channel <
 			(sizeof(p_tc->TC_CHANNEL) / sizeof(p_tc->TC_CHANNEL[0])));
-			
 	tc_channel = p_tc->TC_CHANNEL + ul_channel;
 	return tc_channel->TC_SR;
 }
@@ -460,7 +366,7 @@ uint32_t tc_get_status(
 /* TC divisor used to find the lowest acceptable timer frequency */
 #define TC_DIV_FACTOR 65536
 
-#if (!SAM4L) && !defined(__DOXYGEN__)
+#if (!SAM4L)
 
 #ifndef FREQ_SLOW_CLOCK_EXT
 #define FREQ_SLOW_CLOCK_EXT 32768 /* External slow clock frequency (hz) */
@@ -471,25 +377,22 @@ uint32_t tc_get_status(
  *
  * Finds the best MCK divisor given the timer frequency and MCK. The result
  * is guaranteed to satisfy the following equation:
- * \code (MCK / (DIV * 65536)) <= freq <= (MCK / DIV) \endcode
- * With DIV being the lowest possible value, to maximize timing adjust resolution.
+ * \code
+ *   (MCK / (DIV * 65536)) <= freq <= (MCK / DIV)
+ * \endcode
+ * with DIV being the lowest possible value,
+ * to maximize timing adjust resolution.
  *
- * \param[in] ul_freq     Desired timer frequency
- * \param[in] ul_mck      Master clock frequency
- * \param[out] p_uldiv    Divisor value
- * \param[out] p_ultcclks TCCLKS field value for divisor
- * \param[in] ul_boardmck Board clock frequency
+ * \param ul_freq  Desired timer frequency.
+ * \param ul_mck  Master clock frequency.
+ * \param p_uldiv  Divisor value.
+ * \param p_ultcclks  TCCLKS field value for divisor.
+ * \param ul_boardmck  Board clock frequency.
  *
- * \return The divisor found status.
- * \retval 0 No suitable divisor was found
- * \retval 1 A divisor was found
+ * \return 1 if a proper divisor has been found, otherwise 0.
  */
-uint32_t tc_find_mck_divisor(
-		uint32_t ul_freq,
-		uint32_t ul_mck,
-		uint32_t *p_uldiv,
-		uint32_t *p_ultcclks,
-		uint32_t ul_boardmck)
+uint32_t tc_find_mck_divisor(uint32_t ul_freq, uint32_t ul_mck,
+		uint32_t *p_uldiv, uint32_t *p_ultcclks, uint32_t ul_boardmck)
 {
 	const uint32_t divisors[5] = { 2, 8, 32, 128,
 			ul_boardmck / FREQ_SLOW_CLOCK_EXT };
@@ -524,38 +427,30 @@ uint32_t tc_find_mck_divisor(
 	return 1;
 }
 
-#endif /* (!SAM4L) */
+#endif
 
-#if (SAM4L) || defined(__DOXYGEN__)
+#if (SAM4L)
 /**
- * \brief Find the best PBA/MCK divisor.
+ * \brief Find the best PBA clock divisor.
  *
- * <b>For SAM4L devices:</b> Finds the best PBA divisor given the timer
- * frequency and PBA clock. The result is guaranteed to satisfy the following equation:
- * \code  (ul_pbaclk / (2* DIV * 65536)) <= freq <= (ul_pbaclk / (2* DIV)) \endcode
- * with DIV being the lowest possible value, to maximize timing adjust resolution.
+ * Finds the best divisor given the timer frequency and PBA clock. The result
+ * is guaranteed to satisfy the following equation:
+ * \code
+ *   (ul_pbaclk / (2* DIV * 65536)) <= freq <= (ul_pbaclk / (2* DIV))
+ * \endcode
+ * with DIV being the lowest possible value,
+ * to maximize timing adjust resolution.
  *
- * <b>For non SAM4L devices:</b> Finds the best MCK divisor given the timer frequency
- * and MCK. The result is guaranteed to satisfy the following equation:
- * \code (MCK / (DIV * 65536)) <= freq <= (MCK / DIV) \endcode
- * with DIV being the lowest possible value, to maximize timing adjust resolution.
+ * \param ul_freq  Desired timer frequency.
+ * \param ul_mck  PBA clock frequency.
+ * \param p_uldiv  Divisor value.
+ * \param p_ultcclks  TCCLKS field value for divisor.
+ * \param ul_boardmck  useless here.
  *
- * \param[in] ul_freq     Desired timer frequency
- * \param[in] ul_mck      PBA clock frequency
- * \param[out] p_uldiv    Divisor value
- * \param[out] p_ultcclks TCCLKS field value for divisor
- * \param[in] ul_boardmck Board clock frequency (set to 0 for SAM4L devices)
- *
- * \return The divisor found status.
- * \retval 0 No suitable divisor was found
- * \retval 1 A divisor was found
+ * \return 1 if a proper divisor has been found, otherwise 0.
  */
-uint32_t tc_find_mck_divisor(
-		uint32_t ul_freq,
-		uint32_t ul_mck,
-		uint32_t *p_uldiv,
-		uint32_t *p_ultcclks,
-		uint32_t ul_boardmck)
+uint32_t tc_find_mck_divisor(uint32_t ul_freq, uint32_t ul_mck,
+		uint32_t *p_uldiv, uint32_t *p_ultcclks, uint32_t ul_boardmck)
 {
 	const uint32_t divisors[5] = { 0, 2, 8, 32, 128};
 	uint32_t ul_index;
@@ -591,173 +486,108 @@ uint32_t tc_find_mck_divisor(
 	return 1;
 }
 
-#endif /* (SAM4L) || defined(__DOXYGEN__) */
+#endif
 
-#if (!SAM4L && !SAMG) || defined(__DOXYGEN__)
+#if (!SAM4L)
 
 /**
  * \brief Enable TC QDEC interrupts.
  *
- * \note This function is not available on SAM4L or SAMG devices.
- *
- * \param[out] p_tc      Module hardware register base address pointer
- * \param[in] ul_sources A bitmask of QDEC interrupts to be enabled
- *
- * Where the input parameter <i>ul_sources</i> can be one or more of the following:
- * <table>
- * <tr>
- *    <th>Parameter Value</th>
- *    <th>Description</th>
- * </tr>
- *     <tr><td>TC_QIER_IDX</td><td>Enable the rising edge detected on IDX input interrupt</td></tr>
- *     <tr><td>TC_QIER_DIRCHG</td><td>Enable the change in rotation direction detected interrupt</td></tr>
- *     <tr><td>TC_QIER_QERR</td><td>Enable the quadrature error detected on PHA/PHB interrupt</td></tr>
- * </table>
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_sources Interrupts to be enabled.
  */
-void tc_enable_qdec_interrupt(
-		Tc *p_tc,
-		uint32_t ul_sources)
+void tc_enable_qdec_interrupt(Tc *p_tc, uint32_t ul_sources)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	p_tc->TC_QIER = ul_sources;
 }
 
 /**
  * \brief Disable TC QDEC interrupts.
  *
- * \note This function is not available on SAM4L or SAMG devices.
- *
- * \param[out] p_tc      Module hardware register base address pointer
- * \param[in] ul_sources A bitmask of QDEC interrupts to be disabled
- *
- * Where the input parameter <i>ul_sources</i> can be one or more of the following:
- * <table>
- * <tr>
- *    <th>Parameter Value</th>
- *    <th>Description</th>
- * </tr>
- *     <tr><td>TC_QIDR_IDX</td><td>Disable the rising edge detected on IDX input interrupt</td></tr>
- *     <tr><td>TC_QIDR_DIRCHG</td><td>Disable the change in rotation direction detected interrupt</td></tr>
- *     <tr><td>TC_QIDR_QERR</td><td>Disable the quadrature error detected on PHA/PHB interrupt</td></tr>
- * </table>
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_sources Interrupts to be disabled.
  */
-void tc_disable_qdec_interrupt(
-		Tc *p_tc,
-		uint32_t ul_sources)
+void tc_disable_qdec_interrupt(Tc *p_tc, uint32_t ul_sources)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	p_tc->TC_QIDR = ul_sources;
 }
 
 /**
  * \brief Read TC QDEC interrupt mask.
  *
- * \note This function is not available on SAM4L or SAMG devices.
+ * \param p_tc Pointer to a TC instance.
  *
- * \param[in] p_tc Module hardware register base address pointer
- *
- * \return The QDEC interrupt mask value.
+ * \return The interrupt mask value.
  */
-uint32_t tc_get_qdec_interrupt_mask(
-		Tc *p_tc)
+uint32_t tc_get_qdec_interrupt_mask(Tc *p_tc)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	return p_tc->TC_QIMR;
 }
 
 /**
- * \brief Get current TC QDEC interrupt status.
+ * \brief Get current QDEC status.
  *
- * \note This function is not available on SAM4L or SAMG devices.
+ * \param p_tc Pointer to a TC instance.
  *
- * \param[in] p_tc Module hardware register base address pointer
- *
- * \return The TC QDEC interrupt status.
+ * \return The current TC status.
  */
-uint32_t tc_get_qdec_interrupt_status(
-		Tc *p_tc)
+uint32_t tc_get_qdec_interrupt_status(Tc *p_tc)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	return p_tc->TC_QISR;
 }
 
-#endif /* (!SAM4L && !SAMG) || defined(__DOXYGEN__) */
+#endif
 
-#if (!SAM3U) || defined(__DOXYGEN__)
+#if (!SAM3U)
 
 /**
  * \brief Enable or disable write protection of TC registers.
  *
- * \note This function is not available on SAM3U devices.
- *
- * \param[out] p_tc     Module hardware register base address pointer
- * \param[in] ul_enable 1 to enable, 0 to disable
+ * \param p_tc Pointer to a TC instance.
+ * \param ul_enable 1 to enable, 0 to disable.
  */
-void tc_set_writeprotect(
-		Tc *p_tc,
-		uint32_t ul_enable)
+void tc_set_writeprotect(Tc *p_tc, uint32_t ul_enable)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	if (ul_enable) {
-		p_tc->TC_WPMR = TC_WPMR_WPKEY_PASSWD | TC_WPMR_WPEN;
+		p_tc->TC_WPMR = TC_WPMR_WPKEY_VALUE | TC_WPMR_WPEN;
 	} else {
-		p_tc->TC_WPMR = TC_WPMR_WPKEY_PASSWD;
+		p_tc->TC_WPMR = TC_WPMR_WPKEY_VALUE;
 	}
 }
 
-#endif /* (!SAM3U) || defined(__DOXYGEN__) */
+#endif
 
-#if SAM4L || defined(__DOXYGEN__)
+#if SAM4L
 
 /**
- * \brief Indicate TC features.
+ * \brief Indicate features.
  *
- * \note This function is only available on SAM4L devices.
+ * \param p_tc Pointer to a TC instance.
  *
- * \param[in] p_tc Module hardware register base address pointer
- *
- * \return The TC FEATURES register contents.
+ * \return TC_FEATURES value.
  */
-uint32_t tc_get_feature(
-		Tc *p_tc)
+uint32_t tc_get_feature(Tc *p_tc)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	return p_tc->TC_FEATURES;
 }
 
 /**
- * \brief Indicate TC version.
+ * \brief Indicate version.
  *
- * \note This function is only available on SAM4L devices.
+ * \param p_tc Pointer to a TC instance.
  *
- * \param[in] p_tc Module hardware register base address pointer
- *
- * \return The TC VERSION register contents.
+ * \return TC_VERSION value.
  */
-uint32_t tc_get_version(
-		Tc *p_tc)
+uint32_t tc_get_version(Tc *p_tc)
 {
-	/* Validate inputs. */
-	Assert(p_tc);
-	
 	return p_tc->TC_VERSION;
 }
 
-#endif /* SAM4L || defined(__DOXYGEN__) */
+#endif
 
-/// @cond
+//@}
+
+/// @cond 0
 /**INDENT-OFF**/
 #ifdef __cplusplus
 }

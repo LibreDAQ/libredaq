@@ -4,35 +4,45 @@
  * \brief Universal Synchronous Asynchronous Receiver Transmitter (USART) driver
  * for SAM.
  *
- * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef USART_H_INCLUDED
@@ -72,15 +82,6 @@ extern "C" {
 #define SPI_MODE_2  (SPI_CPOL)
 #define SPI_MODE_3  (SPI_CPOL | SPI_CPHA)
 
-/**micro definition for LIN mode of SAMV71*/
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-#ifndef US_MR_USART_MODE_LIN_MASTER
-#define US_MR_USART_MODE_LIN_MASTER  0x0A
-#endif
-#ifndef US_MR_USART_MODE_LIN_SLAVE
-#define US_MR_USART_MODE_LIN_SLAVE   0x0B
-#endif
-#endif
 /* Input parameters when initializing RS232 and similar modes. */
 typedef struct {
 	/* Set baud rate of the USART (unused in slave modes). */
@@ -216,26 +217,17 @@ uint32_t usart_init_sync_slave(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt);
 uint32_t usart_init_rs485(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
-#if (!SAMG55 && !SAMV71 && !SAMV70 && !SAME70 && !SAMS70)
+#if (!SAMG55)
 uint32_t usart_init_irda(Usart *p_usart,
 		const sam_usart_opt_t *p_usart_opt, uint32_t ul_mck);
 #endif
-#if (!SAMV71 && !SAMV70 && !SAME70 && !SAMS70)
 uint32_t usart_init_iso7816(Usart *p_usart,
 		const usart_iso7816_opt_t *p_usart_opt, uint32_t ul_mck);
-void usart_reset_iterations(Usart *p_usart);
-void usart_reset_nack(Usart *p_usart);
-uint32_t usart_is_rx_buf_end(Usart *p_usart);
-uint32_t usart_is_tx_buf_end(Usart *p_usart);
-uint32_t usart_is_rx_buf_full(Usart *p_usart);
-uint32_t usart_is_tx_buf_empty(Usart *p_usart);
-uint8_t usart_get_error_number(Usart *p_usart);
-#endif
 uint32_t usart_init_spi_master(Usart *p_usart,
 		const usart_spi_opt_t *p_usart_opt, uint32_t ul_mck);
 uint32_t usart_init_spi_slave(Usart *p_usart,
 		const usart_spi_opt_t *p_usart_opt);
-#if (SAM3XA || SAM4L || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA || SAM4L || SAMG55)
 uint32_t usart_init_lin_master(Usart *p_usart, uint32_t ul_baudrate,
 		uint32_t ul_mck);
 uint32_t usart_init_lin_slave(Usart *p_usart, uint32_t ul_baudrate,
@@ -259,28 +251,6 @@ void usart_lin_set_tx_identifier(Usart *p_usart, uint8_t uc_id);
 uint8_t usart_lin_read_identifier(Usart *p_usart);
 uint8_t usart_lin_get_data_length(Usart *usart);
 #endif
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-uint8_t usart_lin_identifier_send_complete(Usart *usart);
-uint8_t usart_lin_identifier_reception_complete(Usart *usart);
-uint8_t usart_lin_tx_complete(Usart *usart);
-uint32_t usart_init_lon(Usart *p_usart, uint32_t ul_baudrate, uint32_t ul_mck);
-void  usart_lon_set_comm_type(Usart *p_usart, uint8_t uc_type);
-void usart_lon_disable_coll_detection(Usart *p_usart);
-void usart_lon_enable_coll_detection(Usart *p_usart);
-void  usart_lon_set_tcol(Usart *p_usart, uint8_t uc_type);
-void  usart_lon_set_cdtail(Usart *p_usart, uint8_t uc_type);
-void  usart_lon_set_dmam(Usart *p_usart, uint8_t uc_type);
-void  usart_lon_set_beta1_tx_len(Usart *p_usart, uint32_t ul_len);
-void  usart_lon_set_beta1_rx_len(Usart *p_usart, uint32_t ul_len);
-void  usart_lon_set_priority(Usart *p_usart, uint8_t uc_psnb, uint8_t uc_nps);
-void  usart_lon_set_tx_idt(Usart *p_usart, uint32_t ul_time);
-void  usart_lon_set_rx_idt(Usart *p_usart, uint32_t ul_time);
-void  usart_lon_set_pre_len(Usart *p_usart, uint32_t ul_len);
-void  usart_lon_set_data_len(Usart *p_usart, uint8_t uc_len);
-void  usart_lon_set_l2hdr(Usart *p_usart, uint8_t uc_bli, uint8_t uc_altp, uint8_t uc_pb);
-uint32_t usart_lon_is_tx_end(Usart *p_usart);
-uint32_t usart_lon_is_rx_end(Usart *p_usart);
-#endif
 void usart_enable_tx(Usart *p_usart);
 void usart_disable_tx(Usart *p_usart);
 void usart_reset_tx(Usart *p_usart);
@@ -298,6 +268,8 @@ void usart_start_tx_break(Usart *p_usart);
 void usart_stop_tx_break(Usart *p_usart);
 void usart_start_rx_timeout(Usart *p_usart);
 uint32_t usart_send_address(Usart *p_usart, uint32_t ul_addr);
+void usart_reset_iterations(Usart *p_usart);
+void usart_reset_nack(Usart *p_usart);
 void usart_restart_rx_timeout(Usart *p_usart);
 #if (SAM3S || SAM4S || SAM3U || SAM4L || SAM4E)
 void usart_drive_DTR_pin_low(Usart *p_usart);
@@ -310,6 +282,10 @@ void usart_spi_release_chip_select(Usart *p_usart);
 uint32_t usart_is_tx_ready(Usart *p_usart);
 uint32_t usart_is_tx_empty(Usart *p_usart);
 uint32_t usart_is_rx_ready(Usart *p_usart);
+uint32_t usart_is_rx_buf_end(Usart *p_usart);
+uint32_t usart_is_tx_buf_end(Usart *p_usart);
+uint32_t usart_is_rx_buf_full(Usart *p_usart);
+uint32_t usart_is_tx_buf_empty(Usart *p_usart);
 uint32_t usart_write(Usart *p_usart, uint32_t c);
 uint32_t usart_putchar(Usart *p_usart, uint32_t c);
 void usart_write_line(Usart *p_usart, const char *string);
@@ -319,13 +295,14 @@ uint32_t usart_getchar(Usart *p_usart, uint32_t *c);
 uint32_t *usart_get_tx_access(Usart *p_usart);
 uint32_t *usart_get_rx_access(Usart *p_usart);
 #endif
-#if (!SAM4L && !SAMV71 && !SAMV70 && !SAME70 && !SAMS70)
+#if (!SAM4L)
 Pdc *usart_get_pdc_base(Usart *p_usart);
 #endif
 void usart_enable_writeprotect(Usart *p_usart);
 void usart_disable_writeprotect(Usart *p_usart);
 uint32_t usart_get_writeprotect_status(Usart *p_usart);
-#if (SAM3S || SAM4S || SAM3U || SAM3XA || SAM4L || SAM4E || SAM4C || SAM4CP || SAM4CM || SAMV70 || SAMV71 || SAMS70 || SAME70)
+uint8_t usart_get_error_number(Usart *p_usart);
+#if (SAM3S || SAM4S || SAM3U || SAM3XA || SAM4L || SAM4E || SAM4C || SAM4CP || SAM4CM)
 void usart_man_set_tx_pre_len(Usart *p_usart, uint8_t uc_len);
 void usart_man_set_tx_pre_pattern(Usart *p_usart, uint8_t uc_pattern);
 void usart_man_set_tx_polarity(Usart *p_usart, uint8_t uc_polarity);
@@ -343,7 +320,7 @@ uint32_t usart_get_version(Usart *p_usart);
 #if SAMG55
 void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
 		bool cmpmode, bool cmppar, uint8_t ul_high_value);
-#endif
+#endif		
 
 /// @cond 0
 /**INDENT-OFF**/
@@ -421,9 +398,9 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
 	    };
     #if SAM4L
       sysclk_enable_peripheral_clock(USART_SERIAL);
-    #else
+    #else  
 	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
-    #endif
+    #endif 
 	    usart_init_rs232(USART_SERIAL, &usart_console_settings,
 	            sysclk_get_main_hz());
 	    usart_enable_tx(USART_SERIAL);
@@ -439,16 +416,7 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
  *   \code
 	board_init();
 \endcode
- * \note Set the following define in conf_board.h file to enable COM port,it will be used in
- * board_init() function to set up IOPorts for the USART pins.
- * For SAM4L:
- *   \code
-  #define CONF_BOARD_COM_PORT
-\endcode
- * For other SAM devices:
- *   \code
-  #define CONF_BOARD_UART_CONSOLE
-\endcode
+ * \note Set the define in conf_board.h file.
  * -# Create USART options struct:
  *   \code
 	const sam_usart_opt_t usart_console_settings = {
@@ -463,9 +431,9 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
  *   \code
 	  #if SAM4L
       sysclk_enable_peripheral_clock(USART_SERIAL);
-    #else
+    #else  
 	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
-    #endif
+    #endif 
 \endcode
  * -# Initialize the USART module in RS232 mode:
  *   \code
@@ -544,9 +512,9 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
 
     #if SAM4L
       sysclk_enable_peripheral_clock(USART_SERIAL);
-    #else
+    #else  
 	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
-    #endif
+    #endif 
 
 	    usart_init_rs232(USART_SERIAL, &usart_console_settings,
 	            sysclk_get_main_hz());
@@ -563,16 +531,7 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
  *   \code
 	board_init();
 \endcode
- * \note Set the following define in conf_board.h file to enable COM port,it will be used in
- * board_init() function to set up IOPorts for the USART pins.
- * For SAM4L:
- *   \code
-  #define CONF_BOARD_COM_PORT
-\endcode
- * For other SAM devices:
- *   \code
-  #define CONF_BOARD_UART_CONSOLE
-\endcode
+ * \note Set the define in conf_board.h file.
  * -# Create USART options struct:
  *   \code
 	const sam_usart_opt_t usart_console_settings = {
@@ -587,9 +546,9 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
  *   \code
     #if SAM4L
       sysclk_enable_peripheral_clock(USART_SERIAL);
-    #else
+    #else  
 	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
-    #endif
+    #endif   
 \endcode
  * -# Initialize the USART module in RS232 mode:
  *   \code
@@ -675,9 +634,9 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
 
     #if SAM4L
       sysclk_enable_peripheral_clock(USART_SERIAL);
-    #else
+    #else  
 	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
-    #endif
+    #endif 
 
 	    usart_init_rs232(USART_SERIAL, &usart_console_settings,
 	            sysclk_get_main_hz());
@@ -697,16 +656,7 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
  *   \code
 	board_init();
 \endcode
- * \note Set the following define in conf_board.h file to enable COM port,it will be used in
- * board_init() function to set up IOPorts for the USART pins.
- * For SAM4L:
- *   \code
-  #define CONF_BOARD_COM_PORT
-\endcode
- * For other SAM devices:
- *   \code
-  #define CONF_BOARD_UART_CONSOLE
-\endcode
+ * \note Set the define in conf_board.h file.
  * -# Create USART options struct:
  *   \code
 	const sam_usart_opt_t usart_console_settings = {
@@ -721,9 +671,9 @@ void usart_set_sleepwalking(Usart *p_uart, uint8_t ul_low_value,
  *   \code
     #if SAM4L
       sysclk_enable_peripheral_clock(USART_SERIAL);
-    #else
+    #else  
 	    sysclk_enable_peripheral_clock(USART_SERIAL_ID);
-    #endif
+    #endif 
 \endcode
  * -# Initialize the USART module in RS232 mode:
  *   \code

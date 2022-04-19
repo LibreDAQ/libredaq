@@ -3,35 +3,45 @@
  *
  * \brief Power Management Controller (PMC) driver for SAM.
  *
- * Copyright (c) 2011-2019 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef PMC_H_INCLUDED
@@ -54,11 +64,7 @@ extern "C" {
 #define PMC_MASK_STATUS1        (0xFFFFFFFF)
 
 /** Loop counter timeout value */
-#if !(SAME70)
 #define PMC_TIMEOUT             (2048)
-#else
-#define PMC_TIMEOUT             (4096)
-#endif
 
 /** Key to unlock CKGR_MOR register */
 #ifndef CKGR_MOR_KEY_PASSWD
@@ -91,17 +97,15 @@ extern "C" {
 #define PMC_PCK_0               0 /* PCK0 ID */
 #define PMC_PCK_1               1 /* PCK1 ID */
 #define PMC_PCK_2               2 /* PCK2 ID */
-#if (SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if SAMG55
 #define PMC_PCK_3               3 /* PCK3 ID */
 #define PMC_PCK_4               4 /* PCK4 ID */
 #define PMC_PCK_5               5 /* PCK5 ID */
 #define PMC_PCK_6               6 /* PCK6 ID */
-#if SAMG55
 #define PMC_PCK_7               7 /* PCK7 ID */
 #endif
-#endif
 
-#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP)
 /** Flash state in Wait Mode */
 #define PMC_WAIT_MODE_FLASH_STANDBY         PMC_FSMR_FLPM_FLASH_STANDBY
 #define PMC_WAIT_MODE_FLASH_DEEP_POWERDOWN  PMC_FSMR_FLPM_FLASH_DEEP_POWERDOWN
@@ -122,9 +126,6 @@ extern "C" {
 //@{
 
 void pmc_mck_set_prescaler(uint32_t ul_pres);
-#if SAMV71 || SAMV70 || SAME70 || SAMS70
-void pmc_mck_set_division(uint32_t ul_div);
-#endif
 void pmc_mck_set_source(uint32_t ul_source);
 uint32_t pmc_switch_mck_to_sclk(uint32_t ul_pres);
 uint32_t pmc_switch_mck_to_mainck(uint32_t ul_pres);
@@ -132,10 +133,10 @@ uint32_t pmc_switch_mck_to_pllack(uint32_t ul_pres);
 #if (SAM3S || SAM4S || SAM4C || SAM4CM || SAM4CP || SAMG55)
 uint32_t pmc_switch_mck_to_pllbck(uint32_t ul_pres);
 #endif
-#if (SAM3XA || SAM3U || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA || SAM3U)
 uint32_t pmc_switch_mck_to_upllck(uint32_t ul_pres);
 #endif
-#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP)
 void pmc_set_flash_in_wait_mode(uint32_t ul_flash_state);
 #endif
 
@@ -192,7 +193,7 @@ void pmc_disable_pllbck(void);
 uint32_t pmc_is_locked_pllbck(void);
 #endif
 
-#if (SAM3XA || SAM3U || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA || SAM3U)
 void pmc_enable_upll_clock(void);
 void pmc_disable_upll_clock(void);
 uint32_t pmc_is_locked_upll(void);
@@ -227,12 +228,6 @@ void pmc_pck_set_source(uint32_t ul_id, uint32_t ul_source);
 uint32_t pmc_switch_pck_to_sclk(uint32_t ul_id, uint32_t ul_pres);
 uint32_t pmc_switch_pck_to_mainck(uint32_t ul_id, uint32_t ul_pres);
 uint32_t pmc_switch_pck_to_pllack(uint32_t ul_id, uint32_t ul_pres);
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-uint32_t pmc_get_slck_config(void);
-uint32_t pmc_get_mainck_config(void);
-uint32_t pmc_get_pllack_config(void);
-uint32_t pmc_get_upllckdiv_config(void);
-#endif
 #if (SAM4C || SAM4CM || SAM4CP)
 void pmc_enable_cpck(void);
 void pmc_disable_cpck(void);
@@ -246,7 +241,7 @@ void pmc_cpck_set_source(uint32_t ul_source);
 #if (SAM3S || SAM4S || SAM4C || SAM4CM || SAM4CP || SAMG55)
 uint32_t pmc_switch_pck_to_pllbck(uint32_t ul_id, uint32_t ul_pres);
 #endif
-#if (SAM3XA || SAM3U || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA || SAM3U)
 uint32_t pmc_switch_pck_to_upllck(uint32_t ul_id, uint32_t ul_pres);
 #endif
 uint32_t pmc_switch_pck_to_mck(uint32_t ul_id, uint32_t ul_pres);
@@ -264,16 +259,16 @@ uint32_t pmc_is_pck_enabled(uint32_t ul_id);
  */
 //@{
 
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55)
 void pmc_switch_udpck_to_pllack(uint32_t ul_usbdiv);
 #endif
 #if (SAM3S || SAM4S || SAMG55)
 void pmc_switch_udpck_to_pllbck(uint32_t ul_usbdiv);
 #endif
-#if (SAM3XA || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA)
 void pmc_switch_udpck_to_upllck(uint32_t ul_usbdiv);
 #endif
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55)
 void pmc_enable_udpck(void);
 void pmc_disable_udpck(void);
 #endif
@@ -312,7 +307,9 @@ void pmc_clr_fast_startup_input(uint32_t ul_inputs);
 void pmc_cp_set_fast_startup_input(uint32_t ul_inputs);
 void pmc_cp_clr_fast_startup_input(uint32_t ul_inputs);
 #endif
+#if (!(SAMG51 || SAMG53 || SAMG54))
 void pmc_enable_sleepmode(uint8_t uc_type);
+#endif
 void pmc_enable_waitmode(void);
 #if (!(SAMG51 || SAMG53 || SAMG54))
 void pmc_enable_backupmode(void);
@@ -330,7 +327,7 @@ void pmc_disable_clock_failure_detector(void);
 
 //@}
 
-#if (SAM4N || SAM4C || SAM4CM || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4N || SAM4C || SAM4CM || SAM4CP)
 /**
  * \name Slow Crystal Oscillator Frequency Monitoring
  *
@@ -354,7 +351,7 @@ uint32_t pmc_get_writeprotect_status(void);
 
 //@}
 
-#if (SAMG53 || SAMG54 || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAMG53 || SAMG54 || SAMG55)
 /**
  * \name Sleepwalking configuration
  *
@@ -363,12 +360,9 @@ uint32_t pmc_get_writeprotect_status(void);
 
 uint32_t pmc_enable_sleepwalking(uint32_t ul_id);
 uint32_t pmc_disable_sleepwalking(uint32_t ul_id);
-uint32_t pmc_get_sleepwalking_status0(void);
-uint32_t pmc_get_active_status0(void);
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-uint32_t pmc_get_sleepwalking_status1(void);
-uint32_t pmc_get_active_status1(void);
-#endif
+uint32_t pmc_get_sleepwalking_status(void);
+uint32_t pmc_get_active_status(void);
+
 //@}
 #endif
 

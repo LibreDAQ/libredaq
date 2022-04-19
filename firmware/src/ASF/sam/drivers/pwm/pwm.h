@@ -3,35 +3,45 @@
  *
  * \brief Pulse Width Modulation (PWM) driver for SAM.
  *
- * Copyright (c) 2011-2019 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011-2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef PWM_H_INCLUDED
@@ -73,7 +83,7 @@ typedef enum {
 typedef enum {
 	PWM_LOW = LOW,     /* Low level */
 	PWM_HIGH = HIGH,  /* High level */
-#if (SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70)
+#if SAM4E
 	PWM_HIGHZ,  /* High Impedance */
 #endif
 } pwm_level_t;
@@ -88,7 +98,7 @@ typedef struct {
 	uint32_t ul_mck;
 } pwm_clock_t;
 
-#if (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70)
+#if (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E)
 /** Definitions for PWM channels used by motor stepper */
 typedef enum {
 	PWM_STEPPER_MOTOR_CH_0_1 = 0,  /* Channel 0 and 1 */
@@ -118,43 +128,21 @@ typedef enum {
 	PWM_FAULT_MAINOSC = (1 << 0),
 	PWM_FAULT_PWMFI2 = (1 << 1),
 	PWM_FAULT_PWMFI0 = (1 << 2),
-	PWM_FAULT_PWMFI1 = (1 << 3),
-#elif (SAM3S || SAM4S )
-	PWM_FAULT_PWMFI0 = (1 << 0),
+	PWM_FAULT_PWMFI1 = (1 << 3)
+#elif (SAM3S || SAM4S || SAM4E)
+	PWM_FAULT_PWMFI1 = (1 << 0),
 	PWM_FAULT_MAINOSC = (1 << 1),
 	PWM_FAULT_ADC = (1 << 2),
 	PWM_FAULT_ACC = (1 << 3),
 	PWM_FAULT_TIMER_0 = (1 << 4),
-	PWM_FAULT_TIMER_1 = (1 << 5),
-#elif (SAM4E )
-	PWM_FAULT_MAINOSC = (1 << 0),
-	PWM_FAULT_ADC = (1 << 1),
-	PWM_FAULT_PWMFI0 = (1 << 2),
-	PWM_FAULT_PWMFI1 = (1 << 3),
-	PWM_FAULT_PWMFI2 = (1 << 4),
-	PWM_FAULT_PWMFI3 = (1 << 5),
-	PWM_FAULT_PWMFI4 = (1 << 6),
-	PWM_FAULT_PWMFI5 = (1 << 7),
-#elif (SAMV70 || SAMV71 || SAME70 || SAMS70)
-	PWM_FAULT_PWMC0_PWMFI0 = (1 << 0),
-	PWM_FAULT_PWMC0_PWMFI1 = (1 << 1),
-	PWM_FAULT_PWMC0_PWMFI2 = (1 << 2),
-	PWM_FAULT_PWMC1_PWMFI0 = (1 << 0),
-	PWM_FAULT_PWMC1_PWMFI1 = (1 << 1),
-	PWM_FAULT_PWMC1_PWMFI2 = (1 << 2),
-	PWM_FAULT_MAINOSC = (1 << 3),
-	PWM_FAULT_AFEC0 = (1 << 4),
-	PWM_FAULT_AFEC1 = (1 << 5),
-	PWM_FAULT_ACC = (1 << 6),
-	PWM_FAULT_TIMER_0 = (1 << 7),
-	PWM_FAULT_TIMER_1 = (1 << 7),
+	PWM_FAULT_TIMER_1 = (1 << 5)
 #elif (SAM3XA)
 	PWM_FAULT_PWMFI0 = (1 << 0),
 	PWM_FAULT_PWMFI1 = (1 << 1),
 	PWM_FAULT_PWMFI2 = (1 << 2),
 	PWM_FAULT_MAINOSC = (1 << 3),
 	PWM_FAULT_ADC = (1 << 4),
-	PWM_FAULT_TIMER_0 = (1 << 5),
+	PWM_FAULT_TIMER_0 = (1 << 5)
 #endif
 } pwm_fault_id_t;
 
@@ -204,23 +192,16 @@ typedef enum {
 	PWM_SYNC_UNDERRUN = (1 << 3)      /* Synchronous Channels Update Underrun Error */
 } pwm_sync_interrupt_t;
 
-#if (SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70)
+#if SAM4E
 typedef enum {
 	PWM_SPREAD_SPECTRUM_MODE_TRIANGULAR = 0,
 	PWM_SPREAD_SPECTRUM_MODE_RANDOM
 } pwm_spread_spectrum_mode_t;
-#if (SAMV70 || SAMV71 || SAME70 || SAMS70)
 typedef enum {
-	PWM_LEADING_EDGE1_MODE_LINC = PWM_LEBR1_PWMLFEN,
-	PWM_LEADING_EDGE1_MODE_LDEC = PWM_LEBR1_PWMLREN,
-	PWM_LEADING_EDGE1_MODE_HINC = PWM_LEBR1_PWMHFEN,
-	PWM_LEADING_EDGE1_MODE_HDEC = PWM_LEBR1_PWMHREN,
-	PWM_LEADING_EDGE2_MODE_LINC = PWM_LEBR2_PWMLFEN,
-	PWM_LEADING_EDGE2_MODE_LDEC = PWM_LEBR2_PWMLREN,
-	PWM_LEADING_EDGE2_MODE_HINC = PWM_LEBR2_PWMHFEN,
-	PWM_LEADING_EDGE2_MODE_HDEC = PWM_LEBR2_PWMHREN,
-} pwm_leading_edge_blanking_mode_t;
-#endif
+	PWM_ADDITIONAL_EDGE_MODE_INC = PWM_CAE_ADEDGM_INC,
+	PWM_ADDITIONAL_EDGE_MODE_DEC = PWM_CAE_ADEDGM_DEC,
+	PWM_ADDITIONAL_EDGE_MODE_BOTH = PWM_CAE_ADEDGM_BOTH,
+} pwm_additional_edge_mode_t;
 #endif
 
 /** Configurations of a PWM channel output */
@@ -278,7 +259,7 @@ typedef struct {
 	/** Offset address of PWM register in which a write access has been attempted */
 	uint32_t ul_offset;
 } pwm_protect_t;
-#endif /* (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70) */
+#endif /* (SAM3U || SAM3S || SAM3XA) */
 
 /** Input parameters when configuring a PWM channel mode */
 typedef struct {
@@ -295,7 +276,7 @@ typedef struct {
 	/** Period Cycle Value */
 	uint32_t ul_period;
 
-#if (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70)
+#if (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E)
     /** Channel counter event */
 	pwm_counter_event_t counter_event;
     /** Boolean of channel dead-time generator */
@@ -318,23 +299,16 @@ typedef struct {
 	pwm_level_t ul_fault_output_pwmh;
 	/** Channel PWML output level in fault protection */
 	pwm_level_t ul_fault_output_pwml;
-#endif /* (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70) */
+#endif /* (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E) */
 #if SAM4E
 	/** Spread Spectrum Value */
 	uint32_t ul_spread;
 	/** Spread Spectrum Mode */
 	pwm_spread_spectrum_mode_t spread_spectrum_mode;
-#elif (SAMV70 || SAMV71 || SAME70 || SAMS70)
-	/** Spread Spectrum Value */
-	uint32_t ul_spread;
-	/** Spread Spectrum Mode */
-	pwm_spread_spectrum_mode_t spread_spectrum_mode;
-	/** Leading Edge Value */
-	uint32_t ul_leading_edge_delay;
-	/** Leading Edge Mode */
-	pwm_leading_edge_blanking_mode_t leading_edge_blanking_mode;
-	/** PPM Mode in Channel mode */
-	uint32_t ul_ppm_mode;
+	/** Additional Edge Value */
+	uint32_t ul_additional_edge;
+	/** Additional Edge Mode */
+	pwm_additional_edge_mode_t additional_edge_mode;
 #endif
 } pwm_channel_t;
 
@@ -356,7 +330,7 @@ void pwm_channel_enable_interrupt(Pwm *p_pwm, uint32_t ul_event,
 void pwm_channel_disable_interrupt(Pwm *p_pwm, uint32_t ul_event,
 		uint32_t ul_fault);
 
-#if (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70)
+#if (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E)
 void pwm_channel_update_output(Pwm *p_pwm, pwm_channel_t *p_channel,
 		pwm_output_t *p_output, bool b_sync);
 void pwm_channel_update_dead_time(Pwm *p_pwm, pwm_channel_t *p_channel,
@@ -375,13 +349,12 @@ void pwm_cmp_enable_interrupt(Pwm *p_pwm, uint32_t ul_sources,
 		pwm_cmp_interrupt_t type);
 void pwm_cmp_disable_interrupt(Pwm *p_pwm, uint32_t ul_sources,
 		pwm_cmp_interrupt_t type);
-#if !(SAMV70 || SAMV71 || SAME70 || SAMS70)
 void pwm_pdc_set_request_mode(Pwm *p_pwm, pwm_pdc_request_mode_t request_mode,
 		uint32_t ul_cmp_unit);
 
 void pwm_pdc_enable_interrupt(Pwm *p_pwm, uint32_t ul_sources);
 void pwm_pdc_disable_interrupt(Pwm *p_pwm, uint32_t ul_sources);
-#endif
+
 uint32_t pwm_sync_init(Pwm *p_pwm, pwm_sync_update_mode_t mode,
 		uint32_t ul_update_period);
 void pwm_sync_unlock_update(Pwm *p_pwm);
@@ -396,29 +369,21 @@ bool pwm_get_protect_status(Pwm *p_pwm, pwm_protect_t * p_protect);
 
 uint32_t pwm_get_interrupt_status(Pwm *p_pwm);
 uint32_t pwm_get_interrupt_mask(Pwm *p_pwm);
-#endif /* (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70) */
+#endif /* (SAM3U || SAM3S || SAM3XA || SAM4S || SAM4E) */
 
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E)
 void pwm_stepper_motor_init(Pwm *p_pwm, pwm_stepper_motor_pair_t pair,
 		bool b_enable_gray, bool b_down);
-#endif /* (SAM3S || SAM3XA || SAM4S || SAM4E || SAMV70 || SAMV71 || SAME70 || SAMS70) */
+#endif /* (SAM3S || SAM3XA || SAM4S || SAM4E) */
 
 #if SAM4E
 void pwm_channel_update_spread(Pwm *p_pwm, pwm_channel_t *p_channel,
 		uint32_t ul_spread);
+void pwm_channel_update_additional_edge(Pwm *p_pwm, pwm_channel_t *p_channel,
+		uint32_t ul_additional_edge,
+		pwm_additional_edge_mode_t additional_edge_mode);
 void pwm_channel_update_polarity_mode(Pwm *p_pwm, pwm_channel_t *p_channel,
 		bool polarity_inversion_flag, pwm_level_t polarity_value);
-#elif (SAMV70 || SAMV71 || SAME70 || SAMS70)
-void pwm_channel_update_spread(Pwm *p_pwm, pwm_channel_t *p_channel,
-		uint32_t ul_spread);
-void pwm_channel_update_leading_edge(Pwm *p_pwm, pwm_channel_t *p_channel,
-		uint32_t ul_leading_edge_delay,
-		pwm_leading_edge_blanking_mode_t leading_edge_blanking_mode);
-#endif
-
-#if (SAMV70 || SAMV71 || SAME70 || SAMS70)
-void pwm_set_dma_duty(Pwm *p_pwm, uint32_t ul_dma_duty_value);
-void pwm_set_ext_trigger_mode(Pwm *p_pwm, pwm_channel_t *p_channel, uint32_t ul_mode);
 #endif
 
 /// @cond 0

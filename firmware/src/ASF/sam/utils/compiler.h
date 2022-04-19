@@ -3,39 +3,50 @@
  *
  * \brief Commonly used includes, types and macros.
  *
- * Copyright (c) 2010-2019 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2010-2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #ifndef UTILS_COMPILER_H
 #define UTILS_COMPILER_H
+
 
 /**
  * \defgroup group_sam_utils Compiler abstraction layer and code utilities
@@ -149,9 +160,6 @@
 #if defined(__CC_ARM)
 #   define __always_inline   __forceinline
 #elif (defined __GNUC__)
-#ifdef __always_inline
-#	undef __always_inline
-#endif
 #	define __always_inline   inline __attribute__((__always_inline__))
 #elif (defined __ICCARM__)
 #	define __always_inline   _Pragma("inline=forced")
@@ -197,7 +205,7 @@
 #endif
 
 /* Define WEAK attribute */
-#if defined   ( __CC_ARM   ) /* Keil µVision 4 */
+#if defined   ( __CC_ARM   ) /* Keil 礦ision 4 */
 #   define WEAK __attribute__ ((weak))
 #elif defined ( __ICCARM__ ) /* IAR Ewarm 5.41+ */
 #   define WEAK __weak
@@ -215,7 +223,7 @@
 #endif
 
 /* Define RAMFUNC attribute */
-#if defined   ( __CC_ARM   ) /* Keil µVision 4 */
+#if defined   ( __CC_ARM   ) /* Keil 礦ision 4 */
 #   define RAMFUNC __attribute__ ((section(".ramfunc")))
 #elif defined ( __ICCARM__ ) /* IAR Ewarm 5.41+ */
 #   define RAMFUNC __ramfunc
@@ -224,12 +232,12 @@
 #endif
 
 /* Define OPTIMIZE_HIGH attribute */
-#if defined   ( __CC_ARM   ) /* Keil µVision 4 */
+#if defined   ( __CC_ARM   ) /* Keil 礦ision 4 */
 #   define OPTIMIZE_HIGH _Pragma("O3") 
 #elif defined ( __ICCARM__ ) /* IAR Ewarm 5.41+ */
 #   define OPTIMIZE_HIGH _Pragma("optimize=high")
 #elif defined (  __GNUC__  ) /* GCC CS3 2009q3-68 */
-#   define OPTIMIZE_HIGH __attribute__((optimize("s")))
+#   define OPTIMIZE_HIGH __attribute__((optimize(s)))
 #endif
 
 #include "interrupt.h"
@@ -572,9 +580,9 @@ typedef struct
  * \return The count of leading zero bits in \a u.
  */
 #if (defined __GNUC__) || (defined __CC_ARM)
-#   define clz(u)              ((u) ? __builtin_clz(u) : 32)
+#   define clz(u)              __builtin_clz(u)
 #elif (defined __ICCARM__)
-#   define clz(u)              ((u) ? __CLZ(u) : 32)
+#   define clz(u)              __CLZ(u)
 #else
 #   define clz(u)              (((u) == 0)          ? 32 : \
                                 ((u) & (1ul << 31)) ?  0 : \
@@ -618,7 +626,7 @@ typedef struct
  * \return The count of trailing zero bits in \a u.
  */
 #if (defined __GNUC__) || (defined __CC_ARM)
-#   define ctz(u)              ((u) ? __builtin_ctz(u) : 32)
+#   define ctz(u)              __builtin_ctz(u)
 #else
 #   define ctz(u)              ((u) & (1ul <<  0) ?  0 : \
                                 (u) & (1ul <<  1) ?  1 : \
@@ -882,7 +890,7 @@ typedef struct
 #define  LSB1D(u64)     MSB6D(u64)           //!< Least significant byte of 2nd rank of \a u64.
 #define  LSB0D(u64)     MSB7D(u64)           //!< Least significant byte of 1st rank of \a u64.
 
-#define  BE16(x)        swap16(x)
+#define  BE16(x)        Swap16(x)
 #define  LE16(x)        (x)
 
 #define  le16_to_cpu(x) (x)
@@ -890,10 +898,10 @@ typedef struct
 #define  LE16_TO_CPU(x) (x)
 #define  CPU_TO_LE16(x) (x)
 
-#define  be16_to_cpu(x) swap16(x)
-#define  cpu_to_be16(x) swap16(x)
-#define  BE16_TO_CPU(x) swap16(x)
-#define  CPU_TO_BE16(x) swap16(x)
+#define  be16_to_cpu(x) Swap16(x)
+#define  cpu_to_be16(x) Swap16(x)
+#define  BE16_TO_CPU(x) Swap16(x)
+#define  CPU_TO_BE16(x) Swap16(x)
 
 #define  le32_to_cpu(x) (x)
 #define  cpu_to_le32(x) (x)
@@ -1046,14 +1054,13 @@ typedef U8                  Byte;       //!< 8-bit unsigned integer.
 #if defined(__ICCARM__)
 #define nop()               __no_operation()
 #elif defined(__GNUC__)
-#define nop()               __NOP()
+#define nop()               (__NOP())
 #endif
 
 #define FLASH_DECLARE(x)  const x
 #define FLASH_EXTERN(x) extern const x
 #define PGM_READ_BYTE(x) *(x)
 #define PGM_READ_WORD(x) *(x)
-#define PGM_READ_DWORD(x) *(x)
 #define MEMCPY_ENDIAN memcpy
 #define PGM_READ_BLOCK(dst, src, len) memcpy((dst), (src), (len))
 

@@ -3,35 +3,45 @@
  *
  * \brief Power Management Controller (PMC) driver for SAM.
  *
- * Copyright (c) 2011-2019 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #include "pmc.h"
@@ -46,14 +56,6 @@
 # define MAX_PERIPH_ID    34
 #elif (SAM4E)
 # define MAX_PERIPH_ID    47
-#elif (SAMV71)
-# define MAX_PERIPH_ID    63
-#elif (SAMV70)
-# define MAX_PERIPH_ID    63
-#elif (SAME70)
-# define MAX_PERIPH_ID    63
-#elif (SAMS70)
-# define MAX_PERIPH_ID    63
 #elif (SAM4N)
 # define MAX_PERIPH_ID    31
 #elif (SAM4C || SAM4CM || SAM4CP)
@@ -99,37 +101,6 @@ void pmc_mck_set_prescaler(uint32_t ul_pres)
 			(PMC->PMC_MCKR & (~PMC_MCKR_PRES_Msk)) | ul_pres;
 	while (!(PMC->PMC_SR & PMC_SR_MCKRDY));
 }
-
-#if SAMV71 || SAMV70 || SAME70 || SAMS70
-/**
- * \brief Set the division of the MCK.
- *
- * \param ul_div Division value.
- */
-void pmc_mck_set_division(uint32_t ul_div)
-{
-	switch (ul_div) {
-		case 1:
-			ul_div = PMC_MCKR_MDIV_EQ_PCK;
-			break;
-		case 2:
-			ul_div = PMC_MCKR_MDIV_PCK_DIV2;
-			break;
-		case 3:
-			ul_div = PMC_MCKR_MDIV_PCK_DIV3;
-			break;
-		case 4:
-			ul_div = PMC_MCKR_MDIV_PCK_DIV4;
-			break;
-		default:
-			ul_div = PMC_MCKR_MDIV_EQ_PCK;
-			break;
-	}
-	PMC->PMC_MCKR =
-			(PMC->PMC_MCKR & (~PMC_MCKR_MDIV_Msk)) | ul_div;
-	while (!(PMC->PMC_SR & PMC_SR_MCKRDY));
-}
-#endif
 
 /**
  * \brief Set the source of the MCK.
@@ -274,7 +245,7 @@ uint32_t pmc_switch_mck_to_pllbck(uint32_t ul_pres)
 }
 #endif
 
-#if (SAM3XA || SAM3U || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA || SAM3U)
 /**
  * \brief Switch master clock source selection to UPLL clock.
  *
@@ -637,7 +608,7 @@ uint32_t pmc_is_locked_pllbck(void)
 }
 #endif
 
-#if (SAM3XA || SAM3U || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA || SAM3U)
 /**
  * \brief Enable UPLL clock.
  */
@@ -681,13 +652,6 @@ uint32_t pmc_is_locked_upll(void)
  */
 uint32_t pmc_enable_periph_clk(uint32_t ul_id)
 {
-#if defined(REG_PMC_PCR) && !SAMG55
-	uint32_t pcr;
-	PMC->PMC_PCR = ul_id & 0x7F;
-	pcr = PMC->PMC_PCR | PMC_PCR_EN | PMC_PCR_CMD;
-	PMC->PMC_PCR = pcr;
-	return 0;
-#else
 	if (ul_id > MAX_PERIPH_ID) {
 		return 1;
 	}
@@ -696,7 +660,7 @@ uint32_t pmc_enable_periph_clk(uint32_t ul_id)
 		if ((PMC->PMC_PCSR0 & (1u << ul_id)) != (1u << ul_id)) {
 			PMC->PMC_PCER0 = 1 << ul_id;
 		}
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMG55)
 	} else {
 		ul_id -= 32;
 		if ((PMC->PMC_PCSR1 & (1u << ul_id)) != (1u << ul_id)) {
@@ -706,7 +670,6 @@ uint32_t pmc_enable_periph_clk(uint32_t ul_id)
 	}
 
 	return 0;
-#endif /* defined(REG_PMC_PCR) && !SAMG55 */
 }
 
 /**
@@ -721,13 +684,6 @@ uint32_t pmc_enable_periph_clk(uint32_t ul_id)
  */
 uint32_t pmc_disable_periph_clk(uint32_t ul_id)
 {
-#if defined(REG_PMC_PCR) && !SAMG55
-	uint32_t pcr;
-	PMC->PMC_PCR = ul_id & 0x7F;
-	pcr = PMC->PMC_PCR | PMC_PCR_CMD;
-	PMC->PMC_PCR = pcr;
-	return 0;
-#else
 	if (ul_id > MAX_PERIPH_ID) {
 		return 1;
 	}
@@ -736,8 +692,7 @@ uint32_t pmc_disable_periph_clk(uint32_t ul_id)
 		if ((PMC->PMC_PCSR0 & (1u << ul_id)) == (1u << ul_id)) {
 			PMC->PMC_PCDR0 = 1 << ul_id;
 		}
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMG55 || SAMV71 \
-		|| SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMG55)
 	} else {
 		ul_id -= 32;
 		if ((PMC->PMC_PCSR1 & (1u << ul_id)) == (1u << ul_id)) {
@@ -746,7 +701,6 @@ uint32_t pmc_disable_periph_clk(uint32_t ul_id)
 #endif
 	}
 	return 0;
-#endif /* defined(REG_PMC_PCR) && !SAMG55 */
 }
 
 /**
@@ -757,16 +711,9 @@ void pmc_enable_all_periph_clk(void)
 	PMC->PMC_PCER0 = PMC_MASK_STATUS0;
 	while ((PMC->PMC_PCSR0 & PMC_MASK_STATUS0) != PMC_MASK_STATUS0);
 
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMV71  \
-		|| SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP)
 	PMC->PMC_PCER1 = PMC_MASK_STATUS1;
 	while ((PMC->PMC_PCSR1 & PMC_MASK_STATUS1) != PMC_MASK_STATUS1);
-#endif
-
-#if defined(REG_PMC_PCR) && !SAMG55
-	for (uint32_t id = 64; id <= 0x7F; id ++) {
-		pmc_enable_periph_clk(id);
-	}
 #endif
 }
 
@@ -778,16 +725,9 @@ void pmc_disable_all_periph_clk(void)
 	PMC->PMC_PCDR0 = PMC_MASK_STATUS0;
 	while ((PMC->PMC_PCSR0 & PMC_MASK_STATUS0) != 0);
 
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMV71 \
-		|| SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP)
 	PMC->PMC_PCDR1 = PMC_MASK_STATUS1;
 	while ((PMC->PMC_PCSR1 & PMC_MASK_STATUS1) != 0);
-#endif
-
-#if defined(REG_PMC_PCR) && !SAMG55
-	for (uint32_t id = 64; id <= 0x7F; id ++) {
-		pmc_disable_periph_clk(id);
-	}
 #endif
 }
 
@@ -803,16 +743,11 @@ void pmc_disable_all_periph_clk(void)
  */
 uint32_t pmc_is_periph_clk_enabled(uint32_t ul_id)
 {
-#if defined(REG_PMC_PCR) && !SAMG55
-	PMC->PMC_PCR = ul_id & 0x7F;
-	return (PMC->PMC_PCR & PMC_PCR_EN) ? 1 : 0;
-#else
 	if (ul_id > MAX_PERIPH_ID) {
 		return 0;
 	}
 
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMV71 \
-		|| SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP)
 	if (ul_id < 32) {
 #endif
 		if ((PMC->PMC_PCSR0 & (1u << ul_id))) {
@@ -820,8 +755,7 @@ uint32_t pmc_is_periph_clk_enabled(uint32_t ul_id)
 		} else {
 			return 0;
 		}
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP || SAMV71 \
-		|| SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAM4C || SAM4CM || SAM4CP)
 	} else {
 		ul_id -= 32;
 		if ((PMC->PMC_PCSR1 & (1u << ul_id))) {
@@ -831,7 +765,6 @@ uint32_t pmc_is_periph_clk_enabled(uint32_t ul_id)
 		}
 	}
 #endif
-#endif /* defined(REG_PMC_PCR) && !SAMG55 */
 }
 
 /**
@@ -934,48 +867,6 @@ uint32_t pmc_switch_pck_to_pllack(uint32_t ul_id, uint32_t ul_pres)
 	return 0;
 }
 
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-/**
- * \brief Get Slow clock source configuration.
- *
- * \retval Crystal Oscillator Select value.
- */
-uint32_t pmc_get_slck_config(void)
-{
-	return (SUPC->SUPC_CR & SUPC_CR_XTALSEL);
-}
-
-/**
- * \brief Get Main clock source configuration.
- *
- * \retval Main Clock Source Oscillator Selection and Main RC Oscillator Frequency Selection values.
- */
-uint32_t pmc_get_mainck_config(void)
-{
-	return (PMC->CKGR_MOR & (CKGR_MOR_MOSCSEL | CKGR_MOR_MOSCRCF_Msk));
-}
-
-/**
- * \brief Get PLLA clock configuration.
- *
- * \retval PLLA Multiplier and PLLA Front End Divider values.
- */
-uint32_t pmc_get_pllack_config(void)
-{
-	return (PMC->CKGR_PLLAR & (CKGR_PLLAR_DIVA_Msk | CKGR_PLLAR_MULA_Msk));
-}
-
-/**
- * \brief Get UPLLCKDIV configuration.
- *
- * \retval UPLL Divider by 2 value.
- */
-uint32_t pmc_get_upllckdiv_config(void)
-{
-	return (PMC->PMC_MCKR & PMC_MCKR_UPLLDIV2);
-}
-#endif
-
 #if (SAM3S || SAM4S || SAM4C || SAM4CM || SAM4CP || SAMG55)
 /**
  * \brief Switch programmable clock source selection to PLLB clock.
@@ -1003,7 +894,7 @@ uint32_t pmc_switch_pck_to_pllbck(uint32_t ul_id, uint32_t ul_pres)
 }
 #endif
 
-#if (SAM3XA || SAM3U || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA || SAM3U)
 /**
  * \brief Switch programmable clock source selection to UPLL clock.
  *
@@ -1144,7 +1035,7 @@ bool pmc_is_cpck_enabled(void)
  */
 void pmc_enable_cpbmck(void)
 {
-	PMC->PMC_SCER = PMC_SCER_CPBMCK | PMC_SCER_CPKEY_PASSWD;
+	PMC->PMC_SCER = PMC_SCER_CPCK | PMC_SCER_CPKEY_PASSWD;
 }
 
 /**
@@ -1152,7 +1043,7 @@ void pmc_enable_cpbmck(void)
  */
 void pmc_disable_cpbmck(void)
 {
-	PMC->PMC_SCDR = PMC_SCDR_CPBMCK | PMC_SCDR_CPKEY_PASSWD;
+	PMC->PMC_SCDR = PMC_SCDR_CPCK | PMC_SCDR_CPKEY_PASSWD;
 }
 
 /**
@@ -1193,7 +1084,7 @@ void pmc_cpck_set_source(uint32_t ul_source)
 }
 #endif
 
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55)
 /**
  * \brief Switch UDP (USB) clock source selection to PLLA clock.
  *
@@ -1217,7 +1108,7 @@ void pmc_switch_udpck_to_pllbck(uint32_t ul_usbdiv)
 }
 #endif
 
-#if (SAM3XA || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3XA)
 /**
  * \brief Switch UDP (USB) clock source selection to UPLL clock.
  *
@@ -1229,17 +1120,15 @@ void pmc_switch_udpck_to_upllck(uint32_t ul_usbdiv)
 }
 #endif
 
-#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM3S || SAM3XA || SAM4S || SAM4E || SAMG55)
 /**
  * \brief Enable UDP (USB) clock.
  */
 void pmc_enable_udpck(void)
 {
-#if (SAM3S || SAM4S || SAM4E || SAMG55)
+# if (SAM3S || SAM4S || SAM4E || SAMG55)
 	PMC->PMC_SCER = PMC_SCER_UDP;
-#elif (SAMV71 || SAMV70 || SAME70 || SAMS70)
-	PMC->PMC_SCER = PMC_SCER_USBCLK;
-#else
+# else
 	PMC->PMC_SCER = PMC_SCER_UOTGCLK;
 # endif
 }
@@ -1249,11 +1138,9 @@ void pmc_enable_udpck(void)
  */
 void pmc_disable_udpck(void)
 {
-#if (SAM3S || SAM4S || SAM4E || SAMG55)
+# if (SAM3S || SAM4S || SAM4E || SAMG55)
 	PMC->PMC_SCDR = PMC_SCDR_UDP;
-#elif (SAMV71 || SAMV70 || SAME70 || SAMS70)
-	PMC->PMC_SCDR = PMC_SCDR_USBCLK;
-#else
+# else
 	PMC->PMC_SCDR = PMC_SCDR_UOTGCLK;
 # endif
 }
@@ -1379,37 +1266,36 @@ void pmc_cp_clr_fast_startup_input(uint32_t ul_inputs)
 }
 #endif
 
+#if (!(SAMG51 || SAMG53 || SAMG54))
 /**
  * \brief Enable Sleep Mode.
  * Enter condition: (WFE or WFI) + (SLEEPDEEP bit = 0) + (LPM bit = 0)
  *
  * \param uc_type 0 for wait for interrupt, 1 for wait for event.
- * \note For SAM4S, SAM4C, SAM4CM, SAM4CP, SAMV71 and SAM4E series,
+ * \note For SAM4S, SAM4C, SAM4CM, SAM4CP and SAM4E series,
  * since only WFI is effective, uc_type = 1 will be treated as uc_type = 0.
  */
 void pmc_enable_sleepmode(uint8_t uc_type)
 {
-#if !(SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if !(SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAM4CP)
 	PMC->PMC_FSMR &= (uint32_t) ~ PMC_FSMR_LPM; // Enter Sleep mode
 #endif
 	SCB->SCR &= (uint32_t) ~ SCB_SCR_SLEEPDEEP_Msk; // Deep sleep
 
-#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAM4CP)
 	UNUSED(uc_type);
-	__DSB();
 	__WFI();
 #else
 	if (uc_type == 0) {
-		__DSB();
 		__WFI();
 	} else {
-		__DSB();
 		__WFE();
 	}
 #endif
 }
+#endif
 
-#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAMG || SAM4CP)
 static uint32_t ul_flash_in_wait_mode = PMC_WAIT_MODE_FLASH_DEEP_POWERDOWN;
 /**
  * \brief Set the embedded flash state in wait mode
@@ -1425,8 +1311,8 @@ void pmc_set_flash_in_wait_mode(uint32_t ul_flash_state)
 /**
  * \brief Enable Wait Mode. Enter condition: (WAITMODE bit = 1) + FLPM
  *
- * \note In this function, FLPM will retain, WAITMODE bit will be set,
- * Generally, this function will be called by pmc_sleep() in order to
+ * \note In this function, FLPM will retain, WAITMODE bit will be set, 
+ * Generally, this function will be called by pmc_sleep() in order to 
  * complete all sequence entering wait mode.
  * See \ref pmc_sleep() for entering different sleep modes.
  */
@@ -1437,12 +1323,7 @@ void pmc_enable_waitmode(void)
 	/* Flash in wait mode */
 	i = PMC->PMC_FSMR;
 	i &= ~PMC_FSMR_FLPM_Msk;
-#if !(SAMV71 || SAMV70 || SAME70 || SAMS70)
 	i |= ul_flash_in_wait_mode;
-#else
-	(void)ul_flash_in_wait_mode;
-	i |= PMC_WAIT_MODE_FLASH_IDLE;
-#endif
 	PMC->PMC_FSMR = i;
 
 	/* Set the WAITMODE bit = 1 */
@@ -1479,7 +1360,6 @@ void pmc_enable_waitmode(void)
 	PMC->PMC_FSMR |= PMC_FSMR_LPM; /* Enter Wait mode */
 	SCB->SCR &= (uint32_t) ~ SCB_SCR_SLEEPDEEP_Msk; /* Deep sleep */
 
-	__DSB();
 	__WFE();
 
 	/* Waiting for MOSCRCEN bit cleared is strongly recommended
@@ -1506,15 +1386,11 @@ void pmc_enable_backupmode(void)
 	while (SUPC->SUPC_SR & SUPC_SR_BUPPORS);
 #endif
 	SCB->SCR |= SCB_SCR_SLEEPDEEP_Msk;
-#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAM4CP || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4S || SAM4E || SAM4N || SAM4C || SAM4CM || SAM4CP || SAMG55)
 	SUPC->SUPC_CR = SUPC_CR_KEY_PASSWD | SUPC_CR_VROFF_STOP_VREG;
-	uint32_t ul_dummy = SUPC->SUPC_MR;
-	UNUSED(ul_dummy);
-	__DSB();
 	__WFE();
 	__WFI();
 #else
-	__DSB();
 	__WFE();
 #endif
 }
@@ -1540,7 +1416,7 @@ void pmc_disable_clock_failure_detector(void)
 	PMC->CKGR_MOR = CKGR_MOR_KEY_PASSWD | ul_reg;
 }
 
-#if (SAM4N || SAM4C || SAM4CM || SAM4CP || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAM4N || SAM4C || SAM4CM || SAM4CP)
 /**
  * \brief Enable Slow Crystal Oscillator Frequency Monitoring.
  */
@@ -1586,7 +1462,7 @@ uint32_t pmc_get_writeprotect_status(void)
 	return PMC->PMC_WPSR;
 }
 
-#if (SAMG53 || SAMG54 || SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if (SAMG53 || SAMG54 || SAMG55)
 /**
  * \brief Enable the specified peripheral clock.
  *
@@ -1600,40 +1476,23 @@ uint32_t pmc_get_writeprotect_status(void)
 uint32_t pmc_enable_sleepwalking(uint32_t ul_id)
 {
 	uint32_t temp;
-#if (SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if SAMG55
 	if ((7 <= ul_id) && (ul_id<= 29)) {
 #else
 	if ((8 <= ul_id) && (ul_id<= 29)) {
 #endif
-		temp = pmc_get_active_status0();
+		temp = pmc_get_active_status();
 		if (temp & (1 << ul_id)) {
 			return 1;
 		}
 		PMC->PMC_SLPWK_ER0 = 1 << ul_id;
-		temp = pmc_get_active_status0();
+		temp = pmc_get_active_status();
 		if (temp & (1 << ul_id)) {
 			pmc_disable_sleepwalking(ul_id);
 			return 1;
 		}
 		return 0;
-	}
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-	else if ((32 <= ul_id) && (ul_id<= 60)) {
-		ul_id -= 32;
-		temp = pmc_get_active_status1();
-		if (temp & (1 << ul_id)) {
-			return 1;
-		}
-		PMC->PMC_SLPWK_ER1 = 1 << ul_id;
-		temp = pmc_get_active_status1();
-		if (temp & (1 << ul_id)) {
-			pmc_disable_sleepwalking(ul_id);
-			return 1;
-		}
-		return 0;
-	}
-#endif
-	else {
+	} else {
 		return 1;
 	}
 }
@@ -1650,22 +1509,14 @@ uint32_t pmc_enable_sleepwalking(uint32_t ul_id)
  */
 uint32_t pmc_disable_sleepwalking(uint32_t ul_id)
 {
-#if (SAMG55 || SAMV71 || SAMV70 || SAME70 || SAMS70)
+#if SAMG55
 	if ((7 <= ul_id) && (ul_id<= 29)) {
 #else
 	if ((8 <= ul_id) && (ul_id<= 29)) {
-#endif
+#endif		
 		PMC->PMC_SLPWK_DR0 = 1 << ul_id;
 		return 0;
-	}
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-	else if ((32 <= ul_id) && (ul_id<= 60)) {
-		ul_id -= 32;
-		PMC->PMC_SLPWK_DR1 = 1 << ul_id;
-		return 0;
-	}
-#endif
-	else {
+	} else {
 		return 1;
 	}
 }
@@ -1675,7 +1526,7 @@ uint32_t pmc_disable_sleepwalking(uint32_t ul_id)
  *
  * \return the status register value.
  */
-uint32_t pmc_get_sleepwalking_status0(void)
+uint32_t pmc_get_sleepwalking_status(void)
 {
 	return PMC->PMC_SLPWK_SR0;
 }
@@ -1685,33 +1536,11 @@ uint32_t pmc_get_sleepwalking_status0(void)
  *
  * \return the status register value.
  */
-uint32_t pmc_get_active_status0(void)
+uint32_t pmc_get_active_status(void)
 {
 	return PMC->PMC_SLPWK_ASR0;
 }
 
-#endif
-
-#if (SAMV71 || SAMV70 || SAME70 || SAMS70)
-/**
- * \brief Return peripheral sleepwalking enable status.
- *
- * \return the status register value.
- */
-uint32_t pmc_get_sleepwalking_status1(void)
-{
-	return PMC->PMC_SLPWK_SR1;
-}
-
-/**
- * \brief Return peripheral active status.
- *
- * \return the status register value.
- */
-uint32_t pmc_get_active_status1(void)
-{
-	return PMC->PMC_SLPWK_ASR1;
-}
 #endif
 
 /// @cond 0

@@ -3,35 +3,45 @@
  *
  * \brief Analog-to-Digital Converter (ADC/ADC12B) driver for SAM.
  *
- * Copyright (c) 2011-2018 Microchip Technology Inc. and its subsidiaries.
+ * Copyright (c) 2011 - 2014 Atmel Corporation. All rights reserved.
  *
  * \asf_license_start
  *
  * \page License
  *
- * Subject to your compliance with these terms, you may use Microchip
- * software and any derivatives exclusively with Microchip products.
- * It is your responsibility to comply with third party license terms applicable
- * to your use of third party software (including open source software) that
- * may accompany Microchip software.
+ * Redistribution and use in source and binary forms, with or without
+ * modification, are permitted provided that the following conditions are met:
  *
- * THIS SOFTWARE IS SUPPLIED BY MICROCHIP "AS IS". NO WARRANTIES,
- * WHETHER EXPRESS, IMPLIED OR STATUTORY, APPLY TO THIS SOFTWARE,
- * INCLUDING ANY IMPLIED WARRANTIES OF NON-INFRINGEMENT, MERCHANTABILITY,
- * AND FITNESS FOR A PARTICULAR PURPOSE. IN NO EVENT WILL MICROCHIP BE
- * LIABLE FOR ANY INDIRECT, SPECIAL, PUNITIVE, INCIDENTAL OR CONSEQUENTIAL
- * LOSS, DAMAGE, COST OR EXPENSE OF ANY KIND WHATSOEVER RELATED TO THE
- * SOFTWARE, HOWEVER CAUSED, EVEN IF MICROCHIP HAS BEEN ADVISED OF THE
- * POSSIBILITY OR THE DAMAGES ARE FORESEEABLE.  TO THE FULLEST EXTENT
- * ALLOWED BY LAW, MICROCHIP'S TOTAL LIABILITY ON ALL CLAIMS IN ANY WAY
- * RELATED TO THIS SOFTWARE WILL NOT EXCEED THE AMOUNT OF FEES, IF ANY,
- * THAT YOU HAVE PAID DIRECTLY TO MICROCHIP FOR THIS SOFTWARE.
+ * 1. Redistributions of source code must retain the above copyright notice,
+ *    this list of conditions and the following disclaimer.
+ *
+ * 2. Redistributions in binary form must reproduce the above copyright notice,
+ *    this list of conditions and the following disclaimer in the documentation
+ *    and/or other materials provided with the distribution.
+ *
+ * 3. The name of Atmel may not be used to endorse or promote products derived
+ *    from this software without specific prior written permission.
+ *
+ * 4. This software may only be redistributed and used in connection with an
+ *    Atmel microcontroller product.
+ *
+ * THIS SOFTWARE IS PROVIDED BY ATMEL "AS IS" AND ANY EXPRESS OR IMPLIED
+ * WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ * MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT ARE
+ * EXPRESSLY AND SPECIFICALLY DISCLAIMED. IN NO EVENT SHALL ATMEL BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+ * OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+ * HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+ * STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN
+ * ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+ * POSSIBILITY OF SUCH DAMAGE.
  *
  * \asf_license_stop
  *
  */
-/*
- * Support and FAQ: visit <a href="https://www.microchip.com/support/">Microchip Support</a>
+ /**
+ * Support and FAQ: visit <a href="http://www.atmel.com/design-support/">Atmel Support</a>
  */
 
 #include "adc.h"
@@ -329,11 +339,11 @@ void adc_start(Adc *p_adc)
 }
 
 /**
- * \brief Reset ADC.
+ * \brief Stop analog-to-digital conversion.
  *
  * \param p_adc Pointer to an ADC instance.
  */
-void adc_reset(Adc *p_adc)
+void adc_stop(Adc *p_adc)
 {
 	p_adc->ADC_CR = ADC_CR_SWRST;
 }
@@ -845,14 +855,14 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 	ul_prescal = ((p_adc->ADC_MR & ADC_MR_PRESCAL_Msk) >>
 			ADC_MR_PRESCAL_Pos);
 	ul_adcfreq = ul_mck / ((ul_prescal + 1) * 2);
-	printf("ADC clock frequency = %d Hz\r\n", (int)ul_adcfreq);
+	//printf("ADC clock frequency = %d Hz\r\n", (int)ul_adcfreq);
 
 	if (ul_adcfreq < ADC_FREQ_MIN) {
-		printf("adc frequency too low (out of specification: %d Hz)\r\n",
+		//printf("adc frequency too low (out of specification: %d Hz)\r\n",
 			(int)ADC_FREQ_MIN);
 	}
 	if (ul_adcfreq > ADC_FREQ_MAX) {
-		printf("adc frequency too high (out of specification: %d Hz)\r\n",
+		//printf("adc frequency too high (out of specification: %d Hz)\r\n",
 			(int)ADC_FREQ_MAX);
 	}
 
@@ -862,7 +872,7 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 		/* 40ms */
 		if (ADC_STARTUP_NORM * ul_adcfreq / 1000000 >
 				calcul_startup(ul_startup)) {
-			printf("Startup time too small: %d, programmed: %d\r\n",
+			//printf("Startup time too small: %d, programmed: %d\r\n",
 					(int)(ADC_STARTUP_NORM * ul_adcfreq /
 							1000000),
 					(int)calcul_startup(ul_startup));
@@ -876,7 +886,7 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 			/* Sleep 40ms */
 			if (ADC_STARTUP_NORM * ul_adcfreq / 1000000 >
 					calcul_startup(ul_startup)) {
-				printf("Startup time too small: %d, programmed: %d\r\n",
+				//printf("Startup time too small: %d, programmed: %d\r\n",
 					(int)(ADC_STARTUP_NORM * ul_adcfreq / 1000000),
 					(int)(calcul_startup(ul_startup)));
 			}
@@ -885,7 +895,7 @@ void adc_check(Adc *p_adc, const uint32_t ul_mck)
 				/* Fast Wake Up Sleep Mode: 12ms */
 				if (ADC_STARTUP_FAST * ul_adcfreq / 1000000 >
 						calcul_startup(ul_startup)) {
-					printf("Startup time too small: %d, programmed: %d\r\n",
+					//printf("Startup time too small: %d, programmed: %d\r\n",
 						(int)(ADC_STARTUP_NORM * ul_adcfreq / 1000000),
 						(int)(calcul_startup(ul_startup)));
 				}
