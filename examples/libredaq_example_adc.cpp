@@ -5,9 +5,13 @@
  **********************************************************/
 
 #include <libredaq.h>
+#include <format.h>
 
 #include <cstdio>
 #include <iostream>
+#include <fstream>
+
+std::ofstream fOut;
 
 // Callback for ADC data
 void my_callback_ADC(const libredaq::TCallbackData_ADC& data)
@@ -25,11 +29,12 @@ void my_callback_ADC(const libredaq::TCallbackData_ADC& data)
     }
 
 #if 1
-    static FILE* f = fopen("adc.txt", "wt");
-    fprintf(f, "%15.7f", data.device_timestamp);
+    if (!fOut.is_open()) fOut.open("adc.txt");
+
+    fOut << libredaq::format("%15.7f", data.device_timestamp);
     for (size_t k = 0; k < data.adc_data_volts.size(); k++)
-        fprintf(f, " %5.05f", data.adc_data_volts[k]);
-    fprintf(f, "\n");
+        fOut << libredaq::format(" %5.05f", data.adc_data_volts[k]);
+    fOut << "\n";
 #endif
 }
 
@@ -56,7 +61,7 @@ int main(int argc, char** argv)
 #else
     daq.switch_firmware_mode(0);
     printf("Starting ADC task...\n");
-    daq.start_task_adc(5000);
+    daq.start_task_adc(10000);
 #endif
     libredaq::sleep_ms(15000);
 
@@ -64,5 +69,7 @@ int main(int argc, char** argv)
     daq.stop_all_tasks();  // This is not required as it will be done anyway in
                            // the destructor, but it is good practice.
 
+    libredaq::sleep_ms(1000);
+    fOut.close();
     return 0;
 }

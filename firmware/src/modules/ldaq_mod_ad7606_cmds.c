@@ -1,10 +1,10 @@
 /*+-------------------------------------------------------------------------+
-  |                             LibreDAQ                                    |
-  |                                                                         |
-  | Copyright (C) 2015  Jose Luis Blanco Claraco                            |
-  | Distributed under GNU General Public License version 3                  |
-  |   See <http://www.gnu.org/licenses/>                                    |
-  +-------------------------------------------------------------------------+  */
+|                             LibreDAQ                                    |
+|                                                                         |
+| Copyright (C) 2015  Jose Luis Blanco Claraco                            |
+| Distributed under GNU General Public License version 3                  |
+|   See <http://www.gnu.org/licenses/>                                    |
++-------------------------------------------------------------------------+  */
 
 #include <asf.h>
 
@@ -26,8 +26,8 @@ void adc_busy_edge_handler(uint32_t a,uint32_t b)
 	mod_ad7606_read_all(trg->adcs);
 	ldaq_leave_cs(flags);
 
-#warning TODO: Put real slot index!!
-trg->src_slot = 0;
+	#warning TODO: Put real slot index!!
+	trg->src_slot = 0;
 	
 	++frame_adc_next_idx;
 	frame_adc_next_idx &= ADC_FRAME_BLOCK_SIZE_MASK;
@@ -35,7 +35,7 @@ trg->src_slot = 0;
 	{
 		frame_adc_buffer_idx_done = frame_adc_buffer_idx;
 		if (++frame_adc_buffer_idx>=ADC_FRAME_BUFFERS)
-			frame_adc_buffer_idx=0;
+		frame_adc_buffer_idx=0;
 	}
 }
 
